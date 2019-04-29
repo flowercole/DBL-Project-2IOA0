@@ -1,0 +1,29 @@
+{
+  "name": "dbl-webtech-viz",
+  "version": "0.0.1",
+  "description": "A cool visualization up for analyzing graph data, written for the DBL Webtech",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "engines": {
+    "node": "11.14.0",
+    "npm": "6.9.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/dielorg/2ioa0-webtech.git"
+  },
+  "keywords": [
+    "dope"
+  ],
+  "author": "Group 26",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/dielorg/2ioa0-webtech/issues"
+  },
+  "homepage": "https://gitlab.com/dielorg/2ioa0-webtech#readme"
+}

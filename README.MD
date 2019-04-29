@@ -9,6 +9,11 @@ Secondly, to run the app, in the root directory, run:
 ```
 node index.js
 ```
+Or, if you have npm installed:
+```
+npm start
+```
+also works.
 You should be able to see it in your browser by going to http://localhost:3000
 
 ### Prerequisites
