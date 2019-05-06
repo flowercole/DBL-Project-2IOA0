@@ -1,3 +1,5 @@
+# file in the Upload directory, not to clutter git
+/data/*.csv
 # The ssl keys should be kept out of git
 #https/ disabled for heroku
 
