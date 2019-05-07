@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/upload"  enctype="multipart/form-data" method="post">
+        <div>
+          <label>Select file to upload</label>
+          <input id="fileinput" type="file" name="upload">
+        </div>
+        <button type="submit" value="upload">Convert</button>
+      </form>
+
+      <script>
+      // Select your input type file and store it in a variable
+        const input = document.getElementById('fileinput');
+
+        // var formData = new FormData();
+        // formData.append('file', input.files[0]);
+
+        // This will upload the file after having read it
+        const upload = (file) => {
+            var formData = new FormData();
+            formData.append('file', file);
+            console.log(file);
+            console.log(formData);
+
+            fetch('http://localhost:3000/upload', { // Your POST endpoint
+                method: 'POST',
+                body: formData // This is your file object
+            })
+            .then(response => {console.log('33333'); response.json()})
+            .catch(error => console.error('Error:', error))
+            .then(response => console.log('Success:', JSON.stringify(response)));
+        };
+            
+        // Event handler executed when a file is selected
+        const onSelectFile = () =>{ upload(input.files[0])};
+
+        // Add a listener on your input
+        // It will be triggered when a file will be selected
+        input.addEventListener('change', onSelectFile, false);
+      </script>
+</body>
+</html>
