@@ -37,7 +37,8 @@
             .catch(error => console.error('Error:', error))
             .then(response => (
               console.log('Success:', JSON.stringify(response)),
-              store_file_name(response.file_name)
+              store_file_name(response.file_name),
+              fetch_file_data(request_file_name())
             ))
         };
 
@@ -48,9 +49,39 @@
         // It will be triggered when a file will be selected
         input.addEventListener('change', onSelectFile, false);
 
+        // Store File Name in local storage
         function store_file_name(file_name) {
           console.log('File name:', file_name);
           localStorage.setItem('file_name', JSON.stringify(file_name));
+        }
+
+        // Fetch File Data from Server
+        function fetch_file_data(file_name) {
+          file_location = 'http://localhost:3000/csv/' + file_name;
+
+          fetch(file_location)
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(myJson) {
+            store_file_data(JSON.parse(JSON.stringify(myJson)));
+          });
+        }
+
+        // Store File Data in local storage
+        function store_file_data(file_data) {
+          console.log('File data:', file_data);
+          localStorage.setItem('file_data', JSON.stringify(file_data));
+        }
+
+        // Request File Name from local storage
+        function request_file_name() {
+          return JSON.parse(localStorage.getItem('file_name'));
+        }
+
+        // Request File Data from local Storage
+        function request_file_data() {
+          return JSON.parse(localStorage.getItem('file_data'));
         }
 
 
