@@ -20,7 +20,6 @@
         .then((resp) => resp.json()) // Transform the data into json
         .then(function(res) {
             files = files.concat(res.data);
-            console.log(files);
             //check localStorage
             if(localStorage.getItem('file_name')!= null){
                 files.push(localStorage.getItem('file_name').replace(/['"]+/g, ''));
