@@ -70,9 +70,6 @@ loadForceGraph = () => {
     // Save original data
     og_data = JSON.parse(JSON.stringify(graph_data));
 
-    //console.log("nodes: " + parsedObj.nodes.length + " - links: " + parsedObj.links.length)
-    console.log(nodes, edges);
-
     //create the visualization based on the graph
     renderDisplay(nodes, edges);
   }
@@ -107,10 +104,6 @@ loadForceGraph = () => {
     // Clear the canvas
     d3.selectAll("svg > *").remove();
 
-    // Set vertices and edges
-    vertices = vertices;
-    edges = edges;
-
     // Set edge appearance
     edge = svg.append("g")
       .attr("stroke", "#000")
@@ -135,7 +128,7 @@ loadForceGraph = () => {
 
     // Make sure the colors are loaded correctly
     d3.selectAll("circle")
-      //sets the color of circle
+      // Set the color of circle
       .attr("fill", function(d) {
         if (!graph_data.selected_nodes.includes(d)) {
           return colors
@@ -143,7 +136,7 @@ loadForceGraph = () => {
           return inverseColors
         }
       })
-      //sets the radius of circle
+      // Set the radius of circle
       .attr("r", document.getElementById("nodeRadius").value)
 
     // Set title to show when hovering
@@ -156,13 +149,12 @@ loadForceGraph = () => {
       .on("tick", ticked)
       .force("link").links(edges)
 
-    //function triggers at each tick of the simulation, sets position of nodes and links
+    // Function triggers at each tick of the simulation, sets position of nodes and links
     function ticked() {
       // Update node position
       node
         .attr("cx", function(d) { return d.x})
         .attr("cy", function(d) { return d.y});
-
       // Update edge position
       edge
         .attr("x1", function(d) { return d.source.x; })
@@ -170,19 +162,17 @@ loadForceGraph = () => {
         .attr("y1", function(d) { return d.source.y; })
         .attr("y2", function(d) { return d.target.y; })
       }
-
     }
 
-    drag = function(simulation) {
+
+    drag = (simulation) => {
+
       function drag_start(d) {
         if (!d3.event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d.x;
         d.fy = d.y;
 
-        //d.selected = !d.selected
-
         // Check if d is already selected
-
         if (!graph_data.selected_nodes.includes(d)) {
           // if it's not yet selected, add it to the selected vertices array
           graph_data.selected_nodes.push(d);
@@ -199,7 +189,6 @@ loadForceGraph = () => {
           // if it is selected, get the index of d and remove that from the selected vertices array
           graph_data.selected_nodes.splice(graph_data.selected_nodes.indexOf(d), 1);
         };
-
 
         updateSelectedEdges();
         d3.selectAll("circle")
@@ -231,18 +220,20 @@ loadForceGraph = () => {
 
     }
 
+    // Update Selected Edges
     function updateSelectedEdges() {
       for(i = 0; i < graph_data.links.length; i++) {
         sel_edge = graph_data.links[i];
+
         // If both source and target of edge are selected and edge is not in selected array, add it
         if (graph_data.selected_nodes.includes(sel_edge.source) && graph_data.selected_nodes.includes(sel_edge.target) && !graph_data.selected_links.includes(sel_edge)) {
           graph_data.selected_links.push(sel_edge);
         }
-
         // If either the source or target (or both) is not selected and the edge is, remove it from the selected array
         if ((!graph_data.selected_nodes.includes(sel_edge.source) || !graph_data.selected_nodes.includes(sel_edge.target)) && graph_data.selected_links.includes(sel_edge)) {
           graph_data.selected_links.splice(graph_data.selected_links.indexOf(sel_edge), 1);
         }
+
       }
     }
 
@@ -274,7 +265,13 @@ loadForceGraph = () => {
       inverseColors = document.getElementById("selColSelect").value
   	  d3.selectAll("circle")
         //sets the color of circle
-        .attr("fill", function(d) {if (!graph_data.selected_nodes.includes(d)) {return colors} else {return inverseColors} })
+        .attr("fill", function(d) {
+          if (!graph_data.selected_nodes.includes(d)) {
+            return colors
+          } else {
+            return inverseColors
+          }
+        })
         //sets the radius of circle
   		  .attr("r", document.getElementById("nodeRadius").value)
     }
