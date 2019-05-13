@@ -82,6 +82,6 @@ loadMatrix = () => {
             }
         ];
         //display heatmap
-        Plotly.newPlot('app', data, {}, {showSendToCloud: true});
+        Plotly.newPlot('visualization-canvas', data, {}, {showSendToCloud: true});
     }
   }

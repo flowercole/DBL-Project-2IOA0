@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Visualization Page</title>
+
+    <style>
+    #visualization-canvas {
+      position:absolute;
+      height: 90%;
+      width: 90%;
+    }
+    </style>
+
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- Visualization selector -->
+    <select id="select-vis">
+      <option value="">Select one of the following Visualizations</option>
+      <option value="matrix">Matrix</option>
+      <option value="graph">Graph</option>
+    </select>
+
+    <!-- Dataset selector -->
+    <select id="select-data">
+      <option value="">Select one of the following datasets</option>
+    </select>
+
+    <!-- Visualise button -->
+    <button id="update-btn">Visualise!</button>
+
+    <!-- Wrapper for the visualization -->
+    <div id="visualization-canvas" style="position: absolute; height, width: 90%;">
+      <h1>Select a visualization above and a dataset to begin</h1>
+    </div>
+
+  </div>
+
+<script>
+
+let selectData = document.querySelector('#select-data');
+let selectVis = document.querySelector('#select-vis');
+let visualizeBtn = document.getElementById('update-btn')
+let visualizationCanvas = document.getElementById("visualization-canvas");
+
+// Read all files on server, put them in the dataset selector
+window.onload = () => {
+  let files = [];
+
+  fetch('http://localhost:3000/datasets')
+  .then((resp) => resp.json()) // Transform the data into json
+  .then(function(res) {
+    files = files.concat(res.data);
+    // Remove duplicates
+    files = [...new Set(files)];
+    updateSelect(files);
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
+}
+
+// Update data selector
+updateSelect = (data) => {
+  let files = data;
+  files.forEach((file) => {
+    let opt = document.createElement('option');
+    opt.value = file;
+    opt.dataset.local = false; //TODO make this true for localStorage files
+    opt.innerHTML = file;
+    selectData.appendChild(opt);
+  })
+}
+
+// On Dataset selection, save filename in LocalStorage
+selectData.addEventListener('change', (event) => {
+  console.log(`You chose ${event.target.value}`);
+  localStorage.setItem('selected_file', `${event.target.value}`)
+});
+
+// On Visualization selection, save visualization name in LocalStorage
+selectVis.addEventListener('change', (event) => {
+  console.log(`You chose ${event.target.value}`);
+  localStorage.setItem('selected_vis', `${event.target.value}`)
+  // Clear previous Canvas
+  clearCanvas()
+  // Load correct Canvas
+  loadCanvas(event.target.value)
+});
+
+// On Visualize! click, load the correct visualization method and file
+visualizeBtn.addEventListener('click', (event) => {
+  // Read the correct visualization method from LocalStorage
+  var vis = localStorage.getItem('selected_vis');
+  // Read the correct filename from LocalStorage
+  var file = localStorage.getItem('selected_file');
+  console.log('Updating the VISUALIZATION...');
+  // Load correct Visualization
+  loadVisualization(vis);
+});
+
+// Clear Canvas Function
+clearCanvas = () => {
+  visualizationCanvas.removeAttribute("style");
+}
+
+// Load Canvas Function
+loadCanvas = (visualization) => {
+  fetch(`/comp/${visualization}.html`)
+  .then(function(response) {
+    response.text().then(function (body) {
+      document.getElementById("visualization-canvas").innerHTML = body;
+    });
+    return response;
+  });
+}
+
+// Load Visualization Function
+loadVisualization = (vis) => {
+  switch(vis) {
+    case 'matrix':
+      loadMatrix();
+      break;
+    case 'graph':
+      loadForceGraph();
+      break;
+    default:
+      break;
+  }
+}
+
+</script>
+
+<!-- include Other Components -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="/public/scripts/matrix.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="/public/scripts/graph.js"></script>
+
+
+</body>
+</html>
