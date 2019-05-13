@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Visualization</title>
+</head>
+<body>
+    <select name="vislist" id="select" form="vis">
+        <option value="">Select an option below</option>
+    </select>
+    
+    <script>
+    let select = document.querySelector('#select');
+
+    window.onload = () => {
+        let files = [];
+        fetch('http://localhost:3000/datasets')
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(res) {
+            files = files.concat(res.data);
+            console.log(files);
+            //check localStorage
+            if(localStorage.getItem('file_name')!= null){
+                files.push(localStorage.getItem('file_name').replace(/['"]+/g, ''));
+            }
+            // Remove duplicates
+            files = [...new Set(files)];
+            updateSelect(files);
+        })
+        .catch(function(err) {
+            console.log(err);
+            // This is where you run code if the server returns any errors
+        });
+    }
+
+    updateSelect = (data) => {
+        let files = data;
+        files.forEach((file) => {
+            let opt = document.createElement('option');
+            opt.value = file;
+            opt.dataset.local = false; //TODO make this true for localStorage files
+            opt.innerHTML = file;
+
+            select.appendChild(opt);
+        })
+    }
+
+    select.addEventListener('change', (event) => {
+        const result = document.querySelector('.result');
+        // TODO make fetch for the given file
+        console.log(`You chose ${event.target.value}`);
+    });
+    </script>
+</body>
+</html>
