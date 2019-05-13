@@ -1,0 +1,57 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-image: linear-gradient(to right, #4200FF, #00DDFF);
+    /*font-family: 'Alegreya Sans';*/
+    font-family: 'Ubuntu';
+    color: white;
+}
+.top-div{
+    width: 50%;
+    margin: auto;
+    margin-top: 10%;
+}
+.top-div-title{
+    font-size: 50pt;
+    text-align: center;
+}
+.top-div-text{
+    font-size: 18pt;
+    margin-top: 3%;
+}
+.bottom-div{
+    margin: auto;
+    margin-top: 5%;
+}
+.bottom-div-section{
+    float: left;
+    width: 20%;
+    padding-left: 10%;
+}
+.info-title{
+    font-size: 22pt;
+    text-align: center;
+    margin-bottom: 5%;
+}
+.info-text{
+    font-size: 14pt;
+}
+.info-button{
+    background-color: darkblue;
+    width: 75%;
+    margin: auto;
+    margin-top: 5%;
+}
+.info-button-text{
+    font-size: 16pt;
+    text-align: center;
+	text-decoration: none;
+}
+.info-button-link{
+	text-decoration: none;
+}
+.info-button:hover{
+    cursor: pointer;
+}

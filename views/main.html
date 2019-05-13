@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name='viewport' content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>DBL Visualisation Tool</title>
+        <link rel='stylesheet' href="../public/main.css">
+        <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
+        <script src='https://d3js.org/d3.v4.min.js'></script>
+        <script src='../public/vis1.js'></script>
+    </head>
+    <body>
+        <div class='wrapper'>
+            <div class='settings-div'>
+                <div class='upload-area-div'>
+                    <div class='button-div'>
+                        <p class='button-text'>Upload</p>
+                    </div>
+                    <div class='button-div'>
+                        <p class='button-text'>Load Dataset</p>
+                    </div>
+                </div>
+                <div class='settings-area-div'>
+                    <div class='vis-types-div'>
+                        <h4 class='vis-title'>Visualisation Type:</h4>
+                        <div class='type-div'>
+                            <p class='type-text'>Visualisation 1</p>
+                            <p class='type-info'>i</p>
+                        </div>
+                        <div class='type-div'>
+                            <p class='type-text'>Visualisation 2</p>
+                            <p class='type-info'>i</p>
+                        </div>
+                        <div class='type-div'>
+                            <p class='type-text'>Visualisation 3</p>
+                            <p class='type-info'>i</p>
+                        </div>
+                        <div class='type-div'>
+                            <p class='type-text'>Visualisation 4</p>
+                            <p class='type-info'>i</p>
+                        </div>
+                        <div class='type-div'>
+                            <p class='type-text'>Visualisation 5</p>
+                            <p class='type-info'>i</p>
+                        </div>
+                        <div class='type-div'>
+                            <p class='type-text'>Visualisation 6</p>
+                            <p class='type-info'>i</p>
+                        </div>
+                        <div class='type-div'>
+                            <p class='type-text'>Visualisation 7</p>
+                            <p class='type-info'>i</p>
+                        </div>
+                    </div>
+                    <div class='graph-settings-div'>
+                        <h4 class='vis-title'>Graph Settings</h4>
+                        <div class='type-div'>
+                            <p class='type-text'>Graph Setting 1</p>
+                            <input type="text" class='graph-input-text'>
+                        </div>
+                        <div class='type-div'>
+                            <p class='type-text'>Graph Setting 2</p>
+                            <input type="text" class='graph-input-text'>
+                        </div>
+                        <div class='type-div'>
+                            <p class='type-text'>Graph Setting 3</p>
+                            <input type="text" class='graph-input-text'>
+                        </div>
+                        <div class='type-div'>
+                            <p class='type-text'>Graph Setting 4</p>
+                            <input type="text" class='graph-input-text'>
+                        </div>
+                        <div class='type-div'>
+                            <p class='type-text'>Graph Setting 5</p>
+                            <!--Some kind of slider if needed-->
+                        </div>
+                    </div>
+                </div>
+                <div class='graph-info-div'>
+                    <p class='graph-info-text'>Graph Info 1: x</p>
+                    <p class='graph-info-text'>Graph Info 2: x</p>
+                    <p class='graph-info-text'>Graph Info 3: x</p>
+                </div>
+            </div>
+            <div class='main-vis-div'>
+                <!--img class='main-vis-img' src='https://i.imgur.com/FbDhmwV.png'-->
+                <svg width='960' height='600'></svg>
+                <script src="https://d3js.org/d3.v4.min.js"></script>
+                <script src="../public/vis1.js"></script>
+<script>
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+var manyBody = d3.forceManyBody()
+var collision = d3.forceCollide(5)
+
+//initialize simulation
+var simulation = d3.forceSimulation()
+    .force("link", d3.forceLink().id(function(d) { return d.id; }))
+    .force("charge", manyBody)
+    .force("center", d3.forceCenter(width / 2, height / 2))
+	.force("collision", collision);
+
+//global variables so they can be changed by html input later
+var node;
+var link;
+
+//set force settings based on selected options
+function setSettings() {
+	//change manyBody settings
+	manyBody
+		.strength(document.getElementById("strength").value) //sets strength (pull or push charge)
+		.distanceMin(document.getElementById("minDis").value) //minimum distance between nodes
+		.distanceMax(document.getElementById("maxDis").value); //max distance between nodes
+		
+	//change collision settings
+	collision
+		.radius(document.getElementById("nodeRadius").value) //set radius of collision
+		
+	//reset simulation for changes to go in effect
+	simulation.alpha(0.8).restart()
+	}
+
+//set display settings based on selected options
+function setDisplay() {
+	//change circle appearance
+	d3.selectAll("circle")
+		.attr("fill", document.getElementById("colSelect").value) //sets the color of circle
+		.attr("r", document.getElementById("nodeRadius").value) //sets the radius of circle
+}
+
+fetch('http://localhost:3000/data/miserables')
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+		 a = JSON.parse(JSON.stringify(myJson));
+		 d3.json(JSON.stringify(myJson), function(error, graph) {
+  if (error) throw error;
+  
+	vertices = graph.nodes
+	edges = graph.links 
+
+	//set edge appearance
+	link = svg.append("g")
+	  .attr("stroke", "#000")
+	  .attr("stroke-width", 1.5)
+	  .attr("stroke-opacity", 0.6)
+	.selectAll("line")
+	.data(edges)
+	.enter().append("line")
+	  .attr("stroke-width", function(d) { return Math.sqrt(d.value); })
+	  
+	  //set node appearance
+	node = svg.append("g")
+      .attr("stroke", "#fff")
+      .attr("stroke-width", 1.5)
+    .selectAll("circle")
+    .data(vertices)
+	.enter().append("circle")
+      .attr("r", 5)
+      .attr("fill", "#0080ff")
+      .call(drag(simulation));
+
+	//give them a title that shows when hovered over with mouse
+	node.append("title")
+      .text(function(d) { return d.id; });
+
+	link.append("title")
+		.text(function(d) {return d.value});
+		
+	//add vertices and edges to force simulation
+	simulation
+		.nodes(vertices)
+		.on("tick", ticked)
+		.force("link").links(edges)		
+
+//function triggers at each tick of the simulation, sets position of nodes and links
+  function ticked() {
+  
+	//update node position
+  	node
+		.attr("cx", function(d) { return d.x})
+		.attr("cy", function(d) { return d.y});
+		
+	//update link position
+    link
+        .attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+  }
+});
+  });
+
+//load the json and simulate the node link diagram
+
+
+//function that handles dragging the nodes
+drag = function(simulation) {
+  
+  function drag_start(d) {
+    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+	d.selected = !d.selected
+	d3.selectAll("circle")
+		.attr("fill", function(d) {return color(d.selected)})
+  }
+  
+  function drag_doing(d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+  }
+  
+  function drag_end(d) {
+    if (!d3.event.active) simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+  }
+  
+  return d3.drag()
+      .on("start", drag_start)
+      .on("drag", drag_doing)
+      .on("end", drag_end);
+}
+
+</script>
+            </div>
+        </div>
+    </body>
+</html>
