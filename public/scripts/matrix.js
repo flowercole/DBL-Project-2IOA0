@@ -1,8 +1,7 @@
 
 //// MATRIX SCRIPT ////
 
-// Function to initialize the matrix
-
+// Function to initialize the matrix (Gets called from main file)
 loadMatrix = () => {
 
   // Initialize
