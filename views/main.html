@@ -4,10 +4,10 @@
         <meta name='viewport' content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>DBL Visualisation Tool</title>
-        <link rel='stylesheet' href="../public/main.css">
+        <link rel='stylesheet' href="/public/main.css">
         <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
         <script src='https://d3js.org/d3.v4.min.js'></script>
-        <script src='../public/vis1.js'></script>
+        <script src='/public/vis1.js'></script>
     </head>
     <body>
         <div class='wrapper'>
@@ -116,11 +116,11 @@ function setSettings() {
 		.strength(document.getElementById("strength").value) //sets strength (pull or push charge)
 		.distanceMin(document.getElementById("minDis").value) //minimum distance between nodes
 		.distanceMax(document.getElementById("maxDis").value); //max distance between nodes
-		
+
 	//change collision settings
 	collision
 		.radius(document.getElementById("nodeRadius").value) //set radius of collision
-		
+
 	//reset simulation for changes to go in effect
 	simulation.alpha(0.8).restart()
 	}
@@ -141,9 +141,9 @@ fetch('http://localhost:3000/data/miserables')
 		 a = JSON.parse(JSON.stringify(myJson));
 		 d3.json(JSON.stringify(myJson), function(error, graph) {
   if (error) throw error;
-  
+
 	vertices = graph.nodes
-	edges = graph.links 
+	edges = graph.links
 
 	//set edge appearance
 	link = svg.append("g")
@@ -154,7 +154,7 @@ fetch('http://localhost:3000/data/miserables')
 	.data(edges)
 	.enter().append("line")
 	  .attr("stroke-width", function(d) { return Math.sqrt(d.value); })
-	  
+
 	  //set node appearance
 	node = svg.append("g")
       .attr("stroke", "#fff")
@@ -172,21 +172,21 @@ fetch('http://localhost:3000/data/miserables')
 
 	link.append("title")
 		.text(function(d) {return d.value});
-		
+
 	//add vertices and edges to force simulation
 	simulation
 		.nodes(vertices)
 		.on("tick", ticked)
-		.force("link").links(edges)		
+		.force("link").links(edges)
 
 //function triggers at each tick of the simulation, sets position of nodes and links
   function ticked() {
-  
+
 	//update node position
   	node
 		.attr("cx", function(d) { return d.x})
 		.attr("cy", function(d) { return d.y});
-		
+
 	//update link position
     link
         .attr("x1", function(d) { return d.source.x; })
@@ -203,7 +203,7 @@ fetch('http://localhost:3000/data/miserables')
 
 //function that handles dragging the nodes
 drag = function(simulation) {
-  
+
   function drag_start(d) {
     if (!d3.event.active) simulation.alphaTarget(0.3).restart();
     d.fx = d.x;
@@ -212,18 +212,18 @@ drag = function(simulation) {
 	d3.selectAll("circle")
 		.attr("fill", function(d) {return color(d.selected)})
   }
-  
+
   function drag_doing(d) {
     d.fx = d3.event.x;
     d.fy = d3.event.y;
   }
-  
+
   function drag_end(d) {
     if (!d3.event.active) simulation.alphaTarget(0);
     d.fx = null;
     d.fy = null;
   }
-  
+
   return d3.drag()
       .on("start", drag_start)
       .on("drag", drag_doing)

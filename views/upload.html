@@ -4,87 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Upload Page</title>
 </head>
 <body>
+
+    <!-- Upload Form -->
     <form action="/upload"  enctype="multipart/form-data" method="post">
-        <div>
-          <label>Select file to upload</label>
-          <input id="fileinput" type="file" name="upload">
-        </div>
-        <!-- <button type="submit" value="upload">Convert</button> -->
-      </form>
+      <p>Select a file to upload !</p>
+      <input id="input" type="file" name="upload">
+    </form>
 
-      <script>
-      // Select your input type file and store it in a variable
-        const input = document.getElementById('fileinput');
+    <!-- Include Upload script -->
+    <script src='public/scripts/upload.js'></script>
 
-        // var formData = new FormData();
-        // formData.append('file', input.files[0]);
-
-        // This will upload the file after having read it
-        const upload = (file) => {
-            var formData = new FormData();
-            formData.append('file', file);
-            console.log(file);
-            console.log(formData);
-
-            fetch('http://localhost:3000/upload', { // Your POST endpoint
-                method: 'POST',
-                body: formData // This is your file object
-            })
-            .then(response => response.json())
-            .catch(error => console.error('Error:', error))
-            .then(response => (
-              console.log('Success:', JSON.stringify(response)),
-              store_file_name(response.file_name),
-              fetch_file_data(request_file_name())
-            ))
-        };
-
-        // Event handler executed when a file is selected
-        const onSelectFile = () =>{ upload(input.files[0]) };
-
-        // Add a listener on your input
-        // It will be triggered when a file will be selected
-        input.addEventListener('change', onSelectFile, false);
-
-        // Store File Name in local storage
-        function store_file_name(file_name) {
-          console.log('File name:', file_name);
-          localStorage.setItem('file_name', JSON.stringify(file_name));
-        }
-
-        // Fetch File Data from Server
-        function fetch_file_data(file_name) {
-          file_location = 'http://localhost:3000/csv/' + file_name;
-
-          fetch(file_location)
-          .then(function(response) {
-            return response.json();
-          })
-          .then(function(myJson) {
-            store_file_data(JSON.parse(JSON.stringify(myJson)));
-          });
-        }
-
-        // Store File Data in local storage
-        function store_file_data(file_data) {
-          console.log('File data:', file_data);
-          localStorage.setItem('file_data', JSON.stringify(file_data));
-        }
-
-        // Request File Name from local storage
-        function request_file_name() {
-          return JSON.parse(localStorage.getItem('file_name'));
-        }
-
-        // Request File Data from local Storage
-        function request_file_data() {
-          return JSON.parse(localStorage.getItem('file_data'));
-        }
-
-
-      </script>
 </body>
 </html>

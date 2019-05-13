@@ -1,3 +1,6 @@
+//// MATRIX SCRIPT ////
+
+// Function to initialize the matrix
 loadMatrix = () => {
     var a;
     var filename = localStorage.getItem('selected_file');
