@@ -5,14 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Visualization</title>
+    <style>
+        #wrapper {
+        position:relative;
+        }
+
+        #app {
+            margin-top: 20px;
+            position:absolute;
+            height: 90%;
+            width: 90%;
+        }
+    </style>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    <select name="vislist" id="select" form="vis">
-        <option value="">Select an option below</option>
-    </select>
-    
+    <div class="wrapper">
+        <select name="vislist" id="select-viz" form="vis">
+            <option value="">Select one of the following Visualizations</option>
+            <option value="matrix">Matrix</option>
+            <option value="graph">Graph</option>
+        </select>
+        <select name="vislist" id="select-data" form="vis">
+            <option value="">Select one of the following datasets</option>
+        </select>
+        <button>Update</button>
+
+        <div id="app" style="background-color:#666;">
+            <!-- This should be killed. -->
+            <h1 style="color:antiquewhite; margin: 0 auto;">Select a visualization above and a dataset to begin</h1>
+        </div>
+    </div>
+
     <script>
-    let select = document.querySelector('#select');
+    let selectData = document.querySelector('#select-data');
+    let selectViz = document.querySelector('#select-viz');
 
     window.onload = () => {
         let files = [];
@@ -42,15 +69,47 @@
             opt.dataset.local = false; //TODO make this true for localStorage files
             opt.innerHTML = file;
 
-            select.appendChild(opt);
+            selectData.appendChild(opt);
         })
     }
 
-    select.addEventListener('change', (event) => {
+    selectData.addEventListener('change', (event) => {
         const result = document.querySelector('.result');
         // TODO make fetch for the given file
         console.log(`You chose ${event.target.value}`);
     });
+
+    selectViz.addEventListener('change', (event) => {
+        // Logic to fetch data
+        console.log(`You chose ${event.target.value}`);
+        const requestedVis = event.target.value;
+
+        switch(requestedVis){
+            case 'matrix':
+                loadMatrix();
+                break;
+            case 'graph':
+                loadForceGraph();
+                break;
+            default:
+                break;
+        }
+
+        // Check if the data select has any value, otherwise default to the first one:
+        // if(selectData.options[selectData.selectedIndex].value == ''){
+        //     selectData.selectedIndex = 1;
+        // }
+
+        // TODO fetch visualization file
+    });
+
+    loadMatrix = () => {
+
+    }
+
+    loadForceGraph = () => {
+
+    }
     </script>
 </body>
 </html>
