@@ -29,10 +29,12 @@
         <select name="vislist" id="select-data" form="vis">
             <option value="">Select one of the following datasets</option>
         </select>
-        <button>Update</button>
+        <button id="update-btn">Visualise!</button>
 
         <div id="app" style="background-color:#666;">
-            <!-- This should be killed. -->
+
+
+
             <h1 style="color:antiquewhite; margin: 0 auto;">Select a visualization above and a dataset to begin</h1>
         </div>
     </div>
@@ -40,6 +42,7 @@
     <script>
     let selectData = document.querySelector('#select-data');
     let selectViz = document.querySelector('#select-viz');
+    var updateBtn = document.getElementById('update-btn')
 
     window.onload = () => {
         let files = [];
@@ -77,19 +80,32 @@
         const result = document.querySelector('.result');
         // TODO make fetch for the given file
         console.log(`You chose ${event.target.value}`);
+
+        localStorage.setItem('selected_file', `${event.target.value}`)
+
     });
 
     selectViz.addEventListener('change', (event) => {
         // Logic to fetch data
         console.log(`You chose ${event.target.value}`);
-        const requestedVis = event.target.value;
+        localStorage.setItem('selected_vis', `${event.target.value}`)
 
-        switch(requestedVis){
+        let div = document.getElementById("app");
+
+        switch(event.target.value){
             case 'matrix':
-                loadMatrix();
+            div.removeAttribute("style");
+            while (div.firstChild) {
+              div.removeChild(div.firstChild);
+            }
+                loadMatrixPage();
                 break;
             case 'graph':
-                loadForceGraph();
+              div.removeAttribute("style");
+              while (div.firstChild) {
+                div.removeChild(div.firstChild);
+              }
+                loadForceGraphPage();
                 break;
             default:
                 break;
@@ -103,13 +119,57 @@
         // TODO fetch visualization file
     });
 
-    loadMatrix = () => {
+    updateBtn.addEventListener('click', (event) => {
+      var file = localStorage.getItem('selected_file')
+      var vis = localStorage.getItem('selected_vis')
 
+      console.log('Updating the VISUALIZATION...');
+
+
+      switch(vis){
+          case 'matrix':
+              loadMatrix();
+              break;
+          case 'graph':
+              loadForceGraph();
+              break;
+          default:
+              break;
+      }
+    })
+
+    loadMatrixPage = () => {
+      fetch('/comp/matrix.html')
+      .then(function(response) {
+        response.text().then(function (text) {
+          // do something with the text response
+          document.getElementById("app").innerHTML=text;
+        });
+        // console.log(response.body)
+        return response;
+      });
     }
 
-    loadForceGraph = () => {
-
+    loadForceGraphPage = () => {
+      fetch('/comp/graph.html')
+      .then(function(response) {
+        response.text().then(function (text) {
+          // do something with the text response
+          document.getElementById("app").innerHTML=text;
+        });
+        // console.log(response.body)
+        return response;
+      });
     }
+
+
     </script>
+
+    <!-- include components -->
+    <script src="/public/scripts/matrix.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="/public/scripts/graph.js"></script>
+
+
 </body>
 </html>
