@@ -1,87 +1,101 @@
+
 //// MATRIX SCRIPT ////
 
 // Function to initialize the matrix
+
 loadMatrix = () => {
-    var a;
-    var filename = localStorage.getItem('selected_file');
-        fetch('http://localhost:3000/csv/'+filename)
-        .then(function(response) {
-        return response.json();
-        })
-        .then(function(myJson) {
-            a = JSON.parse(JSON.stringify(myJson));
-            Visualise();
-        });
-    //call when the
-    function Visualise() {
 
-        var xValues = [];
-        var yValues  = [];
-        //build the name values
-        for(var i = 1; i < a.length; i++) {
-            xValues.push(a[0][i]);
-        }
+  // Initialize
+  var filename = localStorage.getItem('selected_file');
+  var file;
 
-        //yvalues and xValues should be equal by default
-        yValues=xValues;
+  // Fetch file
+  fetch('http://localhost:3000/csv/'+filename)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    file = JSON.parse(JSON.stringify(myJson));
+    // Run Visualise with file
+    Visualise(file);
+  });
 
-        //remove duplicates adding counter
-        for(var i = 0; i < xValues.length-1;i++) {
-            var counter=0;
-            for(var j = i+1; j < xValues.length; j++) {
-                if(xValues[i]==xValues[j]) {
-                    xValues[j]=xValues[j]+counter*" ";
-                    counter++;
-                }
-            }
-        }
+}
 
-        //build a matrix
-        function matrix(rows, cols, defaultValue){
-            var arr = [];
-            // Creates all lines:
-            for(var i=0; i < rows; i++){
-                // Creates an empty line
-                arr.push([]);
-                // Adds cols to the empty line:
-                arr[i].push( new Array(cols));
-                for(var j=0; j < cols; j++){
-                // Initializes:
-                arr[i][j] = defaultValue;
-                }
-            }
-            return arr;
-        }
+// Main Visualise Function
+function Visualise(file) {
 
-        //build a proper matrix from the csv file
-        var array = matrix(a[0].length,a[0].length,"*");
+  // Initialize
+  var xValues = [];
+  var yValues  = [];
 
-        //fill in array with correct values from the csv file matrix
-        for(var i = 0; i < a[0].length; i++) {
-                for(var j = 0; j < a[0].length; j++) {
-                    array[i][j]=a[i][j];
-            }
-        }
+  // Build the name values
+  for(var i = 1; i < file.length; i++) {
+    xValues.push(file[0][i]);
+  }
 
-        //build a matrix for zValues
-        var zValues = matrix(a[0].length-1,a[0].length-1,"*");
+  // yValues and xValues should be equal by default
+  yValues=xValues;
 
-        for(var i = 0; i < array[0].length-1; i++) {
-                for(var j = 0; j < array[0].length-1; j++) {
-                    zValues[i][j]=array[i+1][j+1];
-            }
-        }
-
-        //input data for heatmap
-        var data = [
-            {
-            z: zValues,
-            x: xValues,
-            y: yValues,
-            type: 'heatmap'
-            }
-        ];
-        //display heatmap
-        Plotly.newPlot('visualization-canvas', data, {}, {showSendToCloud: true});
+  // Remove duplicates, adding counter
+  for(var i = 0; i < xValues.length-1;i++) {
+    var counter=0;
+    for(var j = i+1; j < xValues.length; j++) {
+      if(xValues[i]==xValues[j]) {
+        xValues[j]=xValues[j]+counter*" ";
+        counter++;
+      }
     }
   }
+
+  // Build Matrix Function
+  function matrix(rows, cols, defaultValue){
+    var arr = [];
+    // Creates all lines:
+    for(var i=0; i < rows; i++){
+      // Creates an empty line
+      arr.push([]);
+      // Adds cols to the empty line:
+      arr[i].push( new Array(cols));
+      for(var j=0; j < cols; j++){
+        // Initializes:
+        arr[i][j] = defaultValue;
+      }
+    }
+    return arr;
+  }
+
+  // Build a Proper Matrix from the CSV file
+  var array = matrix(file[0].length,file[0].length,"*");
+
+  // Fill in array with correct values from the CSV file
+  for(var i = 0; i < file[0].length; i++) {
+    for(var j = 0; j < file[0].length; j++) {
+      array[i][j]=file[i][j];
+    }
+  }
+
+  // Build a Matrix for zValues
+  var zValues = matrix(file[0].length-1,file[0].length-1,"*");
+
+  // Fill in array with correct z-values
+  for(var i = 0; i < array[0].length-1; i++) {
+    for(var j = 0; j < array[0].length-1; j++) {
+      zValues[i][j]=array[i+1][j+1];
+    }
+  }
+
+  // Input data for heatmap
+  var data = [
+    {
+    z: zValues,
+    x: xValues,
+    y: yValues,
+    type: 'heatmap'
+    }
+  ];
+
+  // Run Heatmap
+  Plotly.newPlot('visualization-canvas', data, {}, {showSendToCloud: true});
+
+}
