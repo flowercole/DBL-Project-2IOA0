@@ -26,11 +26,16 @@ function loadGraph() {
   })
   .then(function(myJson) {
     file = JSON.parse(JSON.stringify(myJson));
-
+	
+	
     graph_data = csvJSON(file);
+	
+	//copy data for the radial graph
+	data_copy= JSON.parse(JSON.stringify(graph_data));
+	
     loadForceGraph(graph_data.nodes, graph_data.links, svg_force, vis_attributes);
     // get rid of this comment to load the radial graph aswell ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ///// loadRadialGraph(graph_data.nodes, graph_data.links, svg_radial, vis_attributes);
+    loadRadialGraph(data_copy.nodes, data_copy.links, svg_radial, vis_attributes);
   });
 
 }
@@ -56,7 +61,7 @@ function csvJSON(csv) {
   }
 
   graph_data = {"nodes": nodes, "links": links};
-
+  
   return graph_data;
 
 }
