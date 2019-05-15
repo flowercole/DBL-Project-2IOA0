@@ -1,224 +1,177 @@
-
-//// DIRECTED FORCE GRAPH SCRIPT ////
-
-// Function to initialize the directed force graph (Gets called from main file)
-loadForceGraph = () => {
-
-  // Initialize variables
-  var svg = d3.select('svg');
-  width = +svg.attr('width');
-  height = +svg.attr('height');
-
-  var color = d3.scaleOrdinal(d3.schemeCategory20);
-  var manyBody = d3.forceManyBody()
-  var collision = d3.forceCollide(5)
-
-  // Get the selected colors
-  var colors = document.getElementById("colSelect").value
-  var inverseColors = document.getElementById("selColSelect").value
+	  // Initialize variables
 
 
-  // Initialize simulation
-  var simulation = d3.forceSimulation()
-    .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", manyBody)
-    .force("center", d3.forceCenter(width/2, height/2))
-    .force("collision", collision);
+	var manyBody = d3.forceManyBody()
+	var collision = d3.forceCollide(5)
 
-  // global variables so they can be changed by html later
-  let node;
-  let link;
-  let graph_data;
-  let og_data;
+		  // Initialize simulation
+	 var simulation = d3.forceSimulation()
+		.force("link", d3.forceLink().id(function(d) { return d.id; }))
+		.force("charge", manyBody)
+		.force("collision", collision)
 
-  // Get filename from LocalStorage
+
+	var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+function loadForceGraph() {
+
+
   var filename = localStorage.getItem('selected_file');
 
-  d3.csv("/csv/"+filename, function(data) {
-      csvJSON(data)
+  fetch('http://localhost:3000/csv/'+filename)
+  .then(function(response) {
+    return response.json();
   })
+  .then(function(myJson) {
+    file = JSON.parse(JSON.stringify(myJson));
+    // Run Visualise with file
+    graph_data = csvJSON(file);
+	startSimulation(graph_data)
+  });
 
   // Convert csv to json format object
   function csvJSON(csv) {
 
     // Initialize
-    var vertices = csv.columns[0].split(";")
+    var vertices = csv[0]
     var nodes = []
     var edges = []
 
     // Fill nodes array with vertices
-    for (var i = 1; i < 100; i++) {
+    for (var i = 1; i < vertices.length; i++) {
       nodes.push({"id" : vertices[i] })
     }
 
     // Fill edges array based on CSV file
-    for (var i = 0; i < 100; i++) {
-      for (var key in csv[i]) {
-        var weights = csv[i][key].split(";")
+    for (var i = 1; i < csv.length; i++) {
+        var weights = csv[i]
         var target = weights[0]
-        for (var j = 1; j < 100; j++) {
-          if (weights[j] > 0 && target != "Clement_T._Yu") {
+        for (var j = 1; j < weights.length; j++) {
+          if (weights[j] > 0) {
             edges.push({"source" : vertices[j], "target" : target, "value" : weights[j] })
           }
-        }
+
       }
     }
-
-    // Put the data in an Object
+	// Put the data in an Object
     graph_data = {"nodes" : nodes, "links" : edges, "selected_nodes": [], "selected_links": []};
 
     // Save original data
     og_data = JSON.parse(JSON.stringify(graph_data));
 
     //create the visualization based on the graph
-    renderDisplay(nodes, edges);
+	return graph_data
   }
 
-  // Called on reset button
-  function renderNormal() {
-    // Reset graph_data to og_data
-    // Again, doing this any other way will cause both og_data and graph_data to change when interacting
-    graph_data = JSON.parse(JSON.stringify(og_data));
-    // Render
-    renderDisplay(graph_data.nodes, graph_data.links);
-    // Restart the simulation to get the vertices and edges at the right positions
-    simulation.alpha(0.8).restart();
-  };
+	function startSimulation(graph) {
+//Show a large graph (static)
+  	console.log("showing static graph")
 
-  // Called on Show selected button
-  function renderSelected() {
-    // Move selected vertices and edges to vertices and edges arrays
-    graph_data.nodes = graph_data.selected_nodes;
-    graph_data.links = graph_data.selected_links;
-    // Empty selected vertices and edges arrays
-    graph_data.selected_nodes = [];
-    graph_data.selected_links = [];
-    // Render
-    renderDisplay(graph_data.nodes, graph_data.links);
-    // Restart simulation
-    simulation.alpha(0.8).restart();
-  };
+	var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
 
-  // Main render function
-  function renderDisplay(vertices, edges) {
-    // Clear the canvas
-    d3.selectAll("svg > *").remove();
+	svg.selectAll("*").remove()
 
-    // Set edge appearance
-    edge = svg.append("g")
-      .attr("stroke", "#000")
-      .attr("stroke-width", 1.5)
-      .attr("stroke-opacity", 0.6)
-      .selectAll("line")
-      .data(edges)
-      .enter().append("line")
-      .attr("stroke-width", function(d) { return 0.1 * Math.sqrt(d.value);})
-      .attr("stroke-opacity",function(d) { return 0.1 * Math.sqrt(d.value);})
+	//load data in arrays
+	vertices = graph.nodes
+	edges = graph.links
 
-    // Set vertex appearance
-    node = svg.append("g")
+	simulation = d3.forceSimulation()
+    .force("link", d3.forceLink()
+	.id(function(d) { return d.id; })
+	.iterations(0.01))
+    .force("charge", manyBody)
+    .force("center", d3.forceCenter(width / 2, height / 2))
+	.force("collision", collision);
+
+	minWeight = 0
+	//determine settings based on amount of data
+	if (edges.length > 80000) {
+		//calculate weight of 100000th largest element to use as minimum weight IMPROVE TO NOT USE SORT
+		var edgeWeights = []
+		for (var ed in edges) {
+			edgeWeights.push(edges[ed].value)
+		}
+		minWeight = edgeWeights.sort(function(a,b) {return b - a})[80000]
+	}
+
+	//set edge appearance group
+	link = svg.append("g")
+	  .attr("stroke", "#000")
+	  .attr("stroke-width", 0.3)
+	  .attr("stroke-opacity", 0.4)
+
+
+	  //set node appearance group
+	node = svg.append("g")
       .attr("stroke", "#fff")
-      .attr("stroke-width", 1.5)
-      .selectAll("circle")
-      .data(vertices)
-      .enter().append("circle")
-      .attr("r", 5)
-      .attr("fill", "colors")
-      .call(drag(simulation));
-
-    // Make sure the colors are loaded correctly
-    d3.selectAll("circle")
-      // Set the color of circle
-      .attr("fill", function(d) {
-        if (!graph_data.selected_nodes.includes(d)) {
-          return colors
-        } else {
-          return inverseColors
-        }
-      })
-      // Set the radius of circle
-      .attr("r", document.getElementById("nodeRadius").value)
-
-    // Set title to show when hovering
-  	node.append("title")
-      .text(function(d) { return d.id; })
-
-    // Add vertices and edges to force simulation
-    simulation
-      .nodes(vertices)
-      .on("tick", ticked)
-      .force("link").links(edges)
-
-    // Function triggers at each tick of the simulation, sets position of nodes and links
-    function ticked() {
-      // Update node position
-      node
-        .attr("cx", function(d) { return d.x})
-        .attr("cy", function(d) { return d.y});
-      // Update edge position
-      edge
-        .attr("x1", function(d) { return d.source.x; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("y2", function(d) { return d.target.y; })
-      }
-    }
+      .attr("stroke-width", 0.5)
 
 
-    drag = (simulation) => {
+	//add vertices and edges to force simulation
+	simulation
+		.nodes(vertices)
+		.force("link").links(edges)
 
-      function drag_start(d) {
-        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-        d.fx = d.x;
-        d.fy = d.y;
 
-        // Check if d is already selected
-        if (!graph_data.selected_nodes.includes(d)) {
-          // if it's not yet selected, add it to the selected vertices array
-          graph_data.selected_nodes.push(d);
-          // Loop over all edges to check if both their source and target are selected
-          for(i = 0; i < graph_data.links.length; i++) {
-            sel_edge = graph_data.links[i];
-            // Check if both source and target are selected and edge is not yet selected
-            if (graph_data.selected_nodes.includes(sel_edge.source) && graph_data.selected_nodes.includes(sel_edge.target) && !graph_data.selected_links.includes(sel_edge)) {
-              graph_data.selected_links.push(sel_edge);
-            }
-          }
+	//optimalization settings
+	manyBody.theta(5)
+	manyBody.distanceMax(2000)
+	collision.iterations(0.01)
+	simulation.velocityDecay(0.8)
+	simulation.alphaDecay(0.01)
 
-        } else {
-          // if it is selected, get the index of d and remove that from the selected vertices array
-          graph_data.selected_nodes.splice(graph_data.selected_nodes.indexOf(d), 1);
-        };
+	console.log("Start simulation")
+	//do 150 steps of the simulation
+	for (var i = 0; i <= 150; i++) {
+		simulation.tick()
+	}
+	console.log("Simulation done")
+	simulation.stop()
 
-        updateSelectedEdges();
-        d3.selectAll("circle")
-          //sets the color of circle
-          .attr("fill", function(d) {
-            if (!graph_data.selected_nodes.includes(d)) {
-              return colors
-            } else {
-              return inverseColors
-            }
-          })
-      }
+	//and then display the state of the simulation
+	drawGraph(minWeight)
+	}
+//draw the Graph based on the current state of the simulation
+  function drawGraph(minWeight) {
+	  //counter holds how many edges are drawn
+		var counter = 0;
 
-      function drag_doing(d) {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-      }
+		console.log("Showing edges higher then: " + minWeight);
 
-      function drag_end(d) {
-        if (!d3.event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
-      }
+		//for each edge, draw only if its weight is high enough
+		for (var ed in edges) {
+			ed = edges[ed]
+			if (ed.value >= minWeight) {
+			counter ++
+			link.append("line")
+				.attr("x1", ed.source.x )
+				.attr("y1", ed.source.y )
+				.attr("x2", ed.target.x )
+				.attr("y2", ed.target.y )
+				.attr("stroke-opacity", Math.sqrt(ed.value) / 5)
+				.attr("stroke-width", Math.sqrt(ed.value) / 5) ;
+			}
+		}
 
-      return d3.drag()
-        .on("start", drag_start)
-        .on("drag", drag_doing)
-        .on("end", drag_end);
+		//draw each node
+		for (var no in vertices) {
+		nod = vertices[no]
+		node.append("circle")
+			.attr("cx", nod.x)
+			.attr("cy", nod.y)
+			.attr("r", 2)
+			.attr("fill", "#0080ff")
+			.on("click", function(d) {console.log(d)})
+		}
+		console.log("Showing " + counter + " edges")
+		console.log("done")
+		//remove loading message
+		d3.selectAll("text").remove()
+  }
 
-    }
+}
 
     // Update Selected Edges
     function updateSelectedEdges() {
@@ -305,4 +258,3 @@ loadForceGraph = () => {
       //then run show selected
       renderSelected();
     }
-}
