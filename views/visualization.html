@@ -126,7 +126,7 @@ loadVisualization = (vis) => {
       loadMatrix();
       break;
     case 'graph':
-      loadForceGraph();
+      loadGraph();
       break;
     default:
       break;
@@ -137,9 +137,11 @@ loadVisualization = (vis) => {
 
 <!-- include Other Components -->
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script src="/public/scripts/matrix.js"></script>
+<script src="/public/scripts/matrix/matrix.js"></script>
 <script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="/public/scripts/graph.js"></script>
+<script src="/public/scripts/graph/graph.js"></script>
+<script src="/public/scripts/graph/graphs/forceGraph.js"></script>
+<script src="/public/scripts/graph/graphs/radialGraph.js"></script>
 
 
 </body>

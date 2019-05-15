@@ -1,15 +1,14 @@
 
-<!-- TEMPLATE FOR THE FORCE DIRECTED GRAPH DIV -->
+<!-- TEMPLATE FOR THE GRAPH DIV -->
 
-<svg width="960" height="600"  style="overflow: hidden; border: 1px solid black;"></svg>
-<form id= settings>
-Strength: <input id="strength" type="range" name="strength" min = "-100" max = "0" value = "-30" oninput="setSettings()"><br>
-  Minimum distance: <input id="minDis" type="range" name="minDis" value = "0" min = "0" max = "500" oninput="setSettings()"><br>
-  Maximum distance: <input id="maxDis" type="range" name="maxDis" value = "1000" min = "200" max = "1000" oninput="setSettings()"><br>
-  Node color: <input id="colSelect" type="color" name="color" oninput="setDisplay()" value="#0080ff"><br>
-   Selected node color: <input id="selColSelect" type="color" name="color" oninput="setDisplay()" value="#000000"><br> <!--!!!!!!-->
-  Node radius: <input id="nodeRadius" type="range" name="nodeRadius" min = "2" max = "10" value = "5" oninput="setSettings(), setDisplay()">
-</form><br>
-<button onclick="renderNormal()">Reset</button>
-<button onclick="renderSelected()">Show only selected</button>
-<button onclick="hideSelected()">Hide selected</button>
+<!-- SVG FOR FORCE DIRECTED GRAPH -->
+<svg id="svg_force" width="960" height="600"  style="overflow: hidden; border: 1px solid black;"></svg>
+
+<!-- SVG FOR RADIAL GRAPH -->
+<svg id="svg_radial" width="960" height="600" style="overflow: hidden; border: 1px solid black;"></svg><br>
+
+<!-- SETTINGS -->
+Link width: <input id="linkWidth" type="range" min="0.1" max="5" value="1"><br>
+Link opacity: <input id="linkOpacity" type="range" min="1" max="100" value="50"><br>
+Node size: <input id="nodeSize" type="range" min="1" max="50" value="5"><br>
+Node color: <input id="nodeColor" type="color" value="#0080ff"><br>
