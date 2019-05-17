@@ -29,12 +29,15 @@
 
     <!-- Upload Form -->
     <div id="drop-area">
-      <form action="/upload"  enctype="multipart/form-data" method="post">
+      <form enctype="multipart/form-data">
         <p>
-          Upload by dropping a file, or select a file.<br>
-          <span id='file'>No file uploaded yet.</span>
+          Upload by dropping a file, or selecting a file.
         </p>
         <input id="input" type="file" name="upload">
+        <p>
+          File: <span id='file'>No file.</span><br>
+          Error:  <span id='msg'>No errors.</span>
+        </p>
       </form>
     </div>
 

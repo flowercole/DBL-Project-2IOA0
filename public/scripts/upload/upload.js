@@ -5,8 +5,6 @@ const upload = (file) => {
   var formData = new FormData();
   formData.append('file', file);
 
-  document.getElementById('file').innerHTML=`Uploaded file: ${file.name}`;
-
   console.log(file);
   console.log(formData);
 
@@ -16,5 +14,16 @@ const upload = (file) => {
   })
   .then(response => response.json())
   .catch(error => console.error('Error:', error))
-  .then(response => console.log('Success:', JSON.stringify(response)))
+  .then(response => {
+    console.log('Success:', JSON.stringify(response));
+    if (response.type=='error') {
+      document.getElementById('file').innerHTML = 'No file.';
+      document.getElementById('msg').innerHTML = response.message;
+    } else {
+      document.getElementById('file').innerHTML = file.name;
+      document.getElementById('msg').innerHTML = response.message;
+    }
+
+
+  })
 };
