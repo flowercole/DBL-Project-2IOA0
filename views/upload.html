@@ -5,17 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Upload Page</title>
+
+    <style>
+    #drop-area {
+      border: 3px solid #ccc;
+      height: 20vh;
+      width: 40vw;
+      margin: 36vh 28vw;
+      padding: 2vh 1vw;
+    }
+
+    #drop-area.highlight {
+      border-color: #222;
+      background-color: #ccc;
+    }
+
+    </style>
+
+
+
 </head>
 <body>
 
     <!-- Upload Form -->
-    <form action="/upload"  enctype="multipart/form-data" method="post">
-      <p>Select a file to upload !</p>
-      <input id="input" type="file" name="upload">
-    </form>
+    <div id="drop-area">
+      <form action="/upload"  enctype="multipart/form-data" method="post">
+        <p>
+          Upload by dropping a file, or select a file.<br>
+          <span id='file'>No file uploaded yet.</span>
+        </p>
+        <input id="input" type="file" name="upload">
+      </form>
+    </div>
 
-    <!-- Include Upload script -->
-    <script src='public/scripts/upload.js'></script>
+    <!-- Include Upload scripts -->
+    <script src='public/scripts/upload/upload.js'></script>
+    <script src='public/scripts/upload/dragdrop.js'></script>
+    <script src='public/scripts/upload/select.js'></script>
 
 </body>
 </html>
