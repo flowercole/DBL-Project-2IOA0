@@ -2,14 +2,17 @@
  * This file contains the code to setup everything for the graph visualisations, like the data and the svgs
 */
 
+let svg_force
+let svg_radial
+
 function loadGraph() {
   // Store the svg with id svg1
-  let svg_force = d3.select("#svg_force")
+  svg_force = d3.select("#svg_force")
       width = +svg_force.attr("width")
       height = +svg_force.attr("height")
 
   // Store the svg with id svg2
-  let svg_radial = d3.select("#svg_radial")
+  svg_radial = d3.select("#svg_radial")
       width = +svg_radial.attr("width")
       height = +svg_radial.attr("height")
 
@@ -64,4 +67,23 @@ function csvJSON(csv) {
   
   return graph_data;
 
+}
+
+//apply settings to change appearance
+function setDisplayForce(svg) {
+	svg_force.selectAll("circle")
+		.attr("fill", document.getElementById("nodeColor").value) //sets the color of circle
+		.attr("r", document.getElementById("nodeSize").value) //sets the radius of circle
+	svg_force.selectAll("line")
+		.attr("stroke-width", document.getElementById("linkWidth").value)
+		.attr("stroke-opacity", document.getElementById("linkOpacity").value)
+}
+
+function setDisplayRadial(svg) {
+	svg_radial.selectAll("circle")
+		.attr("fill", document.getElementById("nodeColorRad").value) //sets the color of circle
+		.attr("r", document.getElementById("nodeSizeRad").value) //sets the radius of circle
+	svg_radial.selectAll("line")
+		.attr("stroke-width", document.getElementById("linkWidthRad").value)
+		.attr("stroke-opacity", document.getElementById("linkOpacityRad").value)
 }

@@ -67,6 +67,7 @@ function loadForceGraph(nodes, links, svg, attributes) {
       .attr("stroke-width", 0.5)
 
 		
+	
 	//add vertices and edges to force simulation
 	simulation
 		.nodes(vertices)
@@ -114,15 +115,18 @@ function loadForceGraph(nodes, links, svg, attributes) {
 		}
 		
 		//draw each node
-		for (var no in vertices) {
-		nod = vertices[no]
-		node.append("circle")
-			.attr("cx", nod.x)
-			.attr("cy", nod.y)
-			.attr("r", 2)
-			.attr("fill", "#0080ff")
-			.on("click", function(d) {console.log(d)})
-		}
+		node = svg.append("g")
+		  .attr("stroke", "#fff")
+		  .attr("stroke-width", 1.5)
+		.selectAll("circle")
+		.data(vertices)
+		.enter().append("circle")
+		  .attr("r", 2)
+		  .attr("fill", "#0080ff")
+		  .attr("cx", function(d) {return d.x})
+		  .attr("cy", function(d) {return d.y})
+		  //.on("click", selected(d))
+
 		console.log("Showing " + counter + " edges")
 		console.log("done")
   }
