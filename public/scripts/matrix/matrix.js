@@ -19,7 +19,7 @@ loadMatrix = () => {
   });
 
 }
-function AlphabeticalOrder(xValues,zValues) {
+function AlphabeticalOrder(xValues,yValues,zValues) {
     function matrix(rows, cols, defaultValue){
         var arr = [];
         // Creates all lines:
@@ -63,8 +63,8 @@ function AlphabeticalOrder(xValues,zValues) {
           reorderedZValues[j][i] = alphaZValues[permutation[j]][i];  
       } 
     }
-    var ret = [sortAr,reorderedZValues];
-    return ret;
+    var returnArray = [sortAr,sortAr,reorderedZValues];
+    return returnArray;
 }
 function SumOrder(xValues,yValues,matrix) {
     var rows = new Array(matrix[0].length).fill(0);
@@ -135,24 +135,32 @@ function SumOrder(xValues,yValues,matrix) {
     var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     return returnArray;
 }
-/*function AverageOrder(xValues,yValues,matrix) {
-    var rows = new Array(matrix[0].length).fill(0);
-    for(var i = 0; i < matrix[0].length; i++){
-      for(var j = 0; j < matrix[0].length; j++){
-        rows[i] += matrix[i][j];
+function AverageOrder(xValues,yValues,initial_matrix) {
+    
+    var rows = new Array(initial_matrix[0].length).fill(1);
+    for(var i = 0; i < initial_matrix[0].length; i++){
+      for(var j = 0; j < initial_matrix[0].length; j++){
+        rows[i] *= initial_matrix[i][j];
+      }
+    }
+    for(var i = 0; i < initial_matrix[0].length; i++){
+      rows[i] = Math.pow(rows[i],1/initial_matrix[0].length);
+    }
+
+    var cols = new Array(initial_matrix[0].length).fill(1);
+    for(var i = 0; i < initial_matrix[0].length; i++){
+      for(var j = 0; j < initial_matrix[0].length; j++){
+        cols[j] *= initial_matrix[i][j];
       }
     }
 
-    var cols = new Array(matrix[0].length).fill(0);
-    for(var i = 0; i < matrix[0].length; i++){
-      for(var j = 0; j < matrix[0].length; j++){
-        cols[j] += matrix[i][j];
-      }
+    for(var i = 0; i < initial_matrix[0].length; i++){
+      cols[i] = Math.pow(cols[i],1/initial_matrix[0].length);
     }
 
     rows_index = [];
     cols_index = [];
-    for(var i = 0; i < matrix[0].length; i++){
+    for(var i = 0; i < initial_matrix[0].length; i++){
       rows_index[i] = i;
       cols_index[i] = i;
     }
@@ -186,24 +194,28 @@ function SumOrder(xValues,yValues,matrix) {
 
     quicksort(cols, cols_index,0,cols.length-1);
     quicksort(rows, rows_index,0,rows.length-1);
-
-    
+  
+  
     var order_matrix = [];
-    for(var i = 0; i < matrix[0].length; i++){
+    var matrix_names = [];
+    for(var i = 0; i < initial_matrix[0].length; i++){
       order_matrix[i] = [];
-      for(var j = 0; j < matrix[0].length; j++){
-        order_matrix[i][j] = matrix[rows_index[i]][cols_index[j]];
+      matrix_names[i] = [];
+      for(var j = 0; j < initial_matrix[0].length; j++){
+        order_matrix[i][j] = initial_matrix[rows_index[i]][cols_index[j]];
       }
     }
+    
     var reorderedXValues = new Array(xValues.length).fill(0);
     var reorderedYValues = new Array(yValues.length).fill(0);
     for(var i = 0; i < xValues.length;i++) {
         reorderedXValues[i] = xValues[cols_index[i]];
         reorderedYValues[i] = yValues[rows_index[i]];
     }
+    
     var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     return returnArray;
-}*/
+}
 // Main Visualise Function
 function Visualise(file) {
 
@@ -285,13 +297,14 @@ function Visualise(file) {
     
   //color diapason of the tiles 
     var colorscaleValue = [
-        [0, '#ffffff'],
-        [1, '#FF0000']
+        [0, '#D3DFFF'],
+        [1, '#003DDE']
     ];
-    var returnAlphaBeticalOrder = AlphabeticalOrder(xValues,zValues);
+    var returnAlphaBeticalOrder = AlphabeticalOrder(xValues,yValues,zValues);
     var returnSumOrder = SumOrder(xValues,yValues,zValues);
+    var returnAverageOrder = AverageOrder(xValues,yValues,zValues);
     console.log(zValues);
-    console.log(returnSumOrder[2]);
+    //console.log(returnSumOrder[2]);
   //Input data for heatmap
  var data = [
     {
