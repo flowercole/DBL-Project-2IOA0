@@ -4,6 +4,8 @@
 
 let svg_force
 let svg_radial
+let attributes = [];
+let filter_var = 1;
 
 function loadGraph() {
   // Store the svg with id svg1
@@ -16,9 +18,15 @@ function loadGraph() {
       width = +svg_radial.attr("width")
       height = +svg_radial.attr("height")
 
+  // Get the attributes from the html and store them
   // The attributes array is composed as following: [link width, link opacity, node size, node color]
   // This array is the values it has first time it's loaded in
-  let vis_attributes = [1.5, 0.5, 5, "#0080ff"];
+  //let attributes = [];
+  attributes[0] = document.getElementById('linkWidth').value / 10;
+  attributes[1] = document.getElementById('linkOpacity').value / 10;
+  attributes[2] = document.getElementById('nodeSize').value / 10;
+  attributes[3] = document.getElementById('nodeColor').value;
+  attributes[4] = document.getElementById('selNodeColor').value;
 
   // Parse the csv file into a json object
   let filename = localStorage.getItem('selected_file');
@@ -38,16 +46,17 @@ function loadGraph() {
     force_data = JSON.parse(JSON.stringify(graph_data));
     radial_data = JSON.parse(JSON.stringify(graph_data));
 
-    console.log(graph_data)
+    //console.log(graph_data)
 	
 	//copy data for the radial graph
   //data_copy= JSON.parse(JSON.stringify(graph_data));
   
   //og_data = JSON.parse(JSON.stringify(graph_data));
 	
-    loadForceGraph(force_data.nodes, force_data.links, svg_force, vis_attributes);
+    loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
     // get rid of this comment to load the radial graph aswell ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, vis_attributes);
+    loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
+    getMaxValue(graph_data.links);
   });
 
 }
@@ -164,12 +173,12 @@ function nodeClick(node) {
   
   svg_radial.selectAll("circle")
     .attr("fill", function(d) {
-      if (!radial_data.selected_nodes.includes(d)) { return document.getElementById("nodeColorRad").value }
-      else { return document.getElementById("selNodeColorRad").value }
+      if (!radial_data.selected_nodes.includes(d)) { return document.getElementById("nodeColor").value }
+      else { return document.getElementById("selNodeColor").value }
     })
 
   updateSelectedEdges();
-  console.log(graph_data, force_data, radial_data);
+  //console.log(graph_data, force_data, radial_data);
 
 }
 
@@ -247,9 +256,11 @@ function renderSelected() {
   force_data = JSON.parse(JSON.stringify(graph_data));
   radial_data = JSON.parse(JSON.stringify(graph_data));
 
-  loadForceGraph(force_data.nodes, force_data.links, svg_force);
-  loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial);
+  updateAttributes();
 
+  loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
+  loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
+  getMaxValue(graph_data.links);
 
 }
 
@@ -259,15 +270,27 @@ function renderReset() {
   force_data = JSON.parse(JSON.stringify(graph_data));
   radial_data = JSON.parse(JSON.stringify(graph_data));
 
-  loadForceGraph(force_data.nodes, force_data.links, svg_force);
-  loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial);
+  updateAttributes();
+
+  loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
+  loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
+  getMaxValue(graph_data.links);
+}
+
+function updateView() {
+  updateAttributes();
+
+  loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
+  loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
 }
 
 function filterEdges() {
-  minWeight = document.getElementById("minWeight").value/100;
-  maxWeight = document.getElementById("maxWeight").value/100;
+  minWeight = document.getElementById("minWeight").value * filter_var;
+  maxWeight = document.getElementById("maxWeight").value * filter_var;
 
+  updateAttributes();
   //filterEdgesForce(minWeight, maxWeight);
+  //console.log(minWeight, maxWeight);
 
 	svg_force.selectAll("line").remove();
 
@@ -288,4 +311,25 @@ function filterEdges() {
       appendLineRadial(l_r);
     }
   }
+
+}
+
+function updateAttributes() {
+  attributes[0] = document.getElementById('linkWidth').value / 10;
+  attributes[1] = document.getElementById('linkOpacity').value / 10;
+  attributes[2] = document.getElementById('nodeSize').value / 10;
+  attributes[3] = document.getElementById('nodeColor').value;
+  attributes[4] = document.getElementById('selNodeColor').value;
+}
+
+function getMaxValue(links) {
+  max = 0;
+  for (i = 0; i < links.length; i++) {
+    if (links[i].value > max) {
+      max = links[i].value;
+    }
+  }
+ 
+  filter_var = max / 100;
+
 }

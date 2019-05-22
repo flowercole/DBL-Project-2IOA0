@@ -56,15 +56,15 @@ function loadForceGraph(nodes, links, svg, attributes) {
 		
 	//set edge appearance group
 	forceLink = svg.append("g")
-	  .attr("stroke", "#000")
+	  .attr("stroke", "#fff")
 	  .attr("stroke-width", 0.3)
 	  .attr("stroke-opacity", 0.4)
 
 	
 	 //set node appearance group
 	node = svg.append("g")
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 0.5)
+      .attr("stroke", "#3e3e3e")
+      .attr("stroke-width", 0.3 * attributes[2])
 
 		
 	
@@ -109,20 +109,23 @@ function loadForceGraph(nodes, links, svg, attributes) {
 				.attr("y1", ed.source.y )
 				.attr("x2", ed.target.x )
 				.attr("y2", ed.target.y )
-				.attr("stroke-opacity", Math.sqrt(ed.value) / 5) 
-				.attr("stroke-width", Math.sqrt(ed.value) / 5) ;
+				.attr("stroke-opacity", attributes[1] * Math.sqrt(ed.value) / 5) 
+				.attr("stroke-width", attributes[0] * Math.sqrt(ed.value) / 5) ;
 			}
 		}
 		
 		//draw each node
 		node = svg.append("g")
-		  .attr("stroke", "#fff")
-		  .attr("stroke-width", 1.5)
+		  .attr("stroke", "#3e3e3e")
+		  .attr("stroke-width", 0.3 * attributes[2])
 		.selectAll("circle")
 		.data(vertices)
 		.enter().append("circle")
-		  .attr("r", 2)
-		  .attr("fill", "#0080ff")
+		  .attr("r", attributes[2])
+		  .attr("fill", function(d) {
+				if (!force_data.selected_nodes.includes(d)) { return attributes[3]}
+				else { return attributes[4] }
+			})
 		  .attr("cx", function(d) {return d.x})
 		  .attr("cy", function(d) {return d.y})
 			.on("click", function(d) {nodeClick(d)})
@@ -146,7 +149,7 @@ function loadForceGraph(nodes, links, svg, attributes) {
         g.attr("transform", t)
     }
     let zoom = d3.zoom()
-        .scaleExtent([0.01, 10])
+        .scaleExtent([0.01, 25])
         .on("zoom", zoomed);
 		svg.call(zoom);
 
@@ -160,8 +163,8 @@ function appendLineForce(l) {
 				.attr("y1", l.target.y)
 				.attr("x2", l.source.x)
 				.attr("y2", l.source.y)
-				.attr("stroke-opacity", Math.sqrt(l.value) / 5)
-				.attr("stroke-width", Math.sqrt(l.value) / 5);
+				.attr("stroke-opacity", attributes[1] * Math.sqrt(l.value) / 5) 
+				.attr("stroke-width", attributes[0] * Math.sqrt(l.value) / 5) ;
 }
 
 
