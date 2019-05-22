@@ -105,6 +105,7 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 			
 		
 		radSimulation.alpha(0.8).restart();
+		radSimulation.stop();
 		
 		console.log("Showing " + counter + " edges")
 		console.log("done")

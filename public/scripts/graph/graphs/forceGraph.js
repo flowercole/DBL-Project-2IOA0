@@ -128,6 +128,7 @@ function loadForceGraph(nodes, links, svg, attributes) {
 			.on("click", function(d) {nodeClick(d)})
 
 			simulation.alpha(0.8).restart()
+			simulation.stop();
 
 		console.log("Showing " + counter + " edges")
 		console.log("done")
