@@ -9,9 +9,8 @@
     <style>
     #drop-area {
       border: 3px solid #ccc;
-      height: 20vh;
       width: 40vw;
-      margin: 36vh 28vw;
+      margin: 20vh 28vw;
       padding: 2vh 1vw;
     }
 
@@ -29,19 +28,27 @@
 
     <!-- Upload Form -->
     <div id="drop-area">
-      <form action="/upload"  enctype="multipart/form-data" method="post">
+      <form enctype="multipart/form-data">
         <p>
-          Upload by dropping a file, or select a file.<br>
-          <span id='file'>No file uploaded yet.</span>
+          File: <span id='file'>No file uploaded.</span><br>
+          Error:  <span id='msg'>No errors.</span><br>
+          File Name: <span id='name'>No file uploaded.</span>
         </p>
-        <input id="input" type="file" name="upload">
+        <p>
+          Upload by dropping a file, or selecting a file.
+        </p>
+        Add filename, leave blank to keep original filename
+        <input id="filename" type="text">
+        <input id="input" type="file">
+        <br>
+        <button type='button' id="submit">Upload</button>
+
       </form>
     </div>
 
     <!-- Include Upload scripts -->
     <script src='public/scripts/upload/upload.js'></script>
     <script src='public/scripts/upload/dragdrop.js'></script>
-    <script src='public/scripts/upload/select.js'></script>
 
 </body>
 </html>
