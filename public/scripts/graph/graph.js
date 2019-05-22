@@ -32,13 +32,22 @@ function loadGraph() {
 	
 	
     graph_data = csvJSON(file);
+
+    data_copy = JSON.parse(JSON.stringify(graph_data));
+
+    force_data = JSON.parse(JSON.stringify(graph_data));
+    radial_data = JSON.parse(JSON.stringify(graph_data));
+
+    console.log(graph_data)
 	
 	//copy data for the radial graph
-	data_copy= JSON.parse(JSON.stringify(graph_data));
+  //data_copy= JSON.parse(JSON.stringify(graph_data));
+  
+  //og_data = JSON.parse(JSON.stringify(graph_data));
 	
-    loadForceGraph(graph_data.nodes, graph_data.links, svg_force, vis_attributes);
+    loadForceGraph(force_data.nodes, force_data.links, svg_force, vis_attributes);
     // get rid of this comment to load the radial graph aswell ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    loadRadialGraph(data_copy.nodes, data_copy.links, svg_radial, vis_attributes);
+    loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, vis_attributes);
   });
 
 }
@@ -50,7 +59,7 @@ function csvJSON(csv) {
   var links = []
 
   for (i = 1; i < vertices.length; i++) {
-    nodes.push({"id": vertices[i]})
+    nodes.push({"id": vertices[i], "selected": false})
   }
 
   for (i = 1; i < csv.length; i++) {
@@ -58,12 +67,14 @@ function csvJSON(csv) {
     var target = weights[0]
     for (j = 1; j < weights.length; j++) {
       if (weights[j] > 0) {
-        links.push({"source": vertices[j], "target": target, "value": weights[j]});
+        if (vertices[j] != target) {
+          links.push({"source": vertices[j], "target": target, "value": weights[j]});
+        }
       }
     }
   }
 
-  graph_data = {"nodes": nodes, "links": links};
+  graph_data = {"nodes": nodes, "links": links, "selected_nodes": [], "selected_links": []};
   
   return graph_data;
 
@@ -72,18 +83,209 @@ function csvJSON(csv) {
 //apply settings to change appearance
 function setDisplayForce(svg) {
 	svg_force.selectAll("circle")
-		.attr("fill", document.getElementById("nodeColor").value) //sets the color of circle
-		.attr("r", document.getElementById("nodeSize").value) //sets the radius of circle
+    .attr("r", document.getElementById("nodeSize").value) //sets the radius of circle
+    .attr("stroke-width", document.getElementById("nodeSize").value/3)
+    .attr("fill", function(d) {
+      if (!graph_data.selected_nodes.includes(d)) { return document.getElementById("nodeColor").value }
+      else { return document.getElementById("selNodeColor").value }
+    })
+
+  svg_force.selectAll("circle").attr("fill", function(d) {
+      if (!graph_data.selected_nodes.includes(d)) { return document.getElementById("nodeColor").value }
+      else { return document.getElementById("selNodeColor").value }
+    })
 	svg_force.selectAll("line")
 		.attr("stroke-width", document.getElementById("linkWidth").value)
-		.attr("stroke-opacity", document.getElementById("linkOpacity").value)
+		.attr("stroke-opacity", document.getElementById("linkOpacity").value/100)
 }
 
 function setDisplayRadial(svg) {
 	svg_radial.selectAll("circle")
-		.attr("fill", document.getElementById("nodeColorRad").value) //sets the color of circle
-		.attr("r", document.getElementById("nodeSizeRad").value) //sets the radius of circle
+		//.attr("fill", document.getElementById("nodeColorRad").value) //sets the color of circle
+    .attr("r", document.getElementById("nodeSizeRad").value) //sets the radius of circle
+    .attr("stroke-width", document.getElementById("nodeSizeRad").value/3)
+    .attr("fill", function(d) {
+      if (!graph_data.selected_nodes.includes(d)) { return document.getElementById("nodeColorRad").value }
+      else { return document.getElementById("selNodeColorRad").value }
+    })
 	svg_radial.selectAll("line")
 		.attr("stroke-width", document.getElementById("linkWidthRad").value)
-		.attr("stroke-opacity", document.getElementById("linkOpacityRad").value)
+		.attr("stroke-opacity", document.getElementById("linkOpacityRad").value/100)
+}
+
+function nodeClick(node) {
+
+  // Main data
+  for (n = 0; n < graph_data.nodes.length; n++) {
+    if (graph_data.nodes[n].id == node.id) {
+      new_node = graph_data.nodes[n];
+    }
+  }
+  
+  if (!graph_data.selected_nodes.includes(new_node)) {
+    graph_data.selected_nodes.push(new_node);
+  } else {
+    graph_data.selected_nodes.splice(graph_data.selected_nodes.indexOf(new_node), 1);
+  }
+  
+  // Force data
+  for (n = 0; n < force_data.nodes.length; n++) {
+    if (new_node.id == force_data.nodes[n].id) {
+      force_node = force_data.nodes[n];
+    }
+  }
+
+  if (!force_data.selected_nodes.includes(force_node)) {
+    force_data.selected_nodes.push(force_node);
+  } else {
+    force_data.selected_nodes.splice(force_data.selected_nodes.indexOf(force_node), 1);
+  }
+
+  // Radial data
+  for (n = 0; n < radial_data.nodes.length; n++) {
+    if (new_node.id == radial_data.nodes[n].id) {
+      radial_node = radial_data.nodes[n];
+    }
+  }
+
+  if (!radial_data.selected_nodes.includes(radial_node)) {
+    radial_data.selected_nodes.push(radial_node);
+  } else {
+    radial_data.selected_nodes.splice(radial_data.selected_nodes.indexOf(radial_node), 1);
+  }
+
+  //console.log(graph_data, force_data, radial_data);
+
+  svg_force.selectAll("circle")
+    .attr("fill", function(d) {
+      if (!force_data.selected_nodes.includes(d)) { return document.getElementById("nodeColor").value }
+      else { return document.getElementById("selNodeColor").value }
+    })
+  
+  svg_radial.selectAll("circle")
+    .attr("fill", function(d) {
+      if (!radial_data.selected_nodes.includes(d)) { return document.getElementById("nodeColorRad").value }
+      else { return document.getElementById("selNodeColorRad").value }
+    })
+
+  updateSelectedEdges();
+  console.log(graph_data, force_data, radial_data);
+
+}
+
+function updateSelectedEdges() {
+  
+  /*target = force_data.links[0].target;
+  if (force_data.nodes.includes(target)) {
+    console.log(force_data);
+  } else {
+    console.error('err');
+  }*/
+
+  for (i = 0; i < graph_data.links.length; i++) {
+    l = graph_data.links[i];
+    source = false;
+    target = false;
+
+    for (n = 0; n < graph_data.selected_nodes.length; n++) {
+      no = graph_data.selected_nodes[n];
+      if (no.id == l.source) {
+        source = true;
+      }
+      if (no.id == l.target) {
+        target = true;
+      }
+    }
+
+    if (source && target && !graph_data.selected_links.includes(l)) {
+      graph_data.selected_links.push(l);
+    }
+    if ((!source || !target) && graph_data.selected_links.includes(l)) {
+      graph_data.selected_links.splice(graph_data.selected_links.indexOf(l), 1);
+    }
+    
+  }
+
+  // Force data
+  for (i = 0; i < force_data.links.length; i++) {
+    l = force_data.links[i];
+    
+    if (force_data.selected_nodes.includes(l.source) && force_data.selected_nodes.includes(l.target) && !force_data.selected_links.includes(l)) {
+      force_data.selected_links.push(l);
+    }
+    if ((!force_data.selected_nodes.includes(l.source) || !force_data.selected_nodes.includes(l.target)) && force_data.selected_links.includes(l)) {
+      force_data.selected_links.splice(force_data.selected_links.indexOf(l), 1);
+    }
+  }
+
+  // Radial data
+  for (i = 0; i < radial_data.links.length; i++) {
+    l = radial_data.links[i];
+    
+    if (radial_data.selected_nodes.includes(l.source) && radial_data.selected_nodes.includes(l.target) && !radial_data.selected_links.includes(l)) {
+      radial_data.selected_links.push(l);
+    }
+    if ((!radial_data.selected_nodes.includes(l.source) || !radial_data.selected_nodes.includes(l.target)) && radial_data.selected_links.includes(l)) {
+      radial_data.selected_links.splice(radial_data.selected_links.indexOf(l), 1);
+    }
+  }
+
+
+
+}
+
+function renderSelected() {
+
+  graph_data.nodes = graph_data.selected_nodes;
+  graph_data.links = graph_data.selected_links;
+  //force_data.nodes = force_data.selected_nodes;
+
+  graph_data.selected_nodes = [];
+  graph_data.selected_links = [];
+  //data_copy.selected_nodes = [];
+  //data_copy.selected_links = [];
+  force_data = JSON.parse(JSON.stringify(graph_data));
+  radial_data = JSON.parse(JSON.stringify(graph_data));
+
+  loadForceGraph(force_data.nodes, force_data.links, svg_force);
+  loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial);
+
+
+}
+
+function renderReset() {
+  graph_data = JSON.parse(JSON.stringify(data_copy));
+  
+  force_data = JSON.parse(JSON.stringify(graph_data));
+  radial_data = JSON.parse(JSON.stringify(graph_data));
+
+  loadForceGraph(force_data.nodes, force_data.links, svg_force);
+  loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial);
+}
+
+function filterEdges() {
+  minWeight = document.getElementById("minWeight").value/100;
+  maxWeight = document.getElementById("maxWeight").value/100;
+
+  //filterEdgesForce(minWeight, maxWeight);
+
+	svg_force.selectAll("line").remove();
+
+	for (i = 0; i < force_data.links.length; i++) {
+		l_f = force_data.links[i]
+		if (l_f.value >= minWeight && l_f.value <= maxWeight) {
+      //counter++
+      appendLineForce(l_f);
+		}
+  }
+  
+  svg_radial.selectAll("line").remove();
+
+  for (i = 0; i < radial_data.links.length; i++) {
+    l_r = radial_data.links[i]
+    if (l_r.value >= minWeight && l_r.value <= maxWeight) {
+      //counter++
+      appendLineRadial(l_r);
+    }
+  }
 }

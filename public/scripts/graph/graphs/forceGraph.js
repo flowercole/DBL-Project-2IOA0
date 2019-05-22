@@ -55,7 +55,7 @@ function loadForceGraph(nodes, links, svg, attributes) {
 	}
 		
 	//set edge appearance group
-	link = svg.append("g")
+	forceLink = svg.append("g")
 	  .attr("stroke", "#000")
 	  .attr("stroke-width", 0.3)
 	  .attr("stroke-opacity", 0.4)
@@ -83,7 +83,7 @@ function loadForceGraph(nodes, links, svg, attributes) {
 	
 	console.log("Start simulation")
 	//do 150 steps of the simulation
-	for (var i = 0; i <= 150; i++) {
+	for (var i = 0; i <= 350; i++) {
 		simulation.tick()
 	}
 	console.log("Simulation done")
@@ -104,7 +104,7 @@ function loadForceGraph(nodes, links, svg, attributes) {
 			ed = edges[ed]
 			if (ed.value >= minWeight) {
 			counter ++
-			link.append("line")
+			forceLink.append("line")
 				.attr("x1", ed.source.x )
 				.attr("y1", ed.source.y )
 				.attr("x2", ed.target.x )
@@ -125,7 +125,9 @@ function loadForceGraph(nodes, links, svg, attributes) {
 		  .attr("fill", "#0080ff")
 		  .attr("cx", function(d) {return d.x})
 		  .attr("cy", function(d) {return d.y})
-		  //.on("click", selected(d))
+			.on("click", function(d) {nodeClick(d)})
+
+			simulation.alpha(0.8).restart()
 
 		console.log("Showing " + counter + " edges")
 		console.log("done")
@@ -145,8 +147,20 @@ function loadForceGraph(nodes, links, svg, attributes) {
     let zoom = d3.zoom()
         .scaleExtent([0.01, 10])
         .on("zoom", zoomed);
-    svg.call(zoom);
+		svg.call(zoom);
 
+		zoom.transform(svg, d3.zoomIdentity);
+
+}
+
+function appendLineForce(l) {
+	forceLink.append("line")
+				.attr("x1", l.target.x)
+				.attr("y1", l.target.y)
+				.attr("x2", l.source.x)
+				.attr("y2", l.source.y)
+				.attr("stroke-opacity", Math.sqrt(l.value) / 5)
+				.attr("stroke-width", Math.sqrt(l.value) / 5);
 }
 
 

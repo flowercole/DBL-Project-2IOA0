@@ -7,8 +7,7 @@
  */
 
 function loadRadialGraph(nodes, links, svg, attributes) {
-	
-	
+
 	//clear svg
 	svg.selectAll("*").remove()
 	
@@ -27,7 +26,7 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 		.force("collision", collision);
   
 	vertices = nodes
-	edges = links 
+	edgesRad = links 
 
 	
 	//standard radius
@@ -36,32 +35,27 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 	
 	//set minimum weight of edges to show if there are a lot of edges
 	minWeight = 0
-	if (edges.length > 50000) {
+	/*if (edges.length > 50000) {
 		//calculate weight of 50000th largest element to use as minimum weight IMPROVE TO NOT USE SORT
 		var edgeWeights = []
 		for (var ed in edges) {
 			edgeWeights.push(edges[ed].value)
 		}
 		minWeight = edgeWeights.sort(function(a,b) {return b - a})[50000]
-	}
+	}*/
 
 	
 	//set edge appearance
-	link = svg.append("g")
+	radialLink = svg.append("g")
 	  .attr("stroke", "#000")
 	  .attr("stroke-width", 1.5)
 	  .attr("stroke-opacity", 0.5)
-	  
-	//set node appearance
-	node = svg.append("g")
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 1.5)
 
 	  
 	//add vertices and edges to force simulation
 	radSimulation
 		.nodes(vertices)
-		.force("link").links(edges)		
+		.force("link").links(edgesRad)		
 
 	console.log("Start simulation")
 	//do 150 steps of the simulation
@@ -82,11 +76,11 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 		console.log("Showing edges higher then: " + minWeight);
 		
 		//for each edge, draw only if its weight is high enough
-		for (var ed in edges) {
-			ed = edges[ed]
+		for (var ed in edgesRad) {
+			ed = edgesRad[ed]
 			if (ed.value >= minWeight) {
 			counter ++
-			link.append("line")
+			radialLink.append("line")
 				.attr("x1", ed.source.x )
 				.attr("y1", ed.source.y )
 				.attr("x2", ed.target.x )
@@ -97,14 +91,20 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 		}
 		
 		//draw each node
-		for (var no in vertices) {
-		nod = vertices[no]
-		node.append("circle")
-			.attr("cx", nod.x)
-			.attr("cy", nod.y)
-			.attr("r", 5)
-			.attr("fill", "#0080ff")		
-		}
+		node = svg.append("g")
+		  .attr("stroke", "#fff")
+		  .attr("stroke-width", 1.5)
+		.selectAll("circle")
+		.data(vertices)
+		.enter().append("circle")
+		  .attr("r", 2)
+		  .attr("fill", "#0080ff")
+		  .attr("cx", function(d) {return d.x})
+		  .attr("cy", function(d) {return d.y})
+			.on("click", function(d) {nodeClick(d)})
+			
+		
+		radSimulation.alpha(0.8).restart();
 		
 		console.log("Showing " + counter + " edges")
 		console.log("done")
@@ -123,9 +123,21 @@ function loadRadialGraph(nodes, links, svg, attributes) {
     let zoom = d3.zoom()
         .scaleExtent([0.01, 10])
         .on("zoom", zoomed);
-    svg.call(zoom);
+		svg.call(zoom);
+		
+			// Reset zoom and pan
+		zoom.transform(svg, d3.zoomIdentity);
 
 }
-	
+
+function appendLineRadial(l) {
+	radialLink.append("line")
+				.attr("x1", l.target.x)
+				.attr("y1", l.target.y)
+				.attr("x2", l.source.x)
+				.attr("y2", l.source.y)
+				.attr("stroke-opacity", Math.sqrt(l.value) / 5)
+				.attr("stroke-width", Math.sqrt(l.value) / 5);
+}
 
 
