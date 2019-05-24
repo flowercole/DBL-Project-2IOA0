@@ -315,6 +315,23 @@ function Visualise(file) {
     type: 'heatmap'
     }
   ];
+/*var data = [{
+           z: zValues,
+           type: 'surface'
+        }];
+  
+var layout = {
+  title: 'Mt Bruno Elevation',
+  autosize: false,
+  width: 500,
+  height: 500,
+  margin: {
+    l: 65,
+    r: 50,
+    b: 65,
+    t: 90,
+  }
+};*/
   //var data = [trace1,trace2];
   var layout = {
   title: 'Heatmap of your data set',
