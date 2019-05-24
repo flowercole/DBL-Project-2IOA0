@@ -1,0 +1,405 @@
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+	<title>dbl ui mockup</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
+	<link href="public/test.css" rel="stylesheet">
+</head>
+
+
+<body>
+	<div class='container'>
+
+    <div class='logo component'>
+      <p class='title'>Visualization Tool</p>
+      <div class='circles'>
+        <div class='circle circle1'></div>
+        <div class='circle circle2'></div>
+        <div class='circle circle3'></div>
+      </div>
+
+    </div>
+
+    <div class='header component'>
+      <div class='component-upload component' id='component-upload'>
+
+        <!-- Upload Form -->
+        <div class='upload-right'>
+          <p>
+            File: <span id='file'>No file uploaded.</span><br>
+            Error:  <span id='msg'>No errors.</span><br>
+            File Name: <span id='name'>No file uploaded.</span>
+          </p>
+          <p>
+            Upload by dropping a file, or selecting a file.<br>
+            Add filename, leave blank to keep original filename
+          </p>
+        </div>
+        <form enctype="multipart/form-data" class='upload-left' id='drop-area'>
+          <input id="filename" type="text">
+          <input id="input" type="file">
+          <br>
+          <button type='button' id="submit">Upload</button>
+        </form>
+
+      </div>
+
+      <div class='component-select component' id='component-select'>
+
+        <!-- Data Selector -->
+        <select id="select-data">
+          <option value="">Select one of the following datasets</option>
+        </select>
+
+      </div>
+    </div>
+
+    <div class='left component'>
+
+      <form>
+        <div class='settings component'>
+          <p>Link width</p>
+          <input id="linkWidth" type="range" min="0" max="250" value="10">
+        </div>
+
+        <div class='settings component'>
+          <p>Link opacity</p>
+          <input id="linkOpacity" type="range" min="1" max="100" value="100">
+        </div>
+
+        <div class='settings component'>
+          <p>Node size</p>
+          <input id="nodeSize" type="range" min="5" max="100" value="25">
+        </div>
+
+        <div class='settings component'>
+          <p>Node color</p>
+          <input id="nodeColor" type="color" value="#0080ff">
+        </div>
+
+        <div class='settings component'>
+          <p>Selected node color</p>
+          <input id="selNodeColor" type="color" value="#ff88aa">
+        </div>
+
+        <div class='settings component'>
+          <button id='renderSelected'>Show Selected</button>
+        </div>
+
+        <div class='settings component'>
+          <button id='renderReset'>Reset</button>
+        </div>
+
+        <div class='settings component'>
+          <button id='updateView'>Update</button>
+        </div>
+
+        <div class='settings component'>
+          <p>Min edge weight</p>
+          <input id="minWeight" type="range" min="0" max="100" value="0">
+        </div>
+
+        <div class='settings component'>
+          <p>Max edge weight</p>
+          <input id="maxWeight" type="range" min="0" max="100" value="100">
+        </div>
+
+        <div class='settings component'>
+          <button id='filterEdges'>Apply Filters</button>
+        </div>
+
+
+
+      </form>
+
+    </div>
+
+    <div class='main component' id='canvas'>
+    </div>
+
+    <div class='right component'>
+
+      <!-- Layout Selector -->
+      <div class='selector component'>
+        <p>Select the Layout.</p>
+        <select id="select-layout">
+          <option value="1">One visualization</option>
+          <option value="2">Two visualizations</option>
+          <option value="3">Three visualizations</option>
+          <option value="4">Four visualizations</option>
+        </select>
+      </div>
+
+      <!-- Visualization Selector 1 -->
+      <div class='selector component'>
+        <p>Select the visualization for box #1</p>
+        <select id="select-vis-1">
+          <option value="force">Force Directed Graph</option>
+          <option value="radial">Radial Graph</option>
+          <option value="radial">Third Graph</option>
+          <option value="matrix">Matrix Heatmap</option>
+        </select>
+      </div>
+
+      <!-- Visualization Selector 2 -->
+      <div class='selector component'>
+        <p>Select the visualization for box #2</p>
+        <select id="select-vis-2">
+          <option value="force">Force Directed Graph</option>
+          <option value="radial">Radial Graph</option>
+          <option value="radial">Third Graph</option>
+          <option value="matrix">Matrix Heatmap</option>
+        </select>
+      </div>
+
+      <!-- Visualization Selector 3 -->
+      <div class='selector component'>
+        <p>Select the visualization for box #3</p>
+        <select id="select-vis-3">
+          <option value="force">Force Directed Graph</option>
+          <option value="radial">Radial Graph</option>
+          <option value="radial">Third Graph</option>
+          <option value="matrix">Matrix Heatmap</option>
+        </select>
+      </div>
+
+      <!-- Visualization Selector 4 -->
+      <div class='selector component'>
+        <p>Select the visualization for box #4</p>
+        <select id="select-vis-4">
+          <option value="force">Force Directed Graph</option>
+          <option value="radial">Radial Graph</option>
+          <option value="radial">Third Graph</option>
+          <option value="matrix">Matrix Heatmap</option>
+        </select>
+      </div>
+
+      <div class='selector component'>
+        <p>Update Layout</p>
+        <button type='button' id="updateLayout">Update</button>
+      </div>
+
+    </div>
+
+	</div>
+
+  <!-- Include Upload scripts -->
+  <script src='public/scripts/upload/upload.js'></script>
+  <script src='public/scripts/upload/dragdrop.js'></script>
+  <script src='public/scripts/upload/select.js'></script>
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="/public/scripts/matrix/matrix.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="/public/scripts/graph/graph.js"></script>
+  <script src="/public/scripts/graph/graphs/forceGraph.js"></script>
+  <script src="/public/scripts/graph/graphs/radialGraph.js"></script>
+
+  <script>
+
+  loadComponent = (component) => {
+    fetch(`/comp/${component}.html`)
+    .then(function(response) {
+      response.text().then(function (body) {
+        document.getElementById(`component-${component}`).innerHTML = body;
+      });
+      return response;
+    });
+  };
+
+  // Data Selector
+  let selectData = document.querySelector('#select-data');
+
+  // On Dataset selection, save filename in LocalStorage
+  selectData.addEventListener('change', (event) => {
+    console.log(`You chose ${event.target.value}`);
+    localStorage.setItem('selected_file', `${event.target.value}`)
+  });
+
+
+  // Layout Selector
+  let selectLayout = document.querySelector('#select-layout');
+
+  // Get Layout from Selector
+  getLayout = () => {
+    selected_layout = selectLayout.value;
+    localStorage.setItem('layout', selected_layout);
+    console.log(`You've selected layout: ${selected_layout} !`)
+  }
+
+  // Layout Selector Listener
+  selectLayout.addEventListener('click', function(){ getLayout() }, false);
+
+
+
+  // Visualization Selector
+  let selectVis1 = document.querySelector('#select-vis-1');
+  let selectVis2 = document.querySelector('#select-vis-2');
+  let selectVis3 = document.querySelector('#select-vis-3');
+  let selectVis4 = document.querySelector('#select-vis-4');
+
+  // Get Visualization from Selector
+  getVisualization = (num) => {
+        switch (num) {
+          case 1:
+            selected_visualization = selectVis1.value;
+            break;
+          case 2:
+            selected_visualization = selectVis2.value;
+            break;
+          case 3:
+            selected_visualization = selectVis3.value;
+            break;
+          case 4:
+            selected_visualization = selectVis4.value;
+            break;
+        }
+        localStorage.setItem(`vis-${num}`, selected_visualization);
+        console.log(`You've set Visualization ${num} to ${selected_visualization} !`)
+  }
+
+  // Visualization Selector Listener
+  selectVis1.addEventListener('click', function(){ getVisualization(1) }, false);
+  selectVis2.addEventListener('click', function(){ getVisualization(2) }, false);
+  selectVis3.addEventListener('click', function(){ getVisualization(3) }, false);
+  selectVis4.addEventListener('click', function(){ getVisualization(4) }, false);
+
+
+
+  // Update Layout Button Selector
+  let updateLayout_btn = document.getElementById('updateLayout')
+
+  // Update Layout Function
+  submitLayout = (num) => {
+      showLayout(num);
+      showCanvas(num);
+      showVisualizations(num);
+  }
+
+  // Update Layout Button Listener
+  updateLayout_btn.addEventListener('click', function(){ submitLayout(localStorage.getItem('layout')) }, false);
+
+
+
+  // Canvas
+  let canvas = document.getElementById('canvas');
+
+  // Show Layout Function
+  showLayout = (num) => {
+    canvas.innerHTML = '';
+    box = document.createElement('div');
+    box.classList.add('component')
+
+    if (parseInt(num) > 0 ) {
+      box1 = box.cloneNode(true)
+      box1.id = 'box1';
+      canvas.appendChild(box1);
+    }
+    if (parseInt(num) > 1 ) {
+      box2 = box.cloneNode(true)
+      box2.id = 'box2';
+      canvas.appendChild(box2);
+    }
+    if (parseInt(num) > 2 ) {
+      box3 = box.cloneNode(true)
+      box3.id = 'box3';
+      canvas.appendChild(box3);
+    }
+    if (parseInt(num) > 3 ) {
+      box4 = box.cloneNode(true)
+      box4.id = 'box4';
+      canvas.appendChild(box4);
+    }
+
+    switch (num) {
+      case '1':
+        box1.style = 'grid-area: a / a / d / d; ';
+        break;
+      case '2':
+        box1.style = 'grid-area: a / a / a / d';
+        box2.style = 'grid-area: c / c / c / d';
+        break;
+      case '3':
+        box1.style = 'grid-area: a / a / a / d';
+        box2.style = 'grid-area: c';
+        box3.style = 'grid-area: d';
+        break;
+      case '4':
+        box1.style = 'grid-area: a';
+        box2.style = 'grid-area: b';
+        box3.style = 'grid-area: c';
+        box4.style = 'grid-area: d';
+        break;
+    }
+  }
+
+  // Show Canvas Function
+  showCanvas = (num) => {
+    if (parseInt(num) > 0 ) {
+      loadCanvas(localStorage.getItem('vis-1'), 'box1');
+    }
+    if (parseInt(num) > 1 ) {
+      loadCanvas(localStorage.getItem('vis-2'), 'box2');
+    }
+    if (parseInt(num) > 2 ) {
+      loadCanvas(localStorage.getItem('vis-3'), 'box3');
+    }
+    if (parseInt(num) > 3 ) {
+      loadCanvas(localStorage.getItem('vis-4'), 'box4');
+    }
+  }
+
+  // Load Canvas Function
+  loadCanvas = (visualization, box) => {
+    fetch(`/comp/${visualization}.html`)
+    .then(function(response) {
+      response.text().then(function (body) {
+        document.getElementById(box).innerHTML = body;
+      });
+      return response;
+    });
+  }
+
+
+  // Show Visualization Function
+  showVisualizations = (num) => {
+    if (parseInt(num) > 0 ) {
+      setTimeout(function(){ loadVisualization(localStorage.getItem('vis-1'), 'box1', localStorage.getItem('layout')); }, 1000);
+    }
+    if (parseInt(num) > 1 ) {
+      setTimeout(function(){ loadVisualization(localStorage.getItem('vis-2'), 'box2', localStorage.getItem('layout')); }, 6000);
+    }
+    if (parseInt(num) > 2 ) {
+      setTimeout(function(){ loadVisualization(localStorage.getItem('vis-3'), 'box3', localStorage.getItem('layout')); }, 11000);
+    }
+    if (parseInt(num) > 3 ) {
+      setTimeout(function(){ loadVisualization(localStorage.getItem('vis-4'), 'box4', localStorage.getItem('layout')); }, 16000);
+    }
+  }
+
+  // Load Visualization Function
+  loadVisualization = (vis, box, layout) => {
+    switch(vis) {
+      case 'matrix':
+        loadMatrix(box);
+        break;
+      case 'force':
+        loadGraph(box, vis);
+        break;
+      case 'radial':
+        loadGraph(box, vis);
+        break;
+      case 'third':
+        loadGraph(box, vis);
+        break;
+    }
+  }
+
+  </script>
+
+
+</body>
+</html>

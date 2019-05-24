@@ -1,7 +1,7 @@
 //// MATRIX SCRIPT ////
 
 // Function to initialize the matrix (Gets called from main file)
-loadMatrix = () => {
+loadMatrix = (box) => {
 
   // Initialize
   var filename = localStorage.getItem('selected_file');
@@ -15,7 +15,7 @@ loadMatrix = () => {
   .then(function(myJson) {
     file = JSON.parse(JSON.stringify(myJson));
     // Run Visualise with file
-    Visualise(file);
+    Visualise(file, box);
   });
 
 }
@@ -48,20 +48,20 @@ function AlphabeticalOrder(xValues,yValues,zValues) {
                 permutation.push(j);
                 break;
             }
-        }   
+        }
     }
-    
+
     var alphaZValues = matrix(zValues[0].length,zValues[0].length,"*")
     var reorderedZValues = matrix(zValues[0].length,zValues[0].length,"*")
     for(var i = 0; i < zValues[0].length; i++) {
       for(var j = 0; j < zValues[0].length; j++) {
-          alphaZValues[i][j] = zValues[i][permutation[j]];     
-      } 
-    } 
+          alphaZValues[i][j] = zValues[i][permutation[j]];
+      }
+    }
     for(var i = 0; i < zValues[0].length; i++) {
       for(var j = 0; j < zValues[0].length; j++) {
-          reorderedZValues[j][i] = alphaZValues[permutation[j]][i];  
-      } 
+          reorderedZValues[j][i] = alphaZValues[permutation[j]][i];
+      }
     }
     var returnArray = [sortAr,sortAr,reorderedZValues];
     return returnArray;
@@ -118,7 +118,7 @@ function SumOrder(xValues,yValues,matrix) {
     quicksort(cols, cols_index,0,cols.length-1);
     quicksort(rows, rows_index,0,rows.length-1);
 
-    
+
     var order_matrix = [];
     for(var i = 0; i < matrix[0].length; i++){
       order_matrix[i] = [];
@@ -136,7 +136,7 @@ function SumOrder(xValues,yValues,matrix) {
     return returnArray;
 }
 function AverageOrder(xValues,yValues,initial_matrix) {
-    
+
     var rows = new Array(initial_matrix[0].length).fill(1);
     for(var i = 0; i < initial_matrix[0].length; i++){
       for(var j = 0; j < initial_matrix[0].length; j++){
@@ -194,8 +194,8 @@ function AverageOrder(xValues,yValues,initial_matrix) {
 
     quicksort(cols, cols_index,0,cols.length-1);
     quicksort(rows, rows_index,0,rows.length-1);
-  
-  
+
+
     var order_matrix = [];
     var matrix_names = [];
     for(var i = 0; i < initial_matrix[0].length; i++){
@@ -205,23 +205,23 @@ function AverageOrder(xValues,yValues,initial_matrix) {
         order_matrix[i][j] = initial_matrix[rows_index[i]][cols_index[j]];
       }
     }
-    
+
     var reorderedXValues = new Array(xValues.length).fill(0);
     var reorderedYValues = new Array(yValues.length).fill(0);
     for(var i = 0; i < xValues.length;i++) {
         reorderedXValues[i] = xValues[cols_index[i]];
         reorderedYValues[i] = yValues[rows_index[i]];
     }
-    
+
     var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     return returnArray;
 }
 // Main Visualise Function
-function Visualise(file) {
+function Visualise(file, box) {
 
   // Initialize
   var xValues = [];
-  var yValues  = [];   
+  var yValues  = [];
 
   // Build the name values
   for(var i = 1; i < file.length; i++) {
@@ -260,10 +260,10 @@ function Visualise(file) {
 
   // Build a Proper Matrix from the CSV file
   var array = matrix(file[0].length,file[0].length,"*");
-    
+
   //matrix for after a reordering
   var reorderedMatrix = array;
-    
+
   // Fill in array with correct values from the CSV file
   for(var i = 0; i < file[0].length; i++) {
     for(var j = 0; j < file[0].length; j++) {
@@ -272,10 +272,10 @@ function Visualise(file) {
   }
   // Build a Matrix for zValues
   var zValues = matrix(file[0].length-1,file[0].length-1,"*");
-    
+
   // Build a Table for zValues
   var table = matrix(file[0].length,file[0].length-1,"*");
-    
+
   for(var i = 0; i < array[0].length; i++) {
     for(var j = 0; j < array[0].length-1; j++) {
       table[i][j]=array[i][j+1];
@@ -294,8 +294,8 @@ function Visualise(file) {
     //var permuted_mat = reorder.stablepermute(zValues, perm);
     //console.log(permuted_mat);
     //console.log(permuted_mat);
-    
-  //color diapason of the tiles 
+
+  //color diapason of the tiles
     var colorscaleValue = [
         [0, '#D3DFFF'],
         [1, '#003DDE']
@@ -336,7 +336,7 @@ var layout = {
   var layout = {
   title: 'Heatmap of your data set',
 };
-    
+
   // Run Heatmap
-  Plotly.newPlot('visualization-canvas', data, layout,{showSendToCloud: true});
+  Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true});
 }
