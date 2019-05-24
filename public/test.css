@@ -1,0 +1,113 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #2b2b2b;
+}
+
+p {
+  color: #f3f3f3;
+  font-family: 'Inconsolata', monospace;
+  font-size: 1.5vh;
+}
+
+.container {
+  position: absolute;
+  margin: 2vh 1vw;
+  height: 95vh;
+  width: 98vw;
+
+  border: solid 1px white;
+  border-radius: 3px;
+
+  display: grid;
+  grid-template-columns: 1fr 6fr 1fr;
+  grid-template-rows: 1fr 6fr;
+  grid-template-areas:
+  "logo header x"
+  "left main right";
+}
+
+.component {
+  padding: 4px;
+  margin: 8px;
+  border: solid 1px #f3f3f3;
+  border-radius: 3px;
+}
+
+.logo {
+  grid-area: logo;
+}
+
+.title {
+  position: absolute;
+  margin: 50px 30px;
+}
+
+/* Header with File Upload and File Select */
+.header {
+  grid-area: header;
+
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+  "upload select";
+}
+
+.component-upload {
+  grid-area: upload;
+
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+  "upload-left upload-right";
+}
+
+.upload-right {
+  grid-area: upload-right;
+}
+
+.upload-left {
+  grid-area: upload-left;
+}
+
+
+
+.component-select {
+  grid-area: select;
+}
+
+.left {
+  grid-area: left;
+}
+
+.main {
+  grid-area: main;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+  "a b"
+  "c d";
+
+}
+
+.right {
+  grid-area: right;
+}
+
+
+
+
+#drop-area {
+  padding: 8px;
+}
+
+#drop-area.highlight {
+  background-color: #ccc;
+}

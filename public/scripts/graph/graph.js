@@ -7,16 +7,27 @@ let svg_radial
 let attributes = [];
 let filter_var = 1;
 
-function loadGraph() {
-  // Store the svg with id svg1
-  svg_force = d3.select("#svg_force")
-      width = +svg_force.attr("width")
-      height = +svg_force.attr("height")
+function loadGraph(box, type) {
 
-  // Store the svg with id svg2
-  svg_radial = d3.select("#svg_radial")
+  console.log(box, type);
+
+  switch(type) {
+    case 'force':
+      svg_force = d3.select(`#${box} #svg_force`);
+      width = +svg_force.attr("width");
+      height = +svg_force.attr("height");
+      break;
+    case 'radial':
+      svg_radial = d3.select(`#${box} #svg_radial`)
       width = +svg_radial.attr("width")
       height = +svg_radial.attr("height")
+      break;
+  }
+
+
+  // Store the svg with id svg2
+
+  svg_third = d3.select(`#${box} #svg_third`)
 
   // Get the attributes from the html and store them
   // The attributes array is composed as following: [link width, link opacity, node size, node color]
@@ -28,6 +39,17 @@ function loadGraph() {
   attributes[3] = document.getElementById('nodeColor').value;
   attributes[4] = document.getElementById('selNodeColor').value;
 
+  renderSelectedBtn = document.getElementById('renderSelected');
+  renderResetBtn = document.getElementById('renderReset');
+  updateViewBtn = document.getElementById('updateView');
+  filterEdgesBtn = document.getElementById('filterEdges');
+
+  renderSelectedBtn.addEventListener('click', renderSelected, false);
+  renderResetBtn.addEventListener('click', renderReset, false);
+  updateViewBtn.addEventListener('click', updateView, false);
+  filterEdgesBtn.addEventListener('click', filterEdges, false);
+
+
   // Parse the csv file into a json object
   let filename = localStorage.getItem('selected_file');
 
@@ -37,8 +59,8 @@ function loadGraph() {
   })
   .then(function(myJson) {
     file = JSON.parse(JSON.stringify(myJson));
-	
-	
+
+
     graph_data = csvJSON(file);
 
     data_copy = JSON.parse(JSON.stringify(graph_data));
@@ -47,16 +69,27 @@ function loadGraph() {
     radial_data = JSON.parse(JSON.stringify(graph_data));
 
     //console.log(graph_data)
-	
+
 	//copy data for the radial graph
   //data_copy= JSON.parse(JSON.stringify(graph_data));
-  
+
   //og_data = JSON.parse(JSON.stringify(graph_data));
-	
-    loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
-    // get rid of this comment to load the radial graph aswell ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
-    getMaxValue(graph_data.links);
+  switch(type) {
+    case 'force':
+      console.log('SELECTED FORCE!', box, type)
+      loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
+      break;
+    case 'radial':
+      console.log('SELECTED RADIAL!', box, type)
+      loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
+      break;
+    case 'third':
+      console.log('SELECTED THIRD!', svg_third)
+      loadThird(radial_data.nodes, radial_data.links, svg_third, attributes);
+      break;
+  }
+
+  getMaxValue(graph_data.links);
   });
 
 }
@@ -84,7 +117,7 @@ function csvJSON(csv) {
   }
 
   graph_data = {"nodes": nodes, "links": links, "selected_nodes": [], "selected_links": []};
-  
+
   return graph_data;
 
 }
@@ -130,13 +163,13 @@ function nodeClick(node) {
       new_node = graph_data.nodes[n];
     }
   }
-  
+
   if (!graph_data.selected_nodes.includes(new_node)) {
     graph_data.selected_nodes.push(new_node);
   } else {
     graph_data.selected_nodes.splice(graph_data.selected_nodes.indexOf(new_node), 1);
   }
-  
+
   // Force data
   for (n = 0; n < force_data.nodes.length; n++) {
     if (new_node.id == force_data.nodes[n].id) {
@@ -170,7 +203,7 @@ function nodeClick(node) {
       if (!force_data.selected_nodes.includes(d)) { return document.getElementById("nodeColor").value }
       else { return document.getElementById("selNodeColor").value }
     })
-  
+
   svg_radial.selectAll("circle")
     .attr("fill", function(d) {
       if (!radial_data.selected_nodes.includes(d)) { return document.getElementById("nodeColor").value }
@@ -183,7 +216,7 @@ function nodeClick(node) {
 }
 
 function updateSelectedEdges() {
-  
+
   /*target = force_data.links[0].target;
   if (force_data.nodes.includes(target)) {
     console.log(force_data);
@@ -212,13 +245,13 @@ function updateSelectedEdges() {
     if ((!source || !target) && graph_data.selected_links.includes(l)) {
       graph_data.selected_links.splice(graph_data.selected_links.indexOf(l), 1);
     }
-    
+
   }
 
   // Force data
   for (i = 0; i < force_data.links.length; i++) {
     l = force_data.links[i];
-    
+
     if (force_data.selected_nodes.includes(l.source) && force_data.selected_nodes.includes(l.target) && !force_data.selected_links.includes(l)) {
       force_data.selected_links.push(l);
     }
@@ -230,7 +263,7 @@ function updateSelectedEdges() {
   // Radial data
   for (i = 0; i < radial_data.links.length; i++) {
     l = radial_data.links[i];
-    
+
     if (radial_data.selected_nodes.includes(l.source) && radial_data.selected_nodes.includes(l.target) && !radial_data.selected_links.includes(l)) {
       radial_data.selected_links.push(l);
     }
@@ -266,7 +299,7 @@ function renderSelected() {
 
 function renderReset() {
   graph_data = JSON.parse(JSON.stringify(data_copy));
-  
+
   force_data = JSON.parse(JSON.stringify(graph_data));
   radial_data = JSON.parse(JSON.stringify(graph_data));
 
@@ -301,7 +334,7 @@ function filterEdges() {
       appendLineForce(l_f);
 		}
   }
-  
+
   svg_radial.selectAll("line").remove();
 
   for (i = 0; i < radial_data.links.length; i++) {
@@ -329,7 +362,7 @@ function getMaxValue(links) {
       max = links[i].value;
     }
   }
- 
+
   filter_var = max / 100;
 
 }
