@@ -8,7 +8,7 @@ loadMatrix = (box) => {
   var file;
 
   // Fetch file
-  fetch('http://localhost:3000/csv/'+filename)
+  fetch('/csv/'+filename)
   .then(function(response) {
     return response.json();
   })

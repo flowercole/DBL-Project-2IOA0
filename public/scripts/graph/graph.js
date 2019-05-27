@@ -54,7 +54,7 @@ function loadGraph(box, type) {
   // Parse the csv file into a json object
   let filename = localStorage.getItem('selected_file');
 
-  fetch('http://localhost:3000/csv/'+filename)
+  fetch('/csv/'+filename)
   .then(function(response) {
     return response.json();
   })
