@@ -8,7 +8,7 @@ loadMatrix = (box) => {
   var file;
 
   // Fetch file
-  fetch('http://localhost:3000/csv/'+filename)
+  fetch('/csv/'+filename)
   .then(function(response) {
     return response.json();
   })
@@ -216,6 +216,35 @@ function AverageOrder(xValues,yValues,initial_matrix) {
     var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     return returnArray;
 }
+function UpdateGraphColor(xValues,yValues,zValues,box) {
+    let attributes = [];
+    attributes[0] = document.getElementById('startColor').value;
+    attributes[1] = document.getElementById('endColor').value;
+    console.log(attributes[0]);
+    console.log(attributes[1]);
+     var colorscaleValue = [
+        [0, attributes[0].toString()],
+        [1, attributes[1].toString()]
+    ];
+  //Input data for heatmap
+    var data = [
+    {
+        z: zValues,
+        x: xValues,
+        y: yValues,
+        colorscale: colorscaleValue,
+        type: 'heatmap'
+    }
+  ];
+    var layout = {
+  title: 'Repainted Heatmap of your data set',
+};
+  
+
+  // Run Heatmap
+  Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true});
+    
+}
 // Main Visualise Function
 function Visualise(file, box) {
 
@@ -240,7 +269,8 @@ function Visualise(file, box) {
       }
     }
   }
-
+  
+  
   // Build Matrix Function
   function matrix(rows, cols, defaultValue){
     var arr = [];
@@ -257,7 +287,7 @@ function Visualise(file, box) {
     }
     return arr;
   }
-
+  
   // Build a Proper Matrix from the CSV file
   var array = matrix(file[0].length,file[0].length,"*");
 
@@ -341,4 +371,6 @@ var layout = {
 
   // Run Heatmap
   Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true});
+document.getElementById("updateColorHeatmap").addEventListener("click",function() {UpdateGraphColor(xValues,yValues,zValues,box)} );
+    /*updateColorHeatmapBtn.addEventListener("click", UpdateGraphColor(xValues,yValues,zValues,box),false);*/
 }
