@@ -34,7 +34,7 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 		.radius(vertices.length * 0.4 + 5 * 2 * vertices.length / (2 * Math.PI))
 	
 	//set minimum weight of edges to show if there are a lot of edges
-	filteredEdgesRad = filterEdges(edgesRad, showMax) 
+	filteredEdgesRad = filterEdgesWeight(edgesRad, showMax) 
 
 
 	
@@ -118,7 +118,7 @@ function loadRadialGraph(nodes, links, svg, attributes) {
         .on("zoom", zoomed);
 		svg.call(zoom);
 		
-			// Reset zoom and pan
+		// Reset zoom and pan
 		zoom.transform(svg, d3.zoomIdentity);
 
 }
