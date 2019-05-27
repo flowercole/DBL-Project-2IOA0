@@ -6,6 +6,7 @@ let svg_force
 let svg_radial
 let attributes = [];
 let filter_var = 1;
+let showMax = 40000;
 
 function loadGraph(box, type) {
 
@@ -326,8 +327,8 @@ function filterEdges() {
   //console.log(minWeight, maxWeight);
 
 	svg_force.selectAll("line").remove();
-
-	for (i = 0; i < force_data.links.length; i++) {
+	let counter = 0;
+	for (i = 0; i < force_data.links.length && counter < showMax; i++) {
 		l_f = force_data.links[i]
 		if (l_f.value >= minWeight && l_f.value <= maxWeight) {
       //counter++
@@ -337,13 +338,14 @@ function filterEdges() {
 
   svg_radial.selectAll("line").remove();
 
-  for (i = 0; i < radial_data.links.length; i++) {
-    l_r = radial_data.links[i]
-    if (l_r.value >= minWeight && l_r.value <= maxWeight) {
-      //counter++
-      appendLineRadial(l_r);
-    }
-  }
+	counter = 0;
+	for (i = 0; i < radial_data.links.length && counter < showMax; i++) {
+		l_r = radial_data.links[i]
+		if (l_r.value >= minWeight && l_r.value <= maxWeight) {
+			counter++
+			appendLineRadial(l_r);
+		}
+	}
 
 }
 
@@ -365,4 +367,18 @@ function getMaxValue(links) {
 
   filter_var = max / 100;
 
+}
+
+//filters the an array of edges to contain only a certain amount with the highest weights, return that array with those edges
+function filterEdges(dataLinks, maxEdges) {
+	if (dataLinks.length < maxEdges) {
+		return dataLinks
+	} else {
+		filteredEdges = []
+		edgeSort = dataLinks.sort(function(a,b) {return b.value - a.value} )
+		for (let i = 0; i < maxEdges; i++) {
+			filteredEdges.push(edgeSort[i])
+		}
+		return filteredEdges
+	}
 }

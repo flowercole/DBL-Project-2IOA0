@@ -44,16 +44,8 @@ function loadForceGraph(nodes, links, svg, attributes) {
 	.force("collision", collision);
 
 	//determine minimum weight of edges to show
-	minWeight = 0
-	if (edges.length > 80000) {
-		//calculate weight of 80000th largest element to use as minimum weight IMPROVE TO NOT USE SORT
-		var edgeWeights = []
-		for (var ed in edges) {
-			edgeWeights.push(edges[ed].value)
-		}
-		minWeight = edgeWeights.sort(function(a,b) {return b - a})[80000]
-	}
-		
+	filteredEdges = filterEdges(edges, showMax) 
+	
 	//set edge appearance group
 	forceLink = svg.append("g")
 	  .attr("stroke", "#fff")
@@ -90,19 +82,16 @@ function loadForceGraph(nodes, links, svg, attributes) {
 	simulation.stop()
 	
 	//and then display the state of the simulation
-	drawGraph(minWeight)
+	drawGraph()
 
 //draw the Graph based on the current state of the simulation
-  function drawGraph(minWeight) {
+  function drawGraph() {
 	  //counter holds how many edges are drawn
 		var counter = 0;
 		
-		console.log("Showing edges higher then: " + minWeight);
-		
 		//for each edge, draw only if its weight is high enough
-		for (var ed in edges) {
-			ed = edges[ed]
-			if (ed.value >= minWeight) {
+		for (var ed in filteredEdges) {
+			ed = filteredEdges[ed]
 			counter ++
 			forceLink.append("line")
 				.attr("x1", ed.source.x )
@@ -111,7 +100,6 @@ function loadForceGraph(nodes, links, svg, attributes) {
 				.attr("y2", ed.target.y )
 				.attr("stroke-opacity", attributes[1] * Math.sqrt(ed.value) / 5) 
 				.attr("stroke-width", attributes[0] * Math.sqrt(ed.value) / 5) ;
-			}
 		}
 		
 		//draw each node
