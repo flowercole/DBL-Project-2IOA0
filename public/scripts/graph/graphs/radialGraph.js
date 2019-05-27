@@ -34,15 +34,8 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 		.radius(vertices.length * 0.4 + 5 * 2 * vertices.length / (2 * Math.PI))
 	
 	//set minimum weight of edges to show if there are a lot of edges
-	minWeight = 0
-	/*if (edges.length > 50000) {
-		//calculate weight of 50000th largest element to use as minimum weight IMPROVE TO NOT USE SORT
-		var edgeWeights = []
-		for (var ed in edges) {
-			edgeWeights.push(edges[ed].value)
-		}
-		minWeight = edgeWeights.sort(function(a,b) {return b - a})[50000]
-	}*/
+	filteredEdgesRad = filterEdges(edgesRad, showMax) 
+
 
 	
 	//set edge appearance
@@ -66,19 +59,16 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 	radSimulation.stop()
 	
 	//and then display the state of the simulation
-	drawGraph(minWeight)
+	drawGraph()
 
 //draw the Graph based on the current state of the simulation
-  function drawGraph(minWeight) {
+  function drawGraph() {
 	  //counter holds how many edges are drawn
 		var counter = 0;
-		
-		console.log("Showing edges higher then: " + minWeight);
-		
+				
 		//for each edge, draw only if its weight is high enough
-		for (var ed in edgesRad) {
-			ed = edgesRad[ed]
-			if (ed.value >= minWeight) {
+		for (var ed in filteredEdgesRad) {
+			ed = filteredEdgesRad[ed]
 			counter ++
 			radialLink.append("line")
 				.attr("x1", ed.source.x )
@@ -87,7 +77,6 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 				.attr("y2", ed.target.y )
 				.attr("stroke-opacity", attributes[1] * Math.sqrt(ed.value) / 5) 
 				.attr("stroke-width", attributes[0] * Math.sqrt(ed.value) / 5) ;
-			}
 		}
 		
 		//draw each node
