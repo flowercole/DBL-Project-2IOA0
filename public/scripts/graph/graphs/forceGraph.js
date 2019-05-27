@@ -44,7 +44,7 @@ function loadForceGraph(nodes, links, svg, attributes) {
 	.force("collision", collision);
 
 	//determine minimum weight of edges to show
-	filteredEdges = filterEdges(edges, showMax) 
+	filteredEdges = filterEdgesWeight(edges, showMax) 
 	
 	//set edge appearance group
 	forceLink = svg.append("g")

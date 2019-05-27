@@ -7,6 +7,8 @@ let svg_radial
 let attributes = [];
 let filter_var = 1;
 let showMax = 40000;
+let showForce = false;
+let showRadial = false;
 
 function loadGraph(box, type) {
 
@@ -17,11 +19,13 @@ function loadGraph(box, type) {
       svg_force = d3.select(`#${box} #svg_force`);
       width = +svg_force.attr("width");
       height = +svg_force.attr("height");
+	  showForce = true
       break;
     case 'radial':
       svg_radial = d3.select(`#${box} #svg_radial`)
       width = +svg_radial.attr("width")
       height = +svg_radial.attr("height")
+	  showRadial = true
       break;
   }
 
@@ -66,22 +70,15 @@ function loadGraph(box, type) {
 
     data_copy = JSON.parse(JSON.stringify(graph_data));
 
-    force_data = JSON.parse(JSON.stringify(graph_data));
-    radial_data = JSON.parse(JSON.stringify(graph_data));
-
-    //console.log(graph_data)
-
-	//copy data for the radial graph
-  //data_copy= JSON.parse(JSON.stringify(graph_data));
-
-  //og_data = JSON.parse(JSON.stringify(graph_data));
   switch(type) {
     case 'force':
       console.log('SELECTED FORCE!', box, type)
+	  force_data = JSON.parse(JSON.stringify(graph_data));
       loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
       break;
     case 'radial':
       console.log('SELECTED RADIAL!', box, type)
+	  radial_data = JSON.parse(JSON.stringify(graph_data));
       loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
       break;
     case 'third':
@@ -122,7 +119,7 @@ function csvJSON(csv) {
   return graph_data;
 
 }
-
+/*
 //apply settings to change appearance
 function setDisplayForce(svg) {
 	svg_force.selectAll("circle")
@@ -154,10 +151,10 @@ function setDisplayRadial(svg) {
 	svg_radial.selectAll("line")
 		.attr("stroke-width", document.getElementById("linkWidthRad").value)
 		.attr("stroke-opacity", document.getElementById("linkOpacityRad").value/100)
-}
+}*/
 
 function nodeClick(node) {
-
+	
   // Main data
   for (n = 0; n < graph_data.nodes.length; n++) {
     if (graph_data.nodes[n].id == node.id) {
@@ -172,45 +169,51 @@ function nodeClick(node) {
   }
 
   // Force data
-  for (n = 0; n < force_data.nodes.length; n++) {
-    if (new_node.id == force_data.nodes[n].id) {
-      force_node = force_data.nodes[n];
-    }
-  }
+  if (showForce) {
+	  console.log("Showing Force")
+	  for (n = 0; n < force_data.nodes.length; n++) {
+		if (new_node.id == force_data.nodes[n].id) {
+		  force_node = force_data.nodes[n];
+		}
+	  }
 
-  if (!force_data.selected_nodes.includes(force_node)) {
-    force_data.selected_nodes.push(force_node);
-  } else {
-    force_data.selected_nodes.splice(force_data.selected_nodes.indexOf(force_node), 1);
+	  if (!force_data.selected_nodes.includes(force_node)) {
+		force_data.selected_nodes.push(force_node);
+	  } else {
+		force_data.selected_nodes.splice(force_data.selected_nodes.indexOf(force_node), 1);
+	  }
   }
-
+  
   // Radial data
-  for (n = 0; n < radial_data.nodes.length; n++) {
-    if (new_node.id == radial_data.nodes[n].id) {
-      radial_node = radial_data.nodes[n];
-    }
-  }
+  if (showRadial) {
+	  console.log("Showing Radial")
+	  for (n = 0; n < radial_data.nodes.length; n++) {
+		if (new_node.id == radial_data.nodes[n].id) {
+		  radial_node = radial_data.nodes[n];
+		}
+	  }
 
-  if (!radial_data.selected_nodes.includes(radial_node)) {
-    radial_data.selected_nodes.push(radial_node);
-  } else {
-    radial_data.selected_nodes.splice(radial_data.selected_nodes.indexOf(radial_node), 1);
+	  if (!radial_data.selected_nodes.includes(radial_node)) {
+		radial_data.selected_nodes.push(radial_node);
+	  } else {
+		radial_data.selected_nodes.splice(radial_data.selected_nodes.indexOf(radial_node), 1);
+	  }
   }
-
   //console.log(graph_data, force_data, radial_data);
-
+	if (showForce) {
   svg_force.selectAll("circle")
     .attr("fill", function(d) {
       if (!force_data.selected_nodes.includes(d)) { return document.getElementById("nodeColor").value }
       else { return document.getElementById("selNodeColor").value }
     })
-
+	}
+	if (showRadial) {
   svg_radial.selectAll("circle")
     .attr("fill", function(d) {
       if (!radial_data.selected_nodes.includes(d)) { return document.getElementById("nodeColor").value }
       else { return document.getElementById("selNodeColor").value }
     })
-
+	}
   updateSelectedEdges();
   //console.log(graph_data, force_data, radial_data);
 
@@ -250,29 +253,31 @@ function updateSelectedEdges() {
   }
 
   // Force data
-  for (i = 0; i < force_data.links.length; i++) {
-    l = force_data.links[i];
+	if (showForce) {
+	  for (i = 0; i < force_data.links.length; i++) {
+		l = force_data.links[i];
 
-    if (force_data.selected_nodes.includes(l.source) && force_data.selected_nodes.includes(l.target) && !force_data.selected_links.includes(l)) {
-      force_data.selected_links.push(l);
-    }
-    if ((!force_data.selected_nodes.includes(l.source) || !force_data.selected_nodes.includes(l.target)) && force_data.selected_links.includes(l)) {
-      force_data.selected_links.splice(force_data.selected_links.indexOf(l), 1);
-    }
-  }
-
+		if (force_data.selected_nodes.includes(l.source) && force_data.selected_nodes.includes(l.target) && !force_data.selected_links.includes(l)) {
+		  force_data.selected_links.push(l);
+		}
+		if ((!force_data.selected_nodes.includes(l.source) || !force_data.selected_nodes.includes(l.target)) && force_data.selected_links.includes(l)) {
+		  force_data.selected_links.splice(force_data.selected_links.indexOf(l), 1);
+		}
+		}
+	}
   // Radial data
-  for (i = 0; i < radial_data.links.length; i++) {
-    l = radial_data.links[i];
+  if (showRadial) {
+	  for (i = 0; i < radial_data.links.length; i++) {
+		l = radial_data.links[i];
 
-    if (radial_data.selected_nodes.includes(l.source) && radial_data.selected_nodes.includes(l.target) && !radial_data.selected_links.includes(l)) {
-      radial_data.selected_links.push(l);
-    }
-    if ((!radial_data.selected_nodes.includes(l.source) || !radial_data.selected_nodes.includes(l.target)) && radial_data.selected_links.includes(l)) {
-      radial_data.selected_links.splice(radial_data.selected_links.indexOf(l), 1);
-    }
+		if (radial_data.selected_nodes.includes(l.source) && radial_data.selected_nodes.includes(l.target) && !radial_data.selected_links.includes(l)) {
+		  radial_data.selected_links.push(l);
+		}
+		if ((!radial_data.selected_nodes.includes(l.source) || !radial_data.selected_nodes.includes(l.target)) && radial_data.selected_links.includes(l)) {
+		  radial_data.selected_links.splice(radial_data.selected_links.indexOf(l), 1);
+		}
+	  }
   }
-
 
 
 }
@@ -281,41 +286,51 @@ function renderSelected() {
 
   graph_data.nodes = graph_data.selected_nodes;
   graph_data.links = graph_data.selected_links;
-  //force_data.nodes = force_data.selected_nodes;
+
 
   graph_data.selected_nodes = [];
   graph_data.selected_links = [];
-  //data_copy.selected_nodes = [];
-  //data_copy.selected_links = [];
-  force_data = JSON.parse(JSON.stringify(graph_data));
-  radial_data = JSON.parse(JSON.stringify(graph_data));
 
   updateAttributes();
 
-  loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
-  loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
+	if (showForce) {
+		force_data = JSON.parse(JSON.stringify(graph_data));
+		loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
+	}
+	if (showRadial) {
+		radial_data = JSON.parse(JSON.stringify(graph_data));
+		loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
+	}
+
   getMaxValue(graph_data.links);
 
 }
 
 function renderReset() {
   graph_data = JSON.parse(JSON.stringify(data_copy));
+    updateAttributes();
+	
+	if (showForce) {
+		force_data = JSON.parse(JSON.stringify(graph_data));
+		loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
+	}
+	if (showRadial) {
+		radial_data = JSON.parse(JSON.stringify(graph_data));
+		loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
+	}
 
-  force_data = JSON.parse(JSON.stringify(graph_data));
-  radial_data = JSON.parse(JSON.stringify(graph_data));
 
-  updateAttributes();
-
-  loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
-  loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
   getMaxValue(graph_data.links);
 }
 
 function updateView() {
   updateAttributes();
-
-  loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
-  loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
+	if (showForce) {
+		loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
+	}
+	if (showRadial) {
+		loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
+	}
 }
 
 function filterEdges() {
@@ -325,28 +340,31 @@ function filterEdges() {
   updateAttributes();
   //filterEdgesForce(minWeight, maxWeight);
   //console.log(minWeight, maxWeight);
+	
+	if (showForce) {
+		svg_force.selectAll("line").remove();
+		let counter = 0;
+		for (i = 0; i < force_data.links.length && counter < showMax; i++) {
+			l_f = force_data.links[i]
+			if (l_f.value >= minWeight && l_f.value <= maxWeight) {
+		  //counter++
+		  appendLineForce(l_f);
+			}
+	  }
+	}
+	
+	if (showRadial) {
+	  svg_radial.selectAll("line").remove();
 
-	svg_force.selectAll("line").remove();
-	let counter = 0;
-	for (i = 0; i < force_data.links.length && counter < showMax; i++) {
-		l_f = force_data.links[i]
-		if (l_f.value >= minWeight && l_f.value <= maxWeight) {
-      //counter++
-      appendLineForce(l_f);
-		}
-  }
-
-  svg_radial.selectAll("line").remove();
-
-	counter = 0;
-	for (i = 0; i < radial_data.links.length && counter < showMax; i++) {
-		l_r = radial_data.links[i]
-		if (l_r.value >= minWeight && l_r.value <= maxWeight) {
-			counter++
-			appendLineRadial(l_r);
+		counter = 0;
+		for (i = 0; i < radial_data.links.length && counter < showMax; i++) {
+			l_r = radial_data.links[i]
+			if (l_r.value >= minWeight && l_r.value <= maxWeight) {
+				counter++
+				appendLineRadial(l_r);
+			}
 		}
 	}
-
 }
 
 function updateAttributes() {
@@ -370,7 +388,7 @@ function getMaxValue(links) {
 }
 
 //filters the an array of edges to contain only a certain amount with the highest weights, return that array with those edges
-function filterEdges(dataLinks, maxEdges) {
+function filterEdgesWeight(dataLinks, maxEdges) {
 	if (dataLinks.length < maxEdges) {
 		return dataLinks
 	} else {
