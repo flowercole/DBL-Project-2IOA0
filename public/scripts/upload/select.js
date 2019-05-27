@@ -1,7 +1,7 @@
 // Read all files on server, put them in the dataset selector
 let files = [];
 
-fetch('http://localhost:3000/datasets')
+fetch('/datasets')
 .then((resp) => resp.json()) // Transform the data into json
 .then(function(res) {
   files = files.concat(res.data);

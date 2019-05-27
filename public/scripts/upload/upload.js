@@ -26,7 +26,7 @@ const upload = (file, name) => {
 
   console.log(formData.get('file'));
 
-  fetch('http://localhost:3000/upload', {   // Your POST endpoint
+  fetch('/upload', {   // Your POST endpoint
     method: 'POST',
     body: formData                          // This is your file object
   })
