@@ -308,13 +308,17 @@ function Visualise(file, box) {
   //Input data for heatmap
  var data = [
     {
-    z: returnSumOrder[2],
-    x: returnSumOrder[0],
-    y: returnSumOrder[1],
+    z: zValues,
+    x: xValues,
+    y: yValues,
     colorscale: colorscaleValue,
     type: 'heatmap'
     }
   ];
+    var layout = {
+  title: 'Heatmap of your data set',
+};
+  
 /*var data = [{
            z: zValues,
            type: 'surface'
@@ -333,9 +337,7 @@ var layout = {
   }
 };*/
   //var data = [trace1,trace2];
-  var layout = {
-  title: 'Heatmap of your data set',
-};
+
 
   // Run Heatmap
   Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true});
