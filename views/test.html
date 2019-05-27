@@ -13,37 +13,40 @@
 <body>
 	<div class='container'>
 
+    <!-- Logo in Corner -->
     <div class='logo component'>
-      <p class='title'>Visualization Tool</p>
-      <div class='circles'>
-        <div class='circle circle1'></div>
-        <div class='circle circle2'></div>
-        <div class='circle circle3'></div>
+      <div class='title'>
+        <p> Place <br>
+        Awesome <br>
+        Image <br>
+        Here </p>
       </div>
-
     </div>
 
+    <!-- Top Header, with upload and select datasets fuctions -->
     <div class='header component'>
-      <div class='component-upload component' id='component-upload'>
 
-        <!-- Upload Form -->
-        <div class='upload-right'>
+      <!-- Upload datasets -->
+      <div class='component-upload component' id='component-upload'>
+        <div class='upload-left'>
           <p>
             File: <span id='file'>No file uploaded.</span><br>
             Error:  <span id='msg'>No errors.</span><br>
             File Name: <span id='name'>No file uploaded.</span>
           </p>
-          <p>
-            Upload by dropping a file, or selecting a file.<br>
-            Add filename, leave blank to keep original filename
-          </p>
         </div>
-        <form enctype="multipart/form-data" class='upload-left' id='drop-area'>
-          <input id="filename" type="text">
-          <input id="input" type="file">
-          <br>
-          <button type='button' id="submit">Upload</button>
-        </form>
+
+          <div class='upload-middle'>
+            <p> Give your file a name (optional)</p>
+            <input id="filename" type="text">
+          </div>
+
+          <div class='upload-right'>
+            <input id="input" type="file" class='input'>
+            <p><label for="input" class='button'>Choose a file</label></p>
+            <button type='button' id="submit" class='button'>Upload</button>
+          </div>
+
 
       </div>
 
@@ -124,7 +127,6 @@
 
       <!-- Layout Selector -->
       <div class='selector component'>
-        <p>Select the Layout.</p>
         <select id="select-layout">
           <option value="1">One visualization</option>
           <option value="2">Two visualizations</option>
@@ -135,7 +137,6 @@
 
       <!-- Visualization Selector 1 -->
       <div class='selector component'>
-        <p>Select the visualization for box #1</p>
         <select id="select-vis-1">
           <option value="force">Force Directed Graph</option>
           <option value="radial">Radial Graph</option>
@@ -146,7 +147,6 @@
 
       <!-- Visualization Selector 2 -->
       <div class='selector component'>
-        <p>Select the visualization for box #2</p>
         <select id="select-vis-2">
           <option value="force">Force Directed Graph</option>
           <option value="radial">Radial Graph</option>
@@ -157,7 +157,6 @@
 
       <!-- Visualization Selector 3 -->
       <div class='selector component'>
-        <p>Select the visualization for box #3</p>
         <select id="select-vis-3">
           <option value="force">Force Directed Graph</option>
           <option value="radial">Radial Graph</option>
@@ -168,7 +167,6 @@
 
       <!-- Visualization Selector 4 -->
       <div class='selector component'>
-        <p>Select the visualization for box #4</p>
         <select id="select-vis-4">
           <option value="force">Force Directed Graph</option>
           <option value="radial">Radial Graph</option>
@@ -178,8 +176,7 @@
       </div>
 
       <div class='selector component'>
-        <p>Update Layout</p>
-        <button type='button' id="updateLayout">Update</button>
+        <button type='button' id="updateLayout">Update Layout</button>
       </div>
 
     </div>
@@ -267,6 +264,25 @@
   selectVis3.addEventListener('click', function(){ getVisualization(3) }, false);
   selectVis4.addEventListener('click', function(){ getVisualization(4) }, false);
 
+
+  setSelectors = (value, selector) => {
+    var val = localStorage.getItem(value);
+    var sel = selector;
+    console.log(val, sel)
+    var opts = sel.options;
+    for (var opt, j = 0; opt = opts[j]; j++) {
+      if (opt.value == val) {
+        sel.selectedIndex = j;
+        break;
+      }
+    }
+  }
+
+  setSelectors('layout', selectLayout);
+  setSelectors('vis-1', selectVis1);
+  setSelectors('vis-2', selectVis2);
+  setSelectors('vis-3', selectVis3);
+  setSelectors('vis-4', selectVis4);
 
 
   // Update Layout Button Selector
