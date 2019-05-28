@@ -113,18 +113,27 @@
 
         <div class='settings component'>
           <p>Heatmap start color</p>
-          <input id="startColor" type="color" value="#0080ff">
+          <input id="startColor" type="color" value="#D3DFFF">
         </div>
           
         <div class='settings component'>
           <p>Heatmap end color</p>
-          <input id="endColor" type="color" value="#ff88aa">
+          <input id="endColor" type="color" value="#003DDE">
+        </div>
+         
+        <div class='settings component'>
+          <button type='button' id='updateHeatmap'>Update Heatmap</button>
+        </div>
+          <div class='selector component'>
+            <p>Select reordering</p>
+            <select id="selectReordering", onchange="SelectReordering(this);">
+              <option value="original">Original</option>
+              <option value="alphabetical">Alphabetical</option>
+              <option value="sum">Sum</option>
+              <option value="average">Average</option>
+            </select>
         </div>
         
-        <div class='settings component'>
-          <button type='button' id='updateColorHeatmap'>Update Color Heatmap</button>
-        </div>
-          
       </form>
 
     </div>
