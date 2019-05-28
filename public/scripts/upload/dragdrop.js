@@ -1,10 +1,10 @@
 //// Drag Drop File Upload Function ////
 
 // Initialize Drag and Drop
-let dropArea = document.getElementById('drop-area')
+//let dropArea = document.getElementById('drop-area')
 
 ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-  dropArea.addEventListener(eventName, preventDefaults, false)
+  //dropArea.addEventListener(eventName, preventDefaults, false)
 })
 
 function preventDefaults (e) {
@@ -14,11 +14,11 @@ function preventDefaults (e) {
 
 // Drag Handler
 ;['dragenter', 'dragover'].forEach(eventName => {
-  dropArea.addEventListener(eventName, highlight, false)
+  //dropArea.addEventListener(eventName, highlight, false)
 })
 
 ;['dragleave', 'drop'].forEach(eventName => {
-  dropArea.addEventListener(eventName, unhighlight, false)
+  //dropArea.addEventListener(eventName, unhighlight, false)
 })
 
 function highlight(e) { dropArea.classList.add('highlight') }
@@ -26,7 +26,7 @@ function unhighlight(e) { dropArea.classList.remove('highlight') }
 
 
 // Drop Handler
-dropArea.addEventListener('drop', handleDrop, false)
+//dropArea.addEventListener('drop', handleDrop, false)
 
 function handleDrop(e) {
   let dt = e.dataTransfer

@@ -1,3 +1,7 @@
+/* CSS FOR VISUALIZATION TOOL */
+/* code by Maxim Snoep (1313517) */
+
+/* Global Styles */
 * {
   margin: 0;
   padding: 0;
@@ -13,38 +17,38 @@ p {
   font-size: 1.5vh;
 }
 
+/* Container for whole Page */
 .container {
   position: absolute;
-  margin: 2vh 1vw;
-  height: 95vh;
-  width: 98vw;
-
-  border: solid 1px white;
-  border-radius: 3px;
+  margin: 0.5vh 0.5vw;
+  height: 99vh;
+  width: 99vw;
 
   display: grid;
   grid-template-columns: 1fr 6fr 1fr;
-  grid-template-rows: 1fr 6fr;
+  grid-template-rows: 1fr 8fr;
   grid-template-areas:
   "logo header x"
   "left main right";
 }
 
+/* Component Class (boxes) */
 .component {
-  padding: 4px;
-  margin: 8px;
+  padding: 3px;
+  margin: 3px;
   border: solid 1px #f3f3f3;
   border-radius: 3px;
 }
 
+/* Corner Logo/Title */
 .logo {
   grid-area: logo;
 }
 
 .title {
   position: absolute;
-  margin: 50px 30px;
 }
+
 
 /* Header with File Upload and File Select */
 .header {
@@ -61,14 +65,39 @@ p {
   grid-area: upload;
 
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto;
   grid-template-areas:
-  "upload-left upload-right";
+  "upload-left upload-mid upload-right";
 }
 
 .upload-right {
   grid-area: upload-right;
+  float: right;
+}
+
+.input {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.button {
+    color: #f3f3f3;
+    font-family: 'Inconsolata', monospace;
+    font-size: 1.5vh;
+    padding: 2px;
+    margin: 10px;
+    border: solid 1px #f3f3f3;
+    border-radius: 3px;
+    background: none;
+}
+
+.upload-mid {
+  grid-area: upload-mid;
 }
 
 .upload-left {
@@ -99,13 +128,6 @@ p {
 
 .right {
   grid-area: right;
-}
-
-
-
-
-#drop-area {
-  padding: 8px;
 }
 
 #drop-area.highlight {
