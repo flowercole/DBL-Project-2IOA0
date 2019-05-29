@@ -29,13 +29,13 @@ code by Maxim Snoep (1313517)
       <div class='upload component bordered'>
         <!-- Left Upload Component -->
         <div class='upload-left'>
-          <input id="input" type="file" class='input'><label for="input" class='button bordered'>Choose a file</label>
-          <input id="filename" placeholder="Filename (Optional)" type="text" class='button bordered' autocomplete="off" >
-          <button type='button' id="submit" class='button bordered'>Upload!</button>
+          <input id="input" type="file" class='input'><label for="input" id='input-placeholder' class='input-placeholder button bordered'>Choose a file</label>
+          <input id="filename" placeholder="Filename (Optional)" type="text" class='file-name button bordered' autocomplete="off" spellcheck="false">
+          <button type='button' id="submit" class='file-upload button bordered'>Upload!</button>
         </div>
         <!-- Right Upload Component -->
         <div class='upload-right'>
-          <p>
+          <p class='file-info'>
           File: <span id='file'>No file uploaded.</span><br>
           Error:  <span id='msg'>No errors.</span><br>
           File Name: <span id='name'>No file uploaded.</span>
@@ -46,7 +46,6 @@ code by Maxim Snoep (1313517)
       <div class='select component bordered'>
         <!-- Data Selector Component -->
         <select id="select-data">
-          <option value="">Select one of the following datasets</option>
         </select>
       </div>
     </div>
@@ -112,8 +111,6 @@ code by Maxim Snoep (1313517)
             </select>
           </div>
         </div>
-
-      </form>
 
     </div>
 
@@ -200,15 +197,6 @@ code by Maxim Snoep (1313517)
     });
   };
 
-  // Data Selector
-  let selectData = document.querySelector('#select-data');
-
-  // On Dataset selection, save filename in LocalStorage
-  selectData.addEventListener('change', (event) => {
-    console.log(`You chose ${event.target.value}`);
-    localStorage.setItem('selected_file', `${event.target.value}`)
-  });
-
 
   // Layout Selector
   let selectLayout = document.querySelector('#select-layout');
@@ -276,7 +264,6 @@ code by Maxim Snoep (1313517)
   setSelectors('vis-2', selectVis2);
   setSelectors('vis-3', selectVis3);
   setSelectors('vis-4', selectVis4);
-
 
   // Update Layout Button Selector
   let updateLayout_btn = document.getElementById('updateLayout')

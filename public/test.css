@@ -93,7 +93,7 @@ p {
   grid-area: upload;
 
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 60% 40%;
   grid-template-rows: auto;
   grid-template-areas:
   "upload-left upload-right";
@@ -104,6 +104,7 @@ p {
 /* Left Box of File Upload */
 .upload-left {
   grid-area: upload-left;
+
   display: flex;
   justify-content: space-around;
 }
@@ -111,6 +112,9 @@ p {
 /* Right Box of File Upload */
 .upload-right {
   grid-area: upload-right;
+
+  display: flex;
+  justify-content: space-around;
 }
 
 /* Make actual input disappear */
@@ -123,6 +127,30 @@ p {
 	z-index: -1;
 }
 
+.input-placeholder {
+  text-align: center;
+  width: 28%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-name {
+  text-align: center;
+  width: 28%;
+}
+
+.file-upload {
+  width: 28%;
+}
+
+.file-info {
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* File Select Component */
 .select {
   grid-area: select;
@@ -131,6 +159,11 @@ p {
 
 .select select {
   margin: auto;
+
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Left Settings Component */
