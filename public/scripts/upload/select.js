@@ -26,6 +26,7 @@ updateDataSelector = () => {
 
   // Update data selector
   updateSelect = (data) => {
+    select_data.innerHTML='';
     let files = data;
     files.forEach((file) => {
       let opt = document.createElement('option');
