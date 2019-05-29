@@ -1,10 +1,12 @@
-
+<!--
+HTML FOR VISUALIZATION TOOL
+code by Maxim Snoep (1313517)
+ -->
 <html>
 
 <head>
   <meta charset="UTF-8">
 	<title>dbl ui mockup</title>
-
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
 	<link href="public/test.css" rel="stylesheet">
 </head>
@@ -14,120 +16,93 @@
 	<div class='container'>
 
     <!-- Logo in Corner -->
-    <div class='logo component'>
-      <div class='title'>
-        <p> Place <br>
-        Awesome <br>
-        Image <br>
-        Here </p>
-      </div>
+    <div class='logo component bordered'>
+      <p> Place <br>
+      Awesome <br>
+      Image <br>
+      Here </p>
     </div>
 
     <!-- Top Header, with upload and select datasets fuctions -->
     <div class='header component'>
-
-      <!-- Upload datasets -->
-      <div class='component-upload component' id='component-upload'>
+      <!-- Upload Datasets -->
+      <div class='upload component bordered'>
+        <!-- Left Upload Component -->
         <div class='upload-left'>
+          <input id="input" type="file" class='input'><label for="input" class='button bordered'>Choose a file</label>
+          <input id="filename" placeholder="Filename (Optional)" type="text" class='button bordered' autocomplete="off" >
+          <button type='button' id="submit" class='button bordered'>Upload!</button>
+        </div>
+        <!-- Right Upload Component -->
+        <div class='upload-right'>
           <p>
-            File: <span id='file'>No file uploaded.</span><br>
-            Error:  <span id='msg'>No errors.</span><br>
-            File Name: <span id='name'>No file uploaded.</span>
+          File: <span id='file'>No file uploaded.</span><br>
+          Error:  <span id='msg'>No errors.</span><br>
+          File Name: <span id='name'>No file uploaded.</span>
           </p>
         </div>
-
-          <div class='upload-middle'>
-            <p> Give your file a name (optional)</p>
-            <input id="filename" type="text">
-          </div>
-
-          <div class='upload-right'>
-            <input id="input" type="file" class='input'>
-            <p><label for="input" class='button'>Choose a file</label></p>
-            <button type='button' id="submit" class='button'>Upload</button>
-          </div>
-
-
       </div>
-
-      <div class='component-select component' id='component-select'>
-
-        <!-- Data Selector -->
+      <!-- Select Datasets-->
+      <div class='select component bordered'>
+        <!-- Data Selector Component -->
         <select id="select-data">
           <option value="">Select one of the following datasets</option>
         </select>
-
       </div>
     </div>
 
+    <!-- About Component-->
+    <div class='about component bordered'>
+      <a href='#' class='button bordered'>about</a>
+      <a href='#' class='button bordered'>contact</a>
+      <a href='#' class='button bordered'>help</a>
+    </div>
+
+    <!-- Left Settings Component -->
     <div class='left component'>
+      <div class='component'>
+        <p>Graph settings:</p>
+        <div class='component bordered'>
+            <p>Link width</p>
+            <input id="linkWidth" type="range" min="0" max="250" value="10">
 
-      <form>
-        <div class='settings component'>
-          <p>Link width</p>
-          <input id="linkWidth" type="range" min="0" max="250" value="10">
-        </div>
+            <p>Link opacity</p>
+            <input id="linkOpacity" type="range" min="1" max="100" value="100">
 
-        <div class='settings component'>
-          <p>Link opacity</p>
-          <input id="linkOpacity" type="range" min="1" max="100" value="100">
-        </div>
+            <p>Node size</p>
+            <input id="nodeSize" type="range" min="5" max="100" value="25">
 
-        <div class='settings component'>
-          <p>Node size</p>
-          <input id="nodeSize" type="range" min="5" max="100" value="25">
-        </div>
+            <p>Node color</p>
+            <input id="nodeColor" type="color" value="#0080ff">
 
-        <div class='settings component'>
-          <p>Node color</p>
-          <input id="nodeColor" type="color" value="#0080ff">
-        </div>
+            <p>Selected node color</p>
+            <input id="selNodeColor" type="color" value="#ff88aa">
 
-        <div class='settings component'>
-          <p>Selected node color</p>
-          <input id="selNodeColor" type="color" value="#ff88aa">
-        </div>
+            <button type='button' id='renderSelected' class='button bordered'>Show Selected</button>
+            <button type='button' id='renderReset' class='button bordered'>Reset</button>
+            <button type='button' id='updateView' class='button bordered'>Update</button>
 
-        <div class='settings component'>
-          <button type='button' id='renderSelected'>Show Selected</button>
-        </div>
+            <p>Min edge weight</p>
+            <input id="minWeight" type="range" min="0" max="100" value="0">
 
-        <div class='settings component'>
-          <button type='button' id='renderReset'>Reset</button>
+            <p>Max edge weight</p>
+            <input id="maxWeight" type="range" min="0" max="100" value="100">
+
+            <button type='button' id='filterEdges' class='button bordered'>Apply Filters</button>
+          </div>
         </div>
 
-        <div class='settings component'>
-          <button type='button' id='updateView'>Update</button>
-        </div>
+        <div class='component'>
+          <p>Heatmap settings:</p>
+          <div class='component bordered'>
+            <p>Heatmap start color</p>
+            <input id="startColor" type="color" value="#D3DFFF">
 
-        <div class='settings component'>
-          <p>Min edge weight</p>
-          <input id="minWeight" type="range" min="0" max="100" value="0">
-        </div>
+            <p>Heatmap end color</p>
+            <input id="endColor" type="color" value="#003DDE">
 
-        <div class='settings component'>
-          <p>Max edge weight</p>
-          <input id="maxWeight" type="range" min="0" max="100" value="100">
-        </div>
+            <button type='button' id='updateHeatmap' class='button bordered'>Update Heatmap</button>
 
-        <div class='settings component'>
-          <button type='button' id='filterEdges'>Apply Filters</button>
-        </div>
-
-        <div class='settings component'>
-          <p>Heatmap start color</p>
-          <input id="startColor" type="color" value="#D3DFFF">
-        </div>
-          
-        <div class='settings component'>
-          <p>Heatmap end color</p>
-          <input id="endColor" type="color" value="#003DDE">
-        </div>
-         
-        <div class='settings component'>
-          <button type='button' id='updateHeatmap'>Update Heatmap</button>
-        </div>
-          <div class='selector component'>
             <p>Select reordering</p>
             <select id="selectReordering", onchange="SelectReordering(this);">
               <option value="original">Original</option>
@@ -135,8 +110,9 @@
               <option value="sum">Sum</option>
               <option value="average">Average</option>
             </select>
+          </div>
         </div>
-        
+
       </form>
 
     </div>
@@ -145,61 +121,57 @@
     </div>
 
     <div class='right component'>
-
       <!-- Layout Selector -->
-      <div class='selector component'>
-        <select id="select-layout">
-          <option value="1">One visualization</option>
-          <option value="2">Two visualizations</option>
-          <option value="3">Three visualizations</option>
-          <option value="4">Four visualizations</option>
-        </select>
-      </div>
+      <div class='component'>
+        <p>Layout settings:</p>
+        <div class='component bordered'>
+          <p>Number of visualizations</p>
+          <select id="select-layout">
+            <option value="1">One visualization</option>
+            <option value="2">Two visualizations</option>
+            <option value="3">Three visualizations</option>
+            <option value="4">Four visualizations</option>
+          </select>
 
-      <!-- Visualization Selector 1 -->
-      <div class='selector component'>
-        <select id="select-vis-1">
-          <option value="force">Force Directed Graph</option>
-          <option value="radial">Radial Graph</option>
-          <option value="radial">Third Graph</option>
-          <option value="matrix">Matrix Heatmap</option>
-        </select>
-      </div>
+          <!-- Visualization Selector 1 -->
+          <p>Select 1st visualization</p>
+          <select id="select-vis-1">
+            <option value="force">Force Directed Graph</option>
+            <option value="radial">Radial Graph</option>
+            <option value="radial">Third Graph</option>
+            <option value="matrix">Matrix Heatmap</option>
+          </select>
 
-      <!-- Visualization Selector 2 -->
-      <div class='selector component'>
-        <select id="select-vis-2">
-          <option value="force">Force Directed Graph</option>
-          <option value="radial">Radial Graph</option>
-          <option value="radial">Third Graph</option>
-          <option value="matrix">Matrix Heatmap</option>
-        </select>
-      </div>
+          <!-- Visualization Selector 2 -->
+          <p>Select 2nd visualization</p>
+          <select id="select-vis-2">
+            <option value="force">Force Directed Graph</option>
+            <option value="radial">Radial Graph</option>
+            <option value="radial">Third Graph</option>
+            <option value="matrix">Matrix Heatmap</option>
+          </select>
 
-      <!-- Visualization Selector 3 -->
-      <div class='selector component'>
-        <select id="select-vis-3">
-          <option value="force">Force Directed Graph</option>
-          <option value="radial">Radial Graph</option>
-          <option value="radial">Third Graph</option>
-          <option value="matrix">Matrix Heatmap</option>
-        </select>
-      </div>
+          <!-- Visualization Selector 3 -->
+          <p>Select 3rd visualization</p>
+          <select id="select-vis-3">
+            <option value="force">Force Directed Graph</option>
+            <option value="radial">Radial Graph</option>
+            <option value="radial">Third Graph</option>
+            <option value="matrix">Matrix Heatmap</option>
+          </select>
 
-      <!-- Visualization Selector 4 -->
-      <div class='selector component'>
-        <select id="select-vis-4">
-          <option value="force">Force Directed Graph</option>
-          <option value="radial">Radial Graph</option>
-          <option value="radial">Third Graph</option>
-          <option value="matrix">Matrix Heatmap</option>
-        </select>
-      </div>
+          <!-- Visualization Selector 4 -->
+          <p>Select 4th visualization</p>
+          <select id="select-vis-4">
+            <option value="force">Force Directed Graph</option>
+            <option value="radial">Radial Graph</option>
+            <option value="radial">Third Graph</option>
+            <option value="matrix">Matrix Heatmap</option>
+          </select>
 
-      <div class='selector component'>
-        <button type='button' id="updateLayout">Update Layout</button>
+          <button type='button' id="updateLayout" class='button bordered'>Update Layout</button>
+        </div>
       </div>
-
     </div>
 
 	</div>
@@ -329,6 +301,7 @@
     canvas.innerHTML = '';
     box = document.createElement('div');
     box.classList.add('component')
+    box.classList.add('bordered')
 
     if (parseInt(num) > 0 ) {
       box1 = box.cloneNode(true)

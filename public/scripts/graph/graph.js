@@ -154,7 +154,7 @@ function setDisplayRadial(svg) {
 }*/
 
 function nodeClick(node) {
-	
+
   // Main data
   for (n = 0; n < graph_data.nodes.length; n++) {
     if (graph_data.nodes[n].id == node.id) {
@@ -183,7 +183,7 @@ function nodeClick(node) {
 		force_data.selected_nodes.splice(force_data.selected_nodes.indexOf(force_node), 1);
 	  }
   }
-  
+
   // Radial data
   if (showRadial) {
 	  console.log("Showing Radial")
@@ -309,7 +309,7 @@ function renderSelected() {
 function renderReset() {
   graph_data = JSON.parse(JSON.stringify(data_copy));
     updateAttributes();
-	
+
 	if (showForce) {
 		force_data = JSON.parse(JSON.stringify(graph_data));
 		loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
@@ -340,7 +340,7 @@ function filterEdges() {
   updateAttributes();
   //filterEdgesForce(minWeight, maxWeight);
   //console.log(minWeight, maxWeight);
-	
+
 	if (showForce) {
 		svg_force.selectAll("line").remove();
 		let counter = 0;
@@ -352,7 +352,7 @@ function filterEdges() {
 			}
 	  }
 	}
-	
+
 	if (showRadial) {
 	  svg_radial.selectAll("line").remove();
 
