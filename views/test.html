@@ -6,7 +6,7 @@ code by Maxim Snoep (1313517)
 
 <head>
   <meta charset="UTF-8">
-	<title>dbl ui mockup</title>
+	<title>Funsualization</title>
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
 	<link href="public/test.css" rel="stylesheet">
 </head>
@@ -17,10 +17,7 @@ code by Maxim Snoep (1313517)
 
     <!-- Logo in Corner -->
     <div class='logo component bordered'>
-      <p> Place <br>
-      Awesome <br>
-      Image <br>
-      Here </p>
+      <img src='public/logo.png'></img>
     </div>
 
     <!-- Top Header, with upload and select datasets fuctions -->
@@ -52,9 +49,9 @@ code by Maxim Snoep (1313517)
 
     <!-- About Component-->
     <div class='about component bordered'>
-      <a href='#' class='button bordered'>about</a>
-      <a href='#' class='button bordered'>contact</a>
-      <a href='#' class='button bordered'>help</a>
+      <button id='about-btn' class='button bordered'>about</button>
+      <button id='contact-btn' class='button bordered'>contact</button>
+      <button id='help-btn' class='button bordered'>help</button>
     </div>
 
     <!-- Left Settings Component -->
@@ -211,6 +208,23 @@ code by Maxim Snoep (1313517)
   // Layout Selector Listener
   selectLayout.addEventListener('click', function(){ getLayout() }, false);
 
+  let aboutBtn = document.getElementById('about-btn');
+  aboutBtn.addEventListener('click', function(){
+    showLayout('1');
+    loadCanvas('about', 'box1')}
+  )
+
+  let contactBtn = document.getElementById('contact-btn');
+  contactBtn.addEventListener('click', function(){
+    showLayout('1');
+    loadCanvas('contact', 'box1')}
+  )
+
+  let helpBtn = document.getElementById('help-btn');
+  helpBtn.addEventListener('click', function(){
+    showLayout('1');
+    loadCanvas('help', 'box1')}
+  )
 
 
   // Visualization Selector
