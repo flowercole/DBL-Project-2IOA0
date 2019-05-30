@@ -4,6 +4,9 @@
 var xValues = [];
 var yValues  = [];
 var zValues;
+var xValuesOriginal=[];
+var yValuesOriginal=[];
+var zValuesOriginal=[];
 var box;
 var colorscaleValue = [
         [0, '#D3DFFF'],
@@ -67,8 +70,8 @@ function AlphabeticalOrder(xVal,yVal,zVal) {
           alphaZValues[i][j] = zVal[i][permutation[j]];
       }
     }
-    for(var i = 0; i < zValues[0].length; i++) {
-      for(var j = 0; j < zValues[0].length; j++) {
+    for(var i = 0; i < zVal[0].length; i++) {
+      for(var j = 0; j < zVal[0].length; j++) {
           reorderedZValues[j][i] = alphaZValues[permutation[j]][i];
       }
     }
@@ -149,6 +152,7 @@ function SumOrder(xVal,yVal,matrix) {
         [1, '#003DDE']
     ];*/
     
+    console.log(zValues);
     DisplayGraph(reorderedXValues,reorderedYValues,order_matrix)
     //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     //return returnArray;
@@ -232,10 +236,14 @@ function AverageOrder(xVal,yVal,initial_matrix) {
         reorderedYValues[i] = yVal[rows_index[i]];
     }
     
+  console.log(zValues);
     DisplayGraph(reorderedXValues,reorderedYValues,order_matrix)
     //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     //return returnArray;
     return;
+}
+function OriginalOrder() {
+    DisplayGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
 }
 function UpdateGraphColor(xVal,yVal,zVal,box) {
     let attributes = [];
@@ -247,27 +255,11 @@ function UpdateGraphColor(xVal,yVal,zVal,box) {
     ];
   //Input data for heatmap
     DisplayGraph(xVal,yVal,zVal)
-    /*var data = [
-    {
-        z: zValues,
-        x: xVal,
-        y: yVal,
-        colorscale: colorscaleValue,
-        type: 'heatmap'
-    }
-  ];
-    var layout = {
-  title: 'Repainted Heatmap of your data set',
-};
-  
-
-  // Run Heatmap
-  Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true});*/
     
 }
 function SelectReordering(selectTag) {
             var selIndexes = "";
-            console.log(zValues);
+            //console.log(zValues);
             for (var i = 0; i < selectTag.options.length; i++) {
                 var optionTag = selectTag.options[i];
                 if (optionTag.selected) {
@@ -282,7 +274,7 @@ function SelectReordering(selectTag) {
                 console.log("Selected options: " + selIndexes);
                 if(selIndexes=="Original") {
                     console.log("Original");
-                    loadMatrix(box);
+                    OriginalOrder();
                 }
                 if(selIndexes=="Alphabetical") {
                     console.log("Alphabetical");
@@ -301,12 +293,10 @@ function SelectReordering(selectTag) {
                 console.log("There is no selected option");
             }
 }
-// Main Visualise Function
-function Visualise(file, box) {
-
-  // Initialize
-  
-
+function Visualise(file, box) {  
+    
+  xValues = [];
+  yValues = [];
   // Build the name values
   for(var i = 1; i < file.length; i++) {
     xValues.push(file[0][i]);
@@ -376,10 +366,14 @@ function Visualise(file, box) {
     //var returnAlphaBeticalOrder = AlphabeticalOrder(xValues,yValues,zValues);
     //var returnSumOrder = SumOrder(xValues,yValues,zValues);
     //var returnAverageOrder = AverageOrder(xValues,yValues,zValues);
-    console.log(zValues);
+    //console.log(zValues);
     //console.log(returnSumOrder[2]);
   //Input data for heatmap
- DisplayGraph(xValues,yValues,zValues);
+xValuesOriginal = xValues;
+yValuesOriginal = yValues;
+zValuesOriginal = zValues;
+
+DisplayGraph(xValues,yValues,zValues);
 document.getElementById("updateHeatmap").addEventListener("click",function() {UpdateGraphColor(xValues,yValues,zValues,box)} );
     
 }
@@ -397,26 +391,6 @@ function DisplayGraph(xVal,yVal,zVal) {
   title: 'Heatmap of your data set',
 };
   
-/*var data = [{
-           z: zValues,
-           type: 'surface'
-        }];
-  
-var layout = {
-  title: 'Mt Bruno Elevation',
-  autosize: false,
-  width: 500,
-  height: 500,
-  margin: {
-    l: 65,
-    r: 50,
-    b: 65,
-    t: 90,
-  }
-};*/
-  //var data = [trace1,trace2];
-
-
-  // Run Heatmap
   Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true});
 }
+
