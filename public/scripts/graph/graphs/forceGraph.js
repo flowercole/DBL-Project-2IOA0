@@ -23,12 +23,9 @@ function loadForceGraph(nodes, links, svg, attributes) {
 		
     
 	var color = d3.scaleOrdinal(d3.schemeCategory20);
-
-  	console.log("showing static graph")
 	
     width = +svg.attr("width"),
     height = +svg.attr("height");
-	
 	
 	//load data in arrays
 	vertices = nodes
@@ -58,12 +55,10 @@ function loadForceGraph(nodes, links, svg, attributes) {
       .attr("stroke", "#3e3e3e")
       .attr("stroke-width", 0.3 * attributes[2])
 
-		
-	
 	//add vertices and edges to force simulation
 	simulation
 		.nodes(vertices)
-		.force("link").links(edges)	
+		.force("link").links(filteredEdges)	
 	
 	
 	//optimalization settings
@@ -122,7 +117,6 @@ function loadForceGraph(nodes, links, svg, attributes) {
 			simulation.stop();
 
 		console.log("Showing " + counter + " edges")
-		console.log("done")
   }
 	
 

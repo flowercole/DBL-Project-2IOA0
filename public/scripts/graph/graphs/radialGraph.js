@@ -28,7 +28,6 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 	vertices = nodes
 	edgesRad = links 
 
-	
 	//standard radius
 	radialForce
 		.radius(vertices.length * 0.4 + 5 * 2 * vertices.length / (2 * Math.PI))
@@ -36,8 +35,6 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 	//set minimum weight of edges to show if there are a lot of edges
 	filteredEdgesRad = filterEdgesWeight(edgesRad, showMax) 
 
-
-	
 	//set edge appearance
 	radialLink = svg.append("g")
 	  .attr("stroke", "#fff")
@@ -48,7 +45,7 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 	//add vertices and edges to force simulation
 	radSimulation
 		.nodes(vertices)
-		.force("link").links(edgesRad)		
+		.force("link").links(filteredEdgesRad)		
 
 	console.log("Start simulation")
 	//do 150 steps of the simulation
@@ -100,7 +97,6 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 		radSimulation.stop();
 		
 		console.log("Showing " + counter + " edges")
-		console.log("done")
 	}
 	
 	

@@ -6,7 +6,7 @@ let svg_force
 let svg_radial
 let attributes = [];
 let filter_var = 1;
-let showMax = 40000;
+let showMax = 10000;
 let showForce = false;
 let showRadial = false;
 
@@ -324,12 +324,34 @@ function renderReset() {
 }
 
 function updateView() {
-  updateAttributes();
+	updateAttributes();
+	
 	if (showForce) {
-		loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
+		svg_force.selectAll("circle")
+			.attr("r", attributes[2]) //sets the radius of circle
+			.attr("stroke-width", 0.3 * attributes[2])
+			.attr("fill", function(d) {
+				if (!force_data.selected_nodes.includes(d)) { return attributes[3] }
+				else { return attributes[4] }
+		})
+		
+		svg_force.selectAll("line").data(force_data.links)
+			.attr("stroke-width", function(d) {return attributes[0] * Math.sqrt(d.value) / 5})
+			.attr("stroke-opacity", function(d) {return attributes[1] * Math.sqrt(d.value) / 5})
 	}
+	
 	if (showRadial) {
-		loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
+		svg_radial.selectAll("circle")
+			.attr("r", attributes[2]) //sets the radius of circle
+			.attr("stroke-width", 0.3 * attributes[2])
+			.attr("fill", function(d) {
+				if (!radial_data.selected_nodes.includes(d)) { return attributes[3] }
+				else { return attributes[4] }
+		})
+		
+		svg_radial.selectAll("line").data(radial_data.links)
+			.attr("stroke-width", function(d) {return attributes[0] * Math.sqrt(d.value) / 5})
+			.attr("stroke-opacity", function(d) {return attributes[1] * Math.sqrt(d.value) / 5})
 	}
 }
 
@@ -347,8 +369,8 @@ function filterEdges() {
 		for (i = 0; i < force_data.links.length && counter < showMax; i++) {
 			l_f = force_data.links[i]
 			if (l_f.value >= minWeight && l_f.value <= maxWeight) {
-		  //counter++
-		  appendLineForce(l_f);
+				counter++
+				appendLineForce(l_f);
 			}
 	  }
 	}
