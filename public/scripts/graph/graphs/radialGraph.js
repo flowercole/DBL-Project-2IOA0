@@ -92,7 +92,9 @@ function loadRadialGraph(nodes, links, svg, attributes) {
 		  .attr("cy", function(d) {return d.y})
 			.on("click", function(d) {nodeClick(d)})
 			
-		
+		node.append("title")
+			.text(function(d) { return d.id; });
+			
 		radSimulation.alpha(0.8).restart();
 		radSimulation.stop();
 		
