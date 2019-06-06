@@ -21,7 +21,7 @@ code by Maxim Snoep (1313517)
     </div>
 
     <!-- Top Header, with upload and select datasets fuctions -->
-    <div class='header component'>
+    <div class='header'>
       <!-- Upload Datasets -->
       <div class='upload component bordered'>
         <!-- Left Upload Component -->
@@ -119,52 +119,24 @@ code by Maxim Snoep (1313517)
       <div class='component'>
         <p>Layout settings:</p>
         <div class='component bordered'>
-          <p>Number of visualizations</p>
-          <select id="select-layout">
-            <option value="1">One visualization</option>
-            <option value="2">Two visualizations</option>
-            <option value="3">Three visualizations</option>
-            <option value="4">Four visualizations</option>
-          </select>
-
           <!-- Visualization Selector 1 -->
-          <p>Select 1st visualization</p>
-          <select id="select-vis-1">
-            <option value="force">Force Directed Graph</option>
-            <option value="radial">Radial Graph</option>
-            <option value="radial">Third Graph</option>
-            <option value="matrix">Matrix Heatmap</option>
-          </select>
+          <p><input type="checkbox" id='force-select' onclick="update('force')">Force Directed Graph</p>
 
           <!-- Visualization Selector 2 -->
-          <p>Select 2nd visualization</p>
-          <select id="select-vis-2">
-            <option value="force">Force Directed Graph</option>
-            <option value="radial">Radial Graph</option>
-            <option value="radial">Third Graph</option>
-            <option value="matrix">Matrix Heatmap</option>
-          </select>
+          <p><input type="checkbox" id='radial-select' onclick="update('radial')">Radial Graph</p>
 
           <!-- Visualization Selector 3 -->
-          <p>Select 3rd visualization</p>
-          <select id="select-vis-3">
-            <option value="force">Force Directed Graph</option>
-            <option value="radial">Radial Graph</option>
-            <option value="radial">Third Graph</option>
-            <option value="matrix">Matrix Heatmap</option>
-          </select>
+          <p><input type="checkbox" id='third-select' onclick="update('third')">Third Graph</p>
 
           <!-- Visualization Selector 4 -->
-          <p>Select 4th visualization</p>
-          <select id="select-vis-4">
-            <option value="force">Force Directed Graph</option>
-            <option value="radial">Radial Graph</option>
-            <option value="radial">Third Graph</option>
-            <option value="matrix">Matrix Heatmap</option>
-          </select>
+          <p><input type="checkbox" id='matrix-select' onclick="update('matrix')">Matrix Heatmap</p>
 
           <button type='button' id="updateLayout" class='button bordered'>Update Layout</button>
         </div>
+
+
+
+
       </div>
     </div>
 
@@ -183,6 +155,69 @@ code by Maxim Snoep (1313517)
   <script src="/public/scripts/graph/graphs/radialGraph.js"></script>
 
   <script>
+  localStorage.setItem('vis-1', 'none')
+  localStorage.setItem('vis-2', 'none')
+  localStorage.setItem('vis-3', 'none')
+  localStorage.setItem('vis-4', 'none')
+  localStorage.setItem('layout', 0)
+
+
+
+  setSelectors2 = () => {
+    if ( localStorage.getItem('vis-1') ) {}
+  }
+
+  update = (last) => {
+    if (!document.getElementById(`${last}-select`).checked) {
+      layout = parseInt(localStorage.getItem('layout')) - 1;
+      localStorage.setItem('layout', layout);
+      if ( localStorage.getItem('vis-1') == last ) {
+        localStorage.setItem('vis-1', localStorage.getItem('vis-2'))
+        localStorage.setItem('vis-2', localStorage.getItem('vis-3'))
+        localStorage.setItem('vis-3', localStorage.getItem('vis-4'))
+        localStorage.setItem('vis-4', '')
+      } else if ( localStorage.getItem('vis-2') == last ) {
+        localStorage.setItem('vis-2', localStorage.getItem('vis-3'))
+        localStorage.setItem('vis-3', localStorage.getItem('vis-4'))
+        localStorage.setItem('vis-4', '')
+      } else if ( localStorage.getItem('vis-3') == last ) {
+        localStorage.setItem('vis-3', localStorage.getItem('vis-4'))
+        localStorage.setItem('vis-4', '')
+      } else if ( localStorage.getItem('vis-4') == last ) {
+        localStorage.setItem('vis-4', '')
+      }
+
+
+
+
+      if ( layout == 3 ) {
+        localStorage.setItem('vis-4', '');
+      } else if ( layout == 2 ) {
+        localStorage.setItem('vis-3', '');
+      } else if ( layout == 1 ) {
+        localStorage.setItem('vis-2', '');
+      } else if ( layout == 0 ) {
+        localStorage.setItem('vis-1', '');
+      }
+    } else {
+      layout = parseInt(localStorage.getItem('layout')) + 1;
+      localStorage.setItem('layout', layout);
+      if ( layout == 4 ) {
+        localStorage.setItem('vis-4', last);
+      } else if ( layout == 3 ) {
+        localStorage.setItem('vis-3', last);
+      } else if ( layout == 2 ) {
+        localStorage.setItem('vis-2', last);
+      } else if ( layout == 1 ) {
+        localStorage.setItem('vis-1', last);
+      }
+    }
+  }
+
+
+
+
+
 
   loadComponent = (component) => {
     fetch(`/comp/${component}.html`)
@@ -206,7 +241,7 @@ code by Maxim Snoep (1313517)
   }
 
   // Layout Selector Listener
-  selectLayout.addEventListener('click', function(){ getLayout() }, false);
+  //selectLayout.addEventListener('click', function(){ getLayout() }, false);
 
   let aboutBtn = document.getElementById('about-btn');
   aboutBtn.addEventListener('click', function(){
@@ -254,10 +289,10 @@ code by Maxim Snoep (1313517)
   }
 
   // Visualization Selector Listener
-  selectVis1.addEventListener('click', function(){ getVisualization(1) }, false);
-  selectVis2.addEventListener('click', function(){ getVisualization(2) }, false);
-  selectVis3.addEventListener('click', function(){ getVisualization(3) }, false);
-  selectVis4.addEventListener('click', function(){ getVisualization(4) }, false);
+  //selectVis1.addEventListener('click', function(){ getVisualization(1) }, false);
+  //selectVis2.addEventListener('click', function(){ getVisualization(2) }, false);
+  //selectVis3.addEventListener('click', function(){ getVisualization(3) }, false);
+  //selectVis4.addEventListener('click', function(){ getVisualization(4) }, false);
 
 
   setSelectors = (value, selector) => {
@@ -272,12 +307,6 @@ code by Maxim Snoep (1313517)
       }
     }
   }
-
-  setSelectors('layout', selectLayout);
-  setSelectors('vis-1', selectVis1);
-  setSelectors('vis-2', selectVis2);
-  setSelectors('vis-3', selectVis3);
-  setSelectors('vis-4', selectVis4);
 
   // Update Layout Button Selector
   let updateLayout_btn = document.getElementById('updateLayout')
@@ -365,6 +394,7 @@ code by Maxim Snoep (1313517)
 
   // Load Canvas Function
   loadCanvas = (visualization, box) => {
+    console.log(visualization, box)
     fetch(`/comp/${visualization}.html`)
     .then(function(response) {
       response.text().then(function (body) {

@@ -32,7 +32,7 @@ h1 {
 
   display: grid;
   grid-template-columns: 1fr 6fr 1fr;
-  grid-template-rows: 1fr 9fr;
+  grid-template-rows: 1fr 10fr;
   grid-template-areas:
   "logo header about"
   "left main right";
