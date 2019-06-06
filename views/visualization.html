@@ -186,10 +186,6 @@ code by Maxim Snoep (1313517)
       } else if ( localStorage.getItem('vis-4') == last ) {
         localStorage.setItem('vis-4', '')
       }
-
-
-
-
       if ( layout == 3 ) {
         localStorage.setItem('vis-4', '');
       } else if ( layout == 2 ) {
@@ -214,11 +210,6 @@ code by Maxim Snoep (1313517)
     }
   }
 
-
-
-
-
-
   loadComponent = (component) => {
     fetch(`/comp/${component}.html`)
     .then(function(response) {
@@ -228,20 +219,6 @@ code by Maxim Snoep (1313517)
       return response;
     });
   };
-
-
-  // Layout Selector
-  let selectLayout = document.querySelector('#select-layout');
-
-  // Get Layout from Selector
-  getLayout = () => {
-    selected_layout = selectLayout.value;
-    localStorage.setItem('layout', selected_layout);
-    console.log(`You've selected layout: ${selected_layout} !`)
-  }
-
-  // Layout Selector Listener
-  //selectLayout.addEventListener('click', function(){ getLayout() }, false);
 
   let aboutBtn = document.getElementById('about-btn');
   aboutBtn.addEventListener('click', function(){
@@ -260,40 +237,6 @@ code by Maxim Snoep (1313517)
     showLayout('1');
     loadCanvas('help', 'box1')}
   )
-
-
-  // Visualization Selector
-  let selectVis1 = document.querySelector('#select-vis-1');
-  let selectVis2 = document.querySelector('#select-vis-2');
-  let selectVis3 = document.querySelector('#select-vis-3');
-  let selectVis4 = document.querySelector('#select-vis-4');
-
-  // Get Visualization from Selector
-  getVisualization = (num) => {
-        switch (num) {
-          case 1:
-            selected_visualization = selectVis1.value;
-            break;
-          case 2:
-            selected_visualization = selectVis2.value;
-            break;
-          case 3:
-            selected_visualization = selectVis3.value;
-            break;
-          case 4:
-            selected_visualization = selectVis4.value;
-            break;
-        }
-        localStorage.setItem(`vis-${num}`, selected_visualization);
-        console.log(`You've set Visualization ${num} to ${selected_visualization} !`)
-  }
-
-  // Visualization Selector Listener
-  //selectVis1.addEventListener('click', function(){ getVisualization(1) }, false);
-  //selectVis2.addEventListener('click', function(){ getVisualization(2) }, false);
-  //selectVis3.addEventListener('click', function(){ getVisualization(3) }, false);
-  //selectVis4.addEventListener('click', function(){ getVisualization(4) }, false);
-
 
   setSelectors = (value, selector) => {
     var val = localStorage.getItem(value);
@@ -315,13 +258,10 @@ code by Maxim Snoep (1313517)
   submitLayout = (num) => {
       showLayout(num);
       showCanvas(num);
-      showVisualizations(num);
   }
 
   // Update Layout Button Listener
   updateLayout_btn.addEventListener('click', function(){ submitLayout(localStorage.getItem('layout')) }, false);
-
-
 
   // Canvas
   let canvas = document.getElementById('canvas');
@@ -380,15 +320,19 @@ code by Maxim Snoep (1313517)
   showCanvas = (num) => {
     if (parseInt(num) > 0 ) {
       loadCanvas(localStorage.getItem('vis-1'), 'box1');
+      setTimeout(function(){ loadVisualization(localStorage.getItem('vis-1'), 'box1', localStorage.getItem('layout'))}, 500 )
     }
     if (parseInt(num) > 1 ) {
       loadCanvas(localStorage.getItem('vis-2'), 'box2');
+      setTimeout(function(){ loadVisualization(localStorage.getItem('vis-2'), 'box2', localStorage.getItem('layout'))}, 500 )
     }
     if (parseInt(num) > 2 ) {
       loadCanvas(localStorage.getItem('vis-3'), 'box3');
+      setTimeout(function(){ loadVisualization(localStorage.getItem('vis-3'), 'box3', localStorage.getItem('layout'))}, 500 )
     }
     if (parseInt(num) > 3 ) {
       loadCanvas(localStorage.getItem('vis-4'), 'box4');
+      setTimeout(function(){ loadVisualization(localStorage.getItem('vis-4'), 'box4', localStorage.getItem('layout'))}, 500 )
     }
   }
 
@@ -402,23 +346,6 @@ code by Maxim Snoep (1313517)
       });
       return response;
     });
-  }
-
-
-  // Show Visualization Function
-  showVisualizations = (num) => {
-    if (parseInt(num) > 0 ) {
-      setTimeout(function(){ loadVisualization(localStorage.getItem('vis-1'), 'box1', localStorage.getItem('layout')); }, 1000);
-    }
-    if (parseInt(num) > 1 ) {
-      setTimeout(function(){ loadVisualization(localStorage.getItem('vis-2'), 'box2', localStorage.getItem('layout')); }, 6000);
-    }
-    if (parseInt(num) > 2 ) {
-      setTimeout(function(){ loadVisualization(localStorage.getItem('vis-3'), 'box3', localStorage.getItem('layout')); }, 11000);
-    }
-    if (parseInt(num) > 3 ) {
-      setTimeout(function(){ loadVisualization(localStorage.getItem('vis-4'), 'box4', localStorage.getItem('layout')); }, 16000);
-    }
   }
 
   // Load Visualization Function
