@@ -55,14 +55,6 @@ function loadForceGraph(nodes, links, svg, attributes) {
       .attr("stroke", "#3e3e3e")
       .attr("stroke-width", 0.3 * attributes[2])
 
-
-	svg.append("marker")
-		.attr("id", "arrow")
-		.attr("viewBox", "0 -5 10 10")
-		.attr("refX", 15)
-		.attr("refY", -1.5)
-		.attr("markerWidth", 6)
-		.attr("markerHeight", 6)
 		
 	//add vertices and edges to force simulation
 	simulation
@@ -104,7 +96,6 @@ function loadForceGraph(nodes, links, svg, attributes) {
 				.attr("y2", ed.target.y )
 				.attr("stroke-opacity", attributes[1] * Math.sqrt(ed.value) / 5) 
 				.attr("stroke-width", attributes[0] * Math.sqrt(ed.value) / 5)
-				.attr("marker-end", "url(#arrow)");
 		}
 		
 		//draw each node

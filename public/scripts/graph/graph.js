@@ -9,6 +9,7 @@ let filter_var = 1;
 let showMax = 10000;
 let showForce = false;
 let showRadial = false;
+let showHierarchical = false;
 
 function loadGraph(box, type) {
 
@@ -26,6 +27,12 @@ function loadGraph(box, type) {
       width = +svg_radial.attr("width")
       height = +svg_radial.attr("height")
 	  showRadial = true
+      break;
+	case 'hierarchical':
+      svg_hierarchical = d3.select(`#${box} #svg_hierarchical`)
+      width = +svg_hierarchical.attr("width")
+      height = +svg_hierarchical.attr("height")
+	  showHierarchical = true
       break;
   }
 
@@ -81,9 +88,10 @@ function loadGraph(box, type) {
 	  radial_data = JSON.parse(JSON.stringify(graph_data));
       loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
       break;
-    case 'third':
+    case 'hierarchical':
       console.log('SELECTED THIRD!', svg_third)
-      loadThird(radial_data.nodes, radial_data.links, svg_third, attributes);
+	  hierarchical_data = JSON.parse(JSON.stringify(graph_data));
+      loadHierarchicalGraph(hierarchical_data.nodes, hierarchical_data.links, hierarchical_data.adjacency, svg_hierarchical, attributes);
       break;
   }
 
@@ -97,24 +105,26 @@ function csvJSON(csv) {
   var vertices = csv[0]
   var nodes = []
   var links = []
+  var adjacency = {}
 
   for (i = 1; i < vertices.length; i++) {
-    nodes.push({"id": vertices[i], "selected": false})
+    nodes.push({"id": vertices[i], "selected": false, "index" : i})
   }
 
   for (i = 1; i < csv.length; i++) {
     var weights = csv[i]
     var target = weights[0]
+	adjacency[target] = weights.slice(1, weights.length-1)
     for (j = 1; j < weights.length; j++) {
       if (weights[j] > 0) {
-        if (vertices[j] != target) {
-          links.push({"source": vertices[j], "target": target, "value": weights[j]});
+        if (vertices[j] != target) 
+          links.push({"source": target, "target": vertices[j], "value": weights[j]});
         }
       }
     }
-  }
+  
 
-  graph_data = {"nodes": nodes, "links": links, "selected_nodes": [], "selected_links": []};
+  graph_data = {"nodes": nodes, "links": links, "selected_nodes": [], "selected_links": [], "adjacency" : adjacency};
 
   return graph_data;
 
@@ -199,6 +209,23 @@ function nodeClick(node) {
 		radial_data.selected_nodes.splice(radial_data.selected_nodes.indexOf(radial_node), 1);
 	  }
   }
+  
+    // Radial data
+  if (showHierarchical) {
+	  console.log("Showing Hierarchical")
+	  for (n = 0; n < hierarchical_data.nodes.length; n++) {
+		if (new_node.id == hierarchical_data.nodes[n].data.id) {
+		  hierarchical_node = hierarchical_data.nodes[n];
+		}
+	  }
+
+	  if (!hierarchical_data.selected_nodes.includes(hierarchical_node)) {
+		hierarchical_data.selected_nodes.push(hierarchical_node);
+	  } else {
+		hierarchical_data.selected_nodes.splice(hierarchical_data.selected_nodes.indexOf(hierarchical_node), 1);
+	  }
+  }
+  
   //console.log(graph_data, force_data, radial_data);
 	if (showForce) {
   svg_force.selectAll("circle")
@@ -207,6 +234,7 @@ function nodeClick(node) {
       else { return document.getElementById("selNodeColor").value }
     })
 	}
+	
 	if (showRadial) {
   svg_radial.selectAll("circle")
     .attr("fill", function(d) {
@@ -214,6 +242,15 @@ function nodeClick(node) {
       else { return document.getElementById("selNodeColor").value }
     })
 	}
+	
+	if (showHierarchical) {
+  svg_hierarchical.selectAll("circle")
+    .attr("fill", function(d) {
+      if (!hierarchical_data.selected_nodes.includes(d)) { return document.getElementById("nodeColor").value }
+      else { return document.getElementById("selNodeColor").value }
+    })
+	}
+	
   updateSelectedEdges();
   //console.log(graph_data, force_data, radial_data);
 
@@ -278,6 +315,19 @@ function updateSelectedEdges() {
 		}
 	  }
   }
+    // Hierarhical data
+  if (showHierarchical) {
+	  for (i = 0; i < hierarchical_data.links.length; i++) {
+		l = hierarchical_data.links[i];
+
+		if (hierarchical_data.selected_nodes.includes(l.source) && hierarchical_data.selected_nodes.includes(l.target) && !hierarchical_data.selected_links.includes(l)) {
+		  hierarchical_data.selected_links.push(l);
+		}
+		if ((!hierarchical_data.selected_nodes.includes(l.source) || !hierarchical_data.selected_nodes.includes(l.target)) && hierarchical_data.selected_links.includes(l)) {
+		  hierarchical_data.selected_links.splice(hierarchical_data.selected_links.indexOf(l), 1);
+		}
+	  }
+  }
 
 
 }
@@ -301,6 +351,10 @@ function renderSelected() {
 		radial_data = JSON.parse(JSON.stringify(graph_data));
 		loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
 	}
+	if (showHierarchical) {
+		hierarchical_data = JSON.parse(JSON.stringify(graph_data));
+		loadHierarchicalGraph(hierarchical_data.nodes, hierarchical_data.links, hierarchical_data.adjacency, svg_hierarchical, attributes);
+	}
 
   getMaxValue(graph_data.links);
 
@@ -317,6 +371,10 @@ function renderReset() {
 	if (showRadial) {
 		radial_data = JSON.parse(JSON.stringify(graph_data));
 		loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
+	}
+	if (showHierarchical) {
+		hierarchical_data = JSON.parse(JSON.stringify(graph_data));
+		loadHierarchicalGraph(hierarchical_data.nodes, hierarchical_data.links, hierarchical_data.adjacency,svg_hierarchical, attributes);
 	}
 
 
@@ -353,6 +411,20 @@ function updateView() {
 			.attr("stroke-width", function(d) {return attributes[0] * Math.sqrt(d.value) / 5})
 			.attr("stroke-opacity", function(d) {return attributes[1] * Math.sqrt(d.value) / 5})
 	}
+	
+	if (showHierarchical) {
+		svg_hierarchical.selectAll("circle")
+			.attr("r", attributes[2]) //sets the radius of circle
+			.attr("stroke-width", 0.3 * attributes[2])
+			.attr("fill", function(d) {
+				if (!hierarchical_data.selected_nodes.includes(d)) { return attributes[3] }
+				else { return attributes[4] }
+		})
+		
+		svg_hierarchical.selectAll("line").data(hierarchical_data.links)
+			.attr("stroke-opacity", function(d) {return attributes[1] * 2/Math.sqrt(d.source.children.length)}) 
+			.attr("stroke-width", function(d) {return attributes[0] * 2/Math.sqrt(d.source.children.length)}) ;
+	}
 }
 
 function filterEdges() {
@@ -385,6 +457,18 @@ function filterEdges() {
 				counter++
 				appendLineRadial(l_r);
 			}
+		}
+	}
+	
+	if (showHierarchical) {
+	  svg_hierarchical.selectAll("line").remove();
+	
+		counter = 0;
+		for (i = 0; i < hierarchical_data.links.length && counter < showMax; i++) {
+			l_h = hierarchical_data.links[i]
+		//	if (l_r.value >= minWeight && l_r.value <= maxWeight) {
+				appendLineHierarchical(l_h);
+		//	}
 		}
 	}
 }
