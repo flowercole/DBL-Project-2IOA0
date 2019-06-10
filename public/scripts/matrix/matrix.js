@@ -8,10 +8,15 @@ var xValuesOriginal=[];
 var yValuesOriginal=[];
 var zValuesOriginal=[];
 var box;
+var dimention=2;
 var colorscaleValue = [
         [0, '#D3DFFF'],
         [1, '#003DDE']
     ];
+
+document.getElementById("updateHeatmap").addEventListener("click",function() {UpdateGraphColor(xValues,yValues,zValues,box)} );    
+document.getElementById("viewHeatmap3D").addEventListener("click",function() {ChangeDimention()} );
+
 loadMatrix = (box1) => {
 
   // Initialize
@@ -75,7 +80,13 @@ function AlphabeticalOrder(xVal,yVal,zVal) {
           reorderedZValues[j][i] = alphaZValues[permutation[j]][i];
       }
     }
-    DisplayGraph(sortAr,sortAr,reorderedZValues)
+    
+    if(dimention==2) {
+        DisplayGraph(sortAr,sortAr,reorderedZValues) 
+    } else {
+        Display3DGraph(sortAr,sortAr,reorderedZValues) 
+    }
+
     //var returnArray = [sortAr,sortAr,reorderedZValues];
     //return returnArray;
     return;
@@ -151,9 +162,11 @@ function SumOrder(xVal,yVal,matrix) {
         [0, '#D3DFFF'],
         [1, '#003DDE']
     ];*/
-    
-    console.log(zValues);
-    DisplayGraph(reorderedXValues,reorderedYValues,order_matrix)
+    if(dimention==2) {
+        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
+    } else {
+        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
+    }
     //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     //return returnArray;
     return;
@@ -238,12 +251,22 @@ function AverageOrder(xVal,yVal,initial_matrix) {
     
   console.log(zValues);
     DisplayGraph(reorderedXValues,reorderedYValues,order_matrix)
+    
+    if(dimention==2) {
+        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
+    } else {
+        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
+    }
     //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     //return returnArray;
     return;
 }
 function OriginalOrder() {
-    DisplayGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
+    if(dimention==2) {
+        DisplayGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
+    } else {
+        Display3DGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
+    }
 }
 function UpdateGraphColor(xVal,yVal,zVal,box) {
     let attributes = [];
@@ -254,10 +277,13 @@ function UpdateGraphColor(xVal,yVal,zVal,box) {
         [1, attributes[1].toString()]
     ];
   //Input data for heatmap
-    DisplayGraph(xVal,yVal,zVal)
-    
+    if(dimention==2) {
+        DisplayGraph(xVal,yVal,zVal)
+    } else {
+        Display3DGraph(xVal,yVal,zVal);
+    } 
 }
-function SelectReordering(selectTag) {
+function SelectReordering(selectTag) {            
             var selIndexes = "";
             //console.log(zValues);
             for (var i = 0; i < selectTag.options.length; i++) {
@@ -269,7 +295,7 @@ function SelectReordering(selectTag) {
                 }
             }
 
-            var info = document.getElementById ("info");
+            var info = document.getElementById("info");
             if (selIndexes.length > 0) {
                 console.log("Selected options: " + selIndexes);
                 if(selIndexes=="Original") {
@@ -292,6 +318,26 @@ function SelectReordering(selectTag) {
             else {
                 console.log("There is no selected option");
             }
+}
+function ChangeDimention() {
+    console.log("button hit");
+    console.log("start"+dimention);
+    element = document.getElementById("viewHeatmap3D").innerHTML
+    if (element=="Switch to 3D") {
+        document.getElementById("viewHeatmap3D").innerHTML = "Switch to 2D";
+        dimention=3;
+        console.log("to3d")      
+        Display3DGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
+        document.getElementById("selectReordering").selectedIndex = 0;
+    }
+    else {
+        console.log("to2d")
+        document.getElementById("viewHeatmap3D").innerHTML = "Switch to 3D";
+        dimention=2;
+        DisplayGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
+        document.getElementById("selectReordering").selectedIndex = 0;
+    }
+    console.log("end"+dimention);
 }
 function Visualise(file, box) {  
     
@@ -374,10 +420,10 @@ yValuesOriginal = yValues;
 zValuesOriginal = zValues;
 
 DisplayGraph(xValues,yValues,zValues);
-document.getElementById("updateHeatmap").addEventListener("click",function() {UpdateGraphColor(xValues,yValues,zValues,box)} );
-    
+
 }
 function DisplayGraph(xVal,yVal,zVal) {
+    document.getElementById("viewHeatmap3D").innerHTML = "Switch to 3D";
     var data = [
     {
     z: zVal,
@@ -391,6 +437,56 @@ function DisplayGraph(xVal,yVal,zVal) {
   title: 'Heatmap of your data set',
 };
   
-  Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true});
-}
+  Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true,scrollZoom: true,displayModeBar: true,displaylogo: false,responsive: true});
+      myPlot = document.getElementById(`${box}`);  
+myPlot.on('plotly_hover', function(data){ 
+    console.log("hover");
+    //pn = data.points[0].pointNumber;
+    //console.log("pointnumber"+pn);
+    //colors[0] = '#00000';
+    
+    /*var update = {
+        z: tempZ
+    };*/
+    //Plotly.restyle(`${box}`, update);
+});
 
+myPlot.on('plotly_unhover', function(data){
+ console.log("unhover")
+});
+    /*var update = {
+        z: tempZ
+    };*/
+    //Plotly.restyle(`${box}`, update);
+}
+function Display3DGraph(xVal,yVal,zVal) {
+    document.getElementById("viewHeatmap3D").innerHTML = "Switch to 2D";
+     var data = [{
+      x: xVal,
+      y: yVal,
+      z: zVal,
+      type: 'surface',
+      colorscale: colorscaleValue,
+      contours: {
+        z: {
+          show:true,
+          //usecolormap: true,
+          highlightcolor:"#42f462",
+          project:{z: true}
+        }
+      }
+    }];
+
+    var layout = {
+      title: 'Your Heatmap in 3D',
+      scene: {camera: {eye: {x: 1.87, y: 0.88, z: 1}}},
+      autosize: true,
+      margin: {
+        l: 65,
+        r: 50,
+        b: 65,
+        t: 90,
+      }
+    };
+    Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true,displayModeBar: true,scrollZoom: true,displaylogo: false,responsive: true});
+}
