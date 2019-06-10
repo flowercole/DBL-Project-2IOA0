@@ -96,9 +96,18 @@ code by Maxim Snoep (1313517)
 
             <p>Heatmap end color</p>
             <input id="endColor" type="color" value="#003DDE">
-
-            <button type='button' id='updateHeatmap' class='button bordered'>Update Heatmap Colorscale</button>
               
+            <p>Min edge weight</p>
+            <input id="minWeightHeatmap" type="range" min="0" max="10" step="0.01" value="0">
+            <label id="minWeightHeatmapValue" style="color: white">0.00</label>
+              
+            <p>Max edge weight</p>
+            <input id="maxWeightHeatmap" type="range" min="0" max="10" step="0.01" value="100">
+            <label id="maxWeightHeatmapValue" style="color: white">10</label>
+              
+            <button type='button' id='updateHeatmap' class='button bordered'>Update Heatmap</button>
+              
+            
             <button type='button' id='viewHeatmap3D' class='button bordered'>Switch to 3D</button>
         
             <p>Select reordering</p>            
