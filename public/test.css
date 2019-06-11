@@ -31,11 +31,11 @@ h1 {
   width: 99vw;
 
   display: grid;
-  grid-template-columns: 1fr 6fr 1fr;
-  grid-template-rows: 1fr 12fr;
+  grid-template-columns: auto 6fr 1fr;
+  grid-template-rows: auto 1fr;
   grid-template-areas:
   "logo header about"
-  "left main right";
+  "left main main";
 }
 
 /* Component Class */
@@ -96,10 +96,10 @@ h1 {
   grid-area: header;
 
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 5fr 1fr 2fr;
   grid-template-rows: auto;
   grid-template-areas:
-  "upload select";
+  "upload select layout";
 }
 
 /* File Upload Component */
@@ -180,6 +180,33 @@ h1 {
   text-overflow: ellipsis;
 }
 
+.layout {
+  grid-area: layout;
+
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  grid-template-areas:
+  "settings visualize-btn";
+
+  align-items: center;
+}
+
+
+.layout .settings {
+  grid-area: settings;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.layout .visualize-btn {
+  grid-area: visualize-btn;
+
+  display: flex;
+  justify-content: space-between;
+}
+
 /* Left Settings Component */
 .left {
   grid-area: left;
@@ -189,8 +216,39 @@ h1 {
 }
 
 .left .component {
-  display: grid;
+  display: flex;
+  flex-direction: column;
 }
+
+.left .setting {
+  display: grid;
+
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto;
+  grid-template-areas:
+  "p input";
+
+}
+
+.left .setting p {
+  text-align: right;
+  padding: 5px;
+  grid-area: p;
+}
+
+.left .setting input, .left .setting select  {
+  grid-area: input;
+  width: 80px;
+}
+
+.left .setting button {
+  grid-area: input / p;
+
+  width: 100px;
+}
+
+
+
 
 /* Right Settings Component */
 .right {
@@ -229,4 +287,9 @@ h1 {
   position: relative;
   top: 3px;
   *overflow: hidden;
+}
+
+.image-center {
+  width: 32px;
+  height: 32px;
 }

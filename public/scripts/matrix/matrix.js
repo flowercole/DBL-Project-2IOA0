@@ -10,20 +10,20 @@ var zValuesOriginal=[];
 var box;
 var dimention=2;
 var colorscaleValue = [
-        [0, '#D3DFFF'],
-        [1, '#003DDE']
+        [0, localStorage.getItem('startColor')],
+        [1, localStorage.getItem('endColor')]
     ];
 
-document.getElementById("updateHeatmap").addEventListener("click",function() {UpdateGraph()} );    
+document.getElementById("updateHeatmap").addEventListener("click",function() {UpdateGraph()} );
 document.getElementById("viewHeatmap3D").addEventListener("click",function() {ChangeDimention()} );
 
 var minSlider = document.getElementById("minWeightHeatmap");
 var maxSlider = document.getElementById("maxWeightHeatmap");
 minSlider.oninput = function() {
-    document.getElementById('minWeightHeatmapValue').innerHTML = this.value;
+    //document.getElementById('minWeightHeatmapValue').innerHTML = this.value;
 }
 maxSlider.oninput = function() {
-    document.getElementById('maxWeightHeatmapValue').innerHTML = this.value;
+    //document.getElementById('maxWeightHeatmapValue').innerHTML = this.value;
 }
 
 loadMatrix = (box1) => {
@@ -89,11 +89,11 @@ function AlphabeticalOrder(xVal,yVal,zVal) {
           reorderedZValues[j][i] = alphaZValues[permutation[j]][i];
       }
     }
-    
+
     if(dimention==2) {
-        DisplayGraph(sortAr,sortAr,reorderedZValues) 
+        DisplayGraph(sortAr,sortAr,reorderedZValues)
     } else {
-        Display3DGraph(sortAr,sortAr,reorderedZValues) 
+        Display3DGraph(sortAr,sortAr,reorderedZValues)
     }
 
     //var returnArray = [sortAr,sortAr,reorderedZValues];
@@ -166,7 +166,7 @@ function SumOrder(xVal,yVal,matrix) {
         reorderedXValues[i] = xVal[cols_index[i]];
         reorderedYValues[i] = yVal[rows_index[i]];
     }
-    
+
     /*colorscaleValue = [
         [0, '#D3DFFF'],
         [1, '#003DDE']
@@ -257,10 +257,10 @@ function AverageOrder(xVal,yVal,initial_matrix) {
         reorderedXValues[i] = xVal[cols_index[i]];
         reorderedYValues[i] = yVal[rows_index[i]];
     }
-    
+
   console.log(zValues);
     DisplayGraph(reorderedXValues,reorderedYValues,order_matrix)
-    
+
     if(dimention==2) {
         DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
     } else {
@@ -274,7 +274,7 @@ function OriginalOrder() {
     //xValues=xValuesOriginal;
     //yValues=yValuesOriginal;
     //zValues=zValuesOriginal;
-    
+
     if(dimention==2) {
         DisplayGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
     } else {
@@ -289,7 +289,7 @@ function SelectGraphColor(xVal,yVal,zVal,box) {
         [0, attributes[0].toString()],
         [1, attributes[1].toString()]
     ];
-    
+
   //Input data for heatmap
 }
 function SelectEdgeRange(xVal,yVal,zVal) {
@@ -310,18 +310,18 @@ function SelectEdgeRange(xVal,yVal,zVal) {
         }
         return arr;
     }
-    
+
     var zValuesReduced = matrix(zVal[0].length,zVal[0].length,"*")
     for(var i = 0; i < zVal[0].length; i++) {
         for(var j = 0; j < zVal[0].length; j++) {
             zValuesReduced[i][j]=zVal[i][j];
         }
     }
-    
+
     for(var i = 0; i < zVal[0].length; i++) {
         for(var j = 0; j < zVal[0].length; j++) {
             if(zVal[i][j] < minWeightHeatmap || zVal[i][j] > maxWeightHeatmap) {
-              zValuesReduced[i][j] = null;         
+              zValuesReduced[i][j] = null;
             }
         }
     }
@@ -329,18 +329,18 @@ function SelectEdgeRange(xVal,yVal,zVal) {
     return returnArray;
 }
 function UpdateGraph() {
-    var ret=[]; 
-    ret=SelectEdgeRange(xValues,yValues,zValues);         
+    var ret=[];
+    ret=SelectEdgeRange(xValues,yValues,zValues);
     SelectGraphColor(ret[0],ret[1],ret[2],box);
     console.log(ret);
-    
+
     if(dimention==2) {
         DisplayGraph(ret[0],ret[1],ret[2]);
      } else {
          Display3DGraph(ret[0],ret[1],ret[2]);
         }
 }
-function SelectReordering(selectTag) {            
+function SelectReordering(selectTag) {
             var selIndexes = "";
             //console.log(zValues);
             for (var i = 0; i < selectTag.options.length; i++) {
@@ -370,7 +370,7 @@ function SelectReordering(selectTag) {
                 if(selIndexes=="Average") {
                     console.log("Average");
                     AverageOrder(xValues,yValues,zValues);
-                }   
+                }
             }
             else {
                 console.log("There is no selected option");
@@ -383,27 +383,27 @@ function ChangeDimention() {
     if (element=="Switch to 3D") {
         document.getElementById("viewHeatmap3D").innerHTML = "Switch to 2D";
         dimention=3;
-        console.log("to3d")      
+        console.log("to3d")
         Display3DGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
-        document.getElementById("selectReordering").selectedIndex = 0;
-        document.getElementById('minWeightHeatmapValue').innerHTML = 0.00;
-        document.getElementById('maxWeightHeatmapValue').innerHTML = 10;
+        //document.getElementById("selectReordering").selectedIndex = 0;
+        //document.getElementById('minWeightHeatmapValue').innerHTML = 0.00;
+        //document.getElementById('maxWeightHeatmapValue').innerHTML = 10;
     }
     else {
         console.log("to2d")
         document.getElementById("viewHeatmap3D").innerHTML = "Switch to 3D";
         dimention=2;
         DisplayGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
-        document.getElementById("selectReordering").selectedIndex = 0;
-        document.getElementById('minWeightHeatmapValue').innerHTML = 0.00;
-        document.getElementById('maxWeightHeatmapValue').innerHTML = 10;
+        //document.getElementById("selectReordering").selectedIndex = 0;
+        //document.getElementById('minWeightHeatmapValue').innerHTML = 0.00;
+        //document.getElementById('maxWeightHeatmapValue').innerHTML = 10;
     }
     console.log("end"+dimention);
 }
-function Visualise(file, box) {  
-    document.getElementById("selectReordering").selectedIndex = 0;
-    document.getElementById('minWeightHeatmapValue').innerHTML = 0.00;
-    document.getElementById('maxWeightHeatmapValue').innerHTML = 10;
+function Visualise(file, box) {
+    //document.getElementById("selectReordering").selectedIndex = 0;
+    //document.getElementById('minWeightHeatmapValue').innerHTML = 0.00;
+    //document.getElementById('maxWeightHeatmapValue').innerHTML = 10;
   xValues = [];
   yValues = [];
   // Build the name values
@@ -423,8 +423,8 @@ function Visualise(file, box) {
       }
     }
   }
-  
-  
+
+
   // Build Matrix Function
   function matrix(rows, cols, defaultValue){
     var arr = [];
@@ -441,7 +441,7 @@ function Visualise(file, box) {
     }
     return arr;
   }
-  
+
   // Build a Proper Matrix from the CSV file
   var array = matrix(file[0].length,file[0].length,"*");
 
@@ -499,15 +499,15 @@ function DisplayGraph(xVal,yVal,zVal) {
     var layout = {
   title: 'Heatmap of your data set',
 };
-  
+
   Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true,scrollZoom: true,displayModeBar: true,displaylogo: false,responsive: true});
-      myPlot = document.getElementById(`${box}`);  
-myPlot.on('plotly_hover', function(data){ 
+      myPlot = document.getElementById(`${box}`);
+myPlot.on('plotly_hover', function(data){
     console.log("hover");
     //pn = data.points[0].pointNumber;
     //console.log("pointnumber"+pn);
     //colors[0] = '#00000';
-    
+
     /*var update = {
         z: tempZ
     };*/
@@ -523,7 +523,7 @@ myPlot.on('plotly_unhover', function(data){
     //Plotly.restyle(`${box}`, update);
 }
 function Display3DGraph(xVal,yVal,zVal) {
-    
+
     document.getElementById("viewHeatmap3D").innerHTML = "Switch to 2D";
      var data = [{
       x: xVal,

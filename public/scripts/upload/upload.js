@@ -10,6 +10,7 @@ const submit = document.getElementById('submit');
 const onSelectFile = () => {
   console.log(input.files[0])
   input_placeholder.innerHTML = input.files[0].name;
+  filename.value = input.files[0].name.split('.').slice(0, -1).join('.');
 }
 
 // Event handler executed when submit is clicked
