@@ -35,7 +35,7 @@ updateDataSelector = () => {
       opt.innerHTML = file;
       select_data.appendChild(opt);
     })
-    setSelectors('selected_file', select_data);
+    setSelector('selected_file', select_data);
   }
 }
 

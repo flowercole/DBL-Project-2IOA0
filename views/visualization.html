@@ -13,6 +13,16 @@ code by Maxim Snoep (1313517)
 
 
 <body>
+  <script>
+
+
+
+
+
+  </script>
+
+
+
 	<div class='container'>
 
     <!-- Logo in Corner -->
@@ -60,7 +70,7 @@ code by Maxim Snoep (1313517)
       <!-- Layout Selector -->
       <div class='component'>
         <p>Layout settings:</p>
-        <div class='component bordered'>
+        <div class='component bordered checkboxes'>
           <!-- Visualization Selector 1 -->
           <p><input type="checkbox" id='force-select' onclick="update('force')">Force Directed Graph</p>
 
@@ -136,6 +146,7 @@ code by Maxim Snoep (1313517)
 
           <button type='button' id='updateHeatmap' class='button bordered'>Update Heatmap</button>
 
+          <p class='checkboxes'><input type="checkbox" id='threeD'>Toggle 3D mode</p>
 
           <button type='button' id='viewHeatmap3D' class='button bordered'>Switch to 3D</button>
 
@@ -167,17 +178,121 @@ code by Maxim Snoep (1313517)
   <script src="/public/scripts/graph/graphs/hierarchicalGraph.js"></script>
 
   <script>
-  localStorage.setItem('vis-1', 'none')
-  localStorage.setItem('vis-2', 'none')
-  localStorage.setItem('vis-3', 'none')
-  localStorage.setItem('vis-4', 'none')
-  localStorage.setItem('layout', 0)
+
+  linkWidthOption = document.getElementById('linkWidth')
+  linkOpacityOption = document.getElementById('linkOpacity')
+  nodeSizeOption = document.getElementById('nodeSize')
+  nodeColorOption = document.getElementById('nodeColor')
+  selNodeColorOption = document.getElementById('selNodeColor')
+  minWeightOption = document.getElementById('minWeight')
+  maxWeightOption = document.getElementById('maxWeight')
+
+  startColorOption = document.getElementById('startColor')
+  endColorOption = document.getElementById('endColor')
+  minWeightHeatmapOption = document.getElementById('minWeightHeatmap')
+  maxWeightHeatmapOption = document.getElementById('maxWeightHeatmap')
+
+  threeDOption = document.getElementById('threeD')
+  selectReorderingOption = document.getElementById('selectReordering')
 
 
 
-  setSelectors2 = () => {
-    if ( localStorage.getItem('vis-1') ) {}
+
+  linkWidthOption.addEventListener('change', function() { changeSettings(this.id, this.value) } )
+  linkOpacityOption.addEventListener('change', function() { changeSettings(this.id, this.value) } )
+  nodeSizeOption.addEventListener('change', function() { changeSettings(this.id, this.value) } )
+  nodeColorOption.addEventListener('change', function() { changeSettings(this.id, this.value) } )
+  selNodeColorOption.addEventListener('change', function() { changeSettings(this.id, this.value) } )
+  minWeightOption.addEventListener('change', function() { changeSettings(this.id, this.value) } )
+  maxWeightOption.addEventListener('change', function() { changeSettings(this.id, this.value) } )
+
+  startColorOption.addEventListener('change', function() { changeSettings(this.id, this.value) } )
+  endColorOption.addEventListener('change', function() { changeSettings(this.id, this.value) } )
+  minWeightHeatmapOption.addEventListener('change', function() { changeSettings(this.id, this.value) } )
+  maxWeightHeatmapOption.addEventListener('change', function() { changeSettings(this.id, this.value) } )
+
+  threeDOption.addEventListener('change', function() { changeSettings(this.id, this.checked) } )
+  selectReorderingOption.addEventListener('change', function() { changeSettings(this.id, this.value) } )
+
+  changeSettings = (key, value) => {
+    localStorage.setItem(key, value);
   }
+
+  initializeLocalStorage = (key, value) => {
+    if(localStorage.getItem(key)===null) {
+      localStorage.setItem(key, value)
+    }
+  }
+
+  initializeLocalStorage('layout', 0)
+  initializeLocalStorage('vis-1', '')
+  initializeLocalStorage('vis-2', '')
+  initializeLocalStorage('vis-3', '')
+  initializeLocalStorage('vis-4', '')
+  initializeLocalStorage('selected_file', 'GephiMatrix_author_similarity.csv')
+  initializeLocalStorage('linkWidth', '10')
+  initializeLocalStorage('linkOpacity', '100')
+  initializeLocalStorage('nodeSize' , '25')
+  initializeLocalStorage('nodeColor', '#0000ff')
+  initializeLocalStorage('selNodeColor', '#ff0000')
+  initializeLocalStorage('minWeight', '0')
+  initializeLocalStorage('maxWeight', '10')
+  initializeLocalStorage('startColor', '#ffffff')
+  initializeLocalStorage('endColor', '#000000')
+  initializeLocalStorage('minWeightHeatmap', '0')
+  initializeLocalStorage('maxWeightHeatmap', '10')
+  initializeLocalStorage('threeD', 'false')
+  initializeLocalStorage('selectReordering', 'original')
+
+  setVis = (vis) => {
+    if (localStorage.getItem(vis) != '') {
+      document.getElementById(`${localStorage.getItem(vis)}-select`).checked = true;
+    }
+  }
+
+  setCheckbox = (item, selector) => {
+    selector.checked = JSON.parse(localStorage.getItem(item))
+  }
+
+  setSelector = (item, selector) => {
+    var val = localStorage.getItem(item);
+    var sel = selector;
+    console.log(val, sel)
+    var opts = sel.options;
+    for (var opt, j = 0; opt = opts[j]; j++) {
+      if (opt.value == val) {
+        sel.selectedIndex = j;
+        break;
+      }
+    }
+  }
+
+  setSlider = (item, selector) => {
+    var val = localStorage.getItem(item);
+    var sel = selector;
+    console.log(val, sel)
+    sel.value = val;
+  }
+
+  setVis('vis-1')
+  setVis('vis-2')
+  setVis('vis-3')
+  setVis('vis-4')
+
+  setSlider('linkWidth', linkWidthOption)
+  setSlider('linkOpacity', linkOpacityOption)
+  setSlider('nodeSize', nodeSizeOption)
+  setSlider('nodeColor', nodeColorOption)
+  setSlider('selNodeColor', selNodeColorOption)
+  setSlider('minWeight', minWeightOption)
+  setSlider('maxWeight', maxWeightOption)
+
+  setSlider('startColor', startColorOption)
+  setSlider('endColor', endColorOption)
+  setSlider('minWeightHeatmap', minWeightHeatmapOption)
+  setSlider('maxWeightHeatmap', maxWeightHeatmapOption)
+  setSelector('selectReordering', selectReorderingOption)
+  setCheckbox('threeD', threeDOption)
 
   update = (last) => {
     if (!document.getElementById(`${last}-select`).checked) {
@@ -249,19 +364,6 @@ code by Maxim Snoep (1313517)
     showLayout('1');
     loadCanvas('help', 'box1')}
   )
-
-  setSelectors = (value, selector) => {
-    var val = localStorage.getItem(value);
-    var sel = selector;
-    console.log(val, sel)
-    var opts = sel.options;
-    for (var opt, j = 0; opt = opts[j]; j++) {
-      if (opt.value == val) {
-        sel.selectedIndex = j;
-        break;
-      }
-    }
-  }
 
   // Update Layout Button Selector
   let updateLayout_btn = document.getElementById('updateLayout')

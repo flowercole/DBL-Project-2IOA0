@@ -220,3 +220,13 @@ h1 {
 .pages-content {
   padding: 30px;
 }
+
+
+.checkboxes input {
+  height: 15px;
+  margin-right: 2px;
+  vertical-align: bottom;
+  position: relative;
+  top: 3px;
+  *overflow: hidden;
+}
