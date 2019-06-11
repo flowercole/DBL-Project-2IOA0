@@ -17,13 +17,14 @@ code by Maxim Snoep (1313517)
 
     <!-- Logo in Corner -->
     <div class='logo component bordered'>
-      <img src='public/logo.png'></img>
+      <p class='head'>Funsualization</p>
+      <p class='sub'>Making Visualizations Fun Again</p>
     </div>
 
     <!-- Top Header, with upload and select datasets fuctions -->
     <div class='header'>
       <!-- Upload Datasets -->
-      <div class='upload component bordered'>
+      <div class='upload component'>
         <!-- Left Upload Component -->
         <div class='upload-left'>
           <input id="input" type="file" class='input'><label for="input" id='input-placeholder' class='input-placeholder button bordered'>Choose a file</label>
@@ -40,7 +41,7 @@ code by Maxim Snoep (1313517)
         </div>
       </div>
       <!-- Select Datasets-->
-      <div class='select component bordered'>
+      <div class='select component'>
         <!-- Data Selector Component -->
         <select id="select-data">
         </select>
@@ -48,7 +49,7 @@ code by Maxim Snoep (1313517)
     </div>
 
     <!-- About Component-->
-    <div class='about component bordered'>
+    <div class='about component'>
       <button id='about-btn' class='button bordered'>about</button>
       <button id='contact-btn' class='button bordered'>contact</button>
       <button id='help-btn' class='button bordered'>help</button>
@@ -56,6 +57,26 @@ code by Maxim Snoep (1313517)
 
     <!-- Left Settings Component -->
     <div class='left component'>
+      <!-- Layout Selector -->
+      <div class='component'>
+        <p>Layout settings:</p>
+        <div class='component bordered'>
+          <!-- Visualization Selector 1 -->
+          <p><input type="checkbox" id='force-select' onclick="update('force')">Force Directed Graph</p>
+
+          <!-- Visualization Selector 2 -->
+          <p><input type="checkbox" id='radial-select' onclick="update('radial')">Radial Graph</p>
+
+          <!-- Visualization Selector 3 -->
+          <p><input type="checkbox" id='hierarchical-select' onclick="update('hierarchical')">Hierarchical Graph</p>
+
+          <!-- Visualization Selector 4 -->
+          <p><input type="checkbox" id='matrix-select' onclick="update('matrix')">Matrix Heatmap</p>
+
+          <button type='button' id="updateLayout" class='button bordered'>Update Layout</button>
+        </div>
+      </div>
+
       <div class='component'>
         <p>Graph settings:</p>
         <div class='component bordered'>
@@ -88,67 +109,46 @@ code by Maxim Snoep (1313517)
           </div>
         </div>
 
-        <div class='component'>
-          <p>Heatmap settings:</p>
-          <div class='component bordered'>
-            <p>Heatmap start color</p>
-            <input id="startColor" type="color" value="#D3DFFF">
-
-            <p>Heatmap end color</p>
-            <input id="endColor" type="color" value="#003DDE">
-              
-            <p>Min edge weight</p>
-            <input id="minWeightHeatmap" type="range" min="0" max="10" step="0.01" value="0">
-            <label id="minWeightHeatmapValue" style="color: white">0.00</label>
-              
-            <p>Max edge weight</p>
-            <input id="maxWeightHeatmap" type="range" min="0" max="10" step="0.01" value="100">
-            <label id="maxWeightHeatmapValue" style="color: white">10</label>
-              
-            <button type='button' id='updateHeatmap' class='button bordered'>Update Heatmap</button>
-              
-            
-            <button type='button' id='viewHeatmap3D' class='button bordered'>Switch to 3D</button>
-        
-            <p>Select reordering</p>            
-            <select id="selectReordering", onchange="SelectReordering(this);">
-              <option value="original">Original</option>
-              <option value="alphabetical">Alphabetical</option>
-              <option value="sum">Sum</option>
-              <option value="average">Average</option>
-            </select>
-          </div>
-        </div>
-
     </div>
 
     <div class='main component' id='canvas'>
+      <div class='initial component bordered'>
+      </div>
     </div>
 
     <div class='right component'>
-      <!-- Layout Selector -->
       <div class='component'>
-        <p>Layout settings:</p>
+        <p>Heatmap settings:</p>
         <div class='component bordered'>
-          <!-- Visualization Selector 1 -->
-          <p><input type="checkbox" id='force-select' onclick="update('force')">Force Directed Graph</p>
+          <p>Heatmap start color</p>
+          <input id="startColor" type="color" value="#D3DFFF">
 
-          <!-- Visualization Selector 2 -->
-          <p><input type="checkbox" id='radial-select' onclick="update('radial')">Radial Graph</p>
+          <p>Heatmap end color</p>
+          <input id="endColor" type="color" value="#003DDE">
 
-          <!-- Visualization Selector 3 -->
-          <p><input type="checkbox" id='hierarchical-select' onclick="update('hierarchical')">Hierarchical Graph</p>
+          <p>Min edge weight</p>
+          <input id="minWeightHeatmap" type="range" min="0" max="10" step="0.01" value="0">
+          <label id="minWeightHeatmapValue" style="color: white">0.00</label>
 
-          <!-- Visualization Selector 4 -->
-          <p><input type="checkbox" id='matrix-select' onclick="update('matrix')">Matrix Heatmap</p>
+          <p>Max edge weight</p>
+          <input id="maxWeightHeatmap" type="range" min="0" max="10" step="0.01" value="100">
+          <label id="maxWeightHeatmapValue" style="color: white">10</label>
 
-          <button type='button' id="updateLayout" class='button bordered'>Update Layout</button>
+          <button type='button' id='updateHeatmap' class='button bordered'>Update Heatmap</button>
+
+
+          <button type='button' id='viewHeatmap3D' class='button bordered'>Switch to 3D</button>
+
+          <p>Select reordering</p>
+          <select id="selectReordering", onchange="SelectReordering(this);">
+            <option value="original">Original</option>
+            <option value="alphabetical">Alphabetical</option>
+            <option value="sum">Sum</option>
+            <option value="average">Average</option>
+          </select>
         </div>
-
-
-
-
       </div>
+
     </div>
 
 	</div>

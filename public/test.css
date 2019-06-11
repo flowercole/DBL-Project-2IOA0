@@ -32,7 +32,7 @@ h1 {
 
   display: grid;
   grid-template-columns: 1fr 6fr 1fr;
-  grid-template-rows: 1fr 10fr;
+  grid-template-rows: 1fr 12fr;
   grid-template-areas:
   "logo header about"
   "left main right";
@@ -74,8 +74,12 @@ h1 {
   grid-area: logo;
 }
 
-.logo img {
-  width: 100%;
+.logo .head {
+  font-size: 16px;
+}
+
+.logo .sub {
+  font-size: 10px;
 }
 
 /* Corner About */
@@ -92,7 +96,7 @@ h1 {
   grid-area: header;
 
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 3fr 1fr;
   grid-template-rows: auto;
   grid-template-areas:
   "upload select";
@@ -103,7 +107,7 @@ h1 {
   grid-area: upload;
 
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 5fr 2fr;
   grid-template-rows: auto;
   grid-template-areas:
   "upload-left upload-right";
@@ -170,7 +174,7 @@ h1 {
 .select select {
   margin: auto;
 
-  width: 90%;
+  width: 250px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -207,4 +211,12 @@ h1 {
   grid-template-areas:
   "a b"
   "c d";
+}
+
+.initial {
+  grid-area: a / a / d / d;
+}
+
+.pages-content {
+  padding: 30px;
 }
