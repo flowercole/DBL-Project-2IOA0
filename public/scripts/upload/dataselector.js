@@ -1,11 +1,25 @@
-// Read all files on server, put them in the dataset selector
+//// Read all files on server, put them in the dataset selector ////
 
 // Data Selector
-let select_data = document.querySelector('#select-data');
+let select_file = document.querySelector('#select_file');
+
+// Set Selector Function
+setSelector = (item, selector) => {
+  var val = localStorage.getItem(item);
+  var sel = selector;
+  console.log(val, sel)
+  var opts = sel.options;
+  for (var opt, j = 0; opt = opts[j]; j++) {
+    if (opt.value == val) {
+      sel.selectedIndex = j;
+      break;
+    }
+  }
+}
 
 // On Dataset selection, save filename in LocalStorage
-select_data.addEventListener('change', (event) => {
-  console.log(`You chose ${event.target.value}`);
+select_file.addEventListener('change', (event) => {
+  console.log(`File ${event.target.value} has been chosen`);
   localStorage.setItem('selected_file', `${event.target.value}`)
 });
 
@@ -21,21 +35,21 @@ updateDataSelector = () => {
     updateSelect(files);
   })
   .catch(function(err) {
-    console.log(err);
+    console.log(`Dataselector Update Error:`, err);
   });
 
   // Update data selector
   updateSelect = (data) => {
-    select_data.innerHTML='';
+    select_file.innerHTML='';
     let files = data;
     files.forEach((file) => {
       let opt = document.createElement('option');
       opt.value = file;
       opt.dataset.local = false; //TODO make this true for localStorage files
       opt.innerHTML = file;
-      select_data.appendChild(opt);
+      select_file.appendChild(opt);
     })
-    setSelector('selected_file', select_data);
+    setSelector('selected_file', select_file);
   }
 }
 

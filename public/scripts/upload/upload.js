@@ -8,7 +8,7 @@ const submit = document.getElementById('submit');
 
 // Event handler executed when file is changed
 const onSelectFile = () => {
-  console.log(input.files[0])
+  console.log(`Selected file:`, input.files[0])
   input_placeholder.innerHTML = input.files[0].name;
   filename.value = input.files[0].name.split('.').slice(0, -1).join('.');
 }
@@ -34,17 +34,14 @@ const upload = (file, name) => {
     formData.append('file', file);
   }
 
-
-  console.log(formData.get('file'));
-
   fetch('/upload', {   // Your POST endpoint
     method: 'POST',
     body: formData                          // This is your file object
   })
   .then(response => response.json())
-  .catch(error => console.error('Error:', error))
+  .catch(error => console.error('File Upload Error:', error))
   .then(response => {
-    console.log('Success:', JSON.stringify(response));
+    console.log('File Upload Success:', JSON.stringify(response));
     if (response.type=='error') {
       document.getElementById('file').innerHTML = 'An error has occured.';
       document.getElementById('msg').innerHTML = response.message;
