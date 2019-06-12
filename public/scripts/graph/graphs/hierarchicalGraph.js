@@ -20,20 +20,59 @@ function loadHierarchicalGraph(nodes, links, adjacents, svg, attributes) {
 	adjacency = adjacents
 	
 	//get a starting node (TO BE IMPROVED: pick a node in a smarter way!!)
-	startNode = vertices[0]
+	startingNode = [vertices[0]]
 	
 	//run bfs to get a tree
-	bfs({"nodes" : vertices, "links" : links, "adjacency" : adjacency}, startNode)
+	bfs({"nodes" : vertices, "links" : links, "adjacency" : adjacency}, startingNode[0], true)
+	
+	let allBlack = false;
+	while (!allBlack) {
+		for (let i = 0; i < nodes.length; i++) {
+			if (nodes[i].color != 2) {
+					startingNode.push(vertices[i])
+					bfs({"nodes" : vertices, "links" : links, "adjacency" : adjacency}, nodes[i], false)
+					break;
+			} else {
+				if (i == nodes.length-1) {
+					allBlack = true
+				}
+			}
+		}
+	}
+	
 	
 	//transform it into data in shape of tree
-	data = createTree(startNode)
+	data = []
+	for (node in startingNode) {
+		data.push(createTree(startingNode[node]))
+	}
 	
-	//create tree data shape with d3
-	const root = d3.tree().nodeSize([10,200])(d3.hierarchy(data));
+	//calculate coordinates for each node
+	roots = []
+	let offset_scale = 10
+	let offset_standard = 30
+	let prevX = 0
+	let newX = 0
+	for (let i = 0; i < data.length; i++) {
+		tempRoot = d3.tree().nodeSize([10,200])(d3.hierarchy(data[i]))
+		newX = prevX + offset_standard + offset_scale * tempRoot.leaves().length/2
+		prevX = 2 * newX - prevX
+		for (node in tempRoot.descendants()) {
+			tempRoot.descendants()[node].x += newX
+		}
+		roots.push(tempRoot)
+		//console.log(tempRoot)
+	}
+
 	
 	//replace nodes and links with those of the tree in hierarchical_data
-	hierarchical_data.nodes = root.descendants()
-	hierarchical_data.links = root.links()
+	hierarchical_data.nodes = []
+	hierarchical_data.links = []
+	
+	for (rootNode in roots) {
+		hierarchical_data.nodes = hierarchical_data.nodes.concat(roots[rootNode].descendants())
+		hierarchical_data.links = hierarchical_data.links.concat(roots[rootNode].links())
+	}
 	
 	//draw links
 	hierarchicalLink = svg.append("g")
@@ -48,8 +87,8 @@ function loadHierarchicalGraph(nodes, links, adjacents, svg, attributes) {
       .attr("y1", link.source.y)
       .attr("x2", link.target.x)
       .attr("y2", link.target.y)
-	  .attr("stroke-opacity", attributes[1] * 2/Math.sqrt(link.source.children.length)) 
-	  .attr("stroke-width", attributes[0] * 2/Math.sqrt(link.source.children.length)) ;
+	  .attr("stroke-opacity", attributes[1] * 1.6/Math.sqrt(link.source.children.length)) 
+	  .attr("stroke-width", attributes[0] * 1.6/Math.sqrt(link.source.children.length)) ;
 	}
 	  
 	//draw nodes
@@ -91,21 +130,28 @@ function loadHierarchicalGraph(nodes, links, adjacents, svg, attributes) {
 }			
 
 //runs bfs on the graph given a name of the starting node, assigns children and distance to each node
-function bfs(graph, startNode) {
+function bfs(graph, startNode, first) {
 	let queue = []
 	
-	for (node in graph.nodes) {
-		if (graph.nodes[node] == startNode) {
-			startNode.color = 1
-			startNode.dis = 0
-			startNode.children = []
-		} else {
-			graph.nodes[node].color = 0
-			graph.nodes[node].dis = -1
-			graph.nodes[node].children = []
-		}
+	if (first) {
+		for (node in graph.nodes) {
+			if (graph.nodes[node] == startNode) {
+				startNode.color = 1
+				startNode.dis = 0
+				startNode.children = []
+			} else {
+				graph.nodes[node].color = 0
+				graph.nodes[node].dis = -1
+				graph.nodes[node].children = []
+			}
 
+		}
 	}
+	
+	//set for starting node 
+	startNode.color = 1
+	startNode.dis = 0
+	startNode.children = []
 	
 	queue.push(startNode)
 	
@@ -168,8 +214,8 @@ function appendLineHierarchical(l) {
       .attr("y1", l.source.y )
       .attr("x2", l.target.x )
       .attr("y2", l.target.y )
-	  .attr("stroke-opacity", attributes[1] * 2/Math.sqrt(l.source.children.length)) 
-	  .attr("stroke-width", attributes[0] * 2/Math.sqrt(l.source.children.length)) ; 
+	  .attr("stroke-opacity", attributes[1] * 1.6/Math.sqrt(l.source.children.length)) 
+	  .attr("stroke-width", attributes[0] * 1.6/Math.sqrt(l.source.children.length)) ; 
 }
 
 	  
