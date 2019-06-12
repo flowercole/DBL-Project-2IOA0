@@ -52,6 +52,7 @@ readShareURL = () => {
 let searchParams = new URLSearchParams(location.search);
 if (searchParams.get('sharedSettings') == 'true') {
   readShareURL();
+  submitLayout(localStorage.getItem('layout'))
 }
 
 document.getElementById('share-btn').addEventListener('click', function() { getShareURL() } );
