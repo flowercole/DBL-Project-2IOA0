@@ -422,8 +422,8 @@ function updateView() {
 		})
 		
 		svg_hierarchical.selectAll("line").data(hierarchical_data.links)
-			.attr("stroke-opacity", function(d) {return attributes[1] * 2/Math.sqrt(d.source.children.length)}) 
-			.attr("stroke-width", function(d) {return attributes[0] * 2/Math.sqrt(d.source.children.length)}) ;
+			.attr("stroke-opacity", function(d) {return attributes[1] * 1.6/Math.sqrt(d.source.children.length)}) 
+			.attr("stroke-width", function(d) {return attributes[0] * 1.6/Math.sqrt(d.source.children.length)}) ;
 	}
 }
 
