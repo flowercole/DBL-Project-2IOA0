@@ -1,29 +1,31 @@
 # DBL WebTech Group 26
 
-This is the visualization project of Group 26.
+This is the visualization project of Group 26. 
 
 ## Short description
-The project is made using a custom web server based on Node.js. The visualizations are created using a number of graphing libraries for javascript, namely D3.js and Plotly.js
+The project is made using a custom web server based on the Node.js web api. The visualizations are created using a number of graphing libraries for javascript, namely D3.js and Plotly.js
 
 ## Getting started
 
-### Prerequisites
+This project is available online at https://dbl-viz.herokuapp.com/ . Due to the fact that we are using the free tier of the platform, the perfomrnace for large datasets will be bottlenecked.
+
+### Local setup
+#### Prerequisites
 The only requirement for running this project is Node.js. 
 No external dependencies on npm packages are present since we want to
 
-### Running the application
-~~First, for using https, create a https folder in the root of the project, and fill in a certificate (in a file cert.pem) and a key (key.pem). This can be done using this website https://www.sslchecker.com/csr/self_signed or from the terminal with Openssl.~~ For convenience, the https folder is already present.
-
-Secondly, to run the app, in the project root directory, use the following terminal command:
+#### Running the application locally
+After cloning the repo, in order to run the app, in the project root directory, use the following terminal command:
 ```
 node index.js
 ```
-Or, if you have npm installed:
+If you have npm installed:
 ```
 npm start
 ```
-also works.
-You should be able to see it in your browser by going to http://localhost:3000
+also works. 
+For live reloading a tool such as nodemon can be used https://nodemon.io/. 
+You should be able to see it in your browser by going to http://localhost:3000 (the port can be changed in the config.js file or by providing the PORT_ENV enviroment variable)
 
 ## Project structure
 The project has the following structure:
