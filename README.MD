@@ -8,6 +8,8 @@ To visualize network data in the most time efficient and representative way poss
 
 ## Features:
 
+We have implemented the following features. Please do note, some of the functionalities and features are very early versions, and are subject to change and may not work properly just yet.
+
 * Node-link visualisation
 * Heatmap visualisation
 * Force Directed visualization of your Graph
@@ -20,11 +22,12 @@ To visualize network data in the most time efficient and representative way poss
 * 3D view of Matrix visualization
 * Saving and exporting the state of the visualisation
 
-Please note that some of the functionalities & features are very early versions, are subject to change and may not work properly just yet.
+
 
 ## Background
 
 Our tool is built upon the following existing projects:
+
 * [node.js](https://nodejs.org/en/download/) - The server framework
 * [d3.js](https://d3js.org/) - The visualization library for the node-link diagrams
 * [plotly](https://plot.ly/javascript/) - The visualization library for the matrix heatmaps
