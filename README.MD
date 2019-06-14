@@ -1,63 +1,80 @@
-# DBL WebTech Group 26
+#Funsualization
 
-This is the visualization project of Group 26. 
+Funsualization is a data visualization tool made by Group 26 for the DBL HTI + Webtech (2IOA0) course, followed in Q4 of 2019 at the Eindhoven University of Technology.
 
-## Short description
-The project is made using a custom web server based on the Node.js web api. The visualizations are created using a number of graphing libraries for javascript, namely D3.js and Plotly.js
+## What is the purpose of our tool?
 
-## Getting started
+To visualize network data in the most time efficient and representative way possible. To get the most meaning out of your data we implement several kinds of visualizations. We have a heatmap with multiple reorderings which allow a better insight into your data. Furthermore we have extended our tool to have a Force Directed, Radial and Hierarchical representation of your graph - you can choose which suits your needs the best.
 
-This project is available online at https://dbl-viz.herokuapp.com/ . Due to the fact that we are using the free tier of the platform, the perfomrnace for large datasets will be bottlenecked.
+## Features:
 
-### Local setup
-#### Prerequisites
-The only requirement for running this project is Node.js. 
-No external dependencies on npm packages are present since we want to
+* Node-link visualisation
+* Heatmap visualisation
+* Force Directed visualization of your Graph
+* Radial  visualization of your Graph
+* Hierarchical visualization of your Graph
+* File uploading
+* CSV parser
+* Multiple interactions for both visualizations
+* Multiple reorderings for heatmap visualization
+* 3D view of Matrix visualization
+* Saving and exporting the state of the visualisation
 
-#### Running the application locally
-After cloning the repo, in order to run the app, in the project root directory, use the following terminal command:
+Please note that some of the functionalities & features are very early versions, are subject to change and may not work properly just yet.
+
+## Background
+
+Our tool is built upon the following existing projects:
+* [node.js](https://nodejs.org/en/download/) - The server framework
+* [d3.js](https://d3js.org/) - The visualization library for the node-link diagrams
+* [plotly](https://plot.ly/javascript/) - The visualization library for the matrix heatmaps
+
+## Get Started
+
+### Prerequisites
+
+Download and install [node.js](https://nodejs.org/en/download/). No other external dependencies.
+
+### Installation
+
+Clone the repository.
+
+Navigate to the downloaded folder.
+
+Use the standard node.js command to start the server:
 ```
 node index.js
 ```
-If you have npm installed:
-```
-npm start
-```
-also works. 
-For live reloading a tool such as nodemon can be used https://nodemon.io/. 
-You should be able to see it in your browser by going to http://localhost:3000 (the port can be changed in the config.js file or by providing the PORT_ENV enviroment variable)
 
-## Project structure
-The project has the following structure:
+The server will be reachable on:
 ```
-├── data                    // Folder for the storage of data files
-├── https                   // Holds the SSL certificate and key
-│   ├── cert.pem
-│   └── key.pem
-├── index.js                // Entry point for the application
-├── lib
-│   ├── config.js
-│   ├── handlers.js
-│   ├── helpers.js
-│   ├── server.js           
-│   ├── vendor              // Place for all the external libraries
-│   └── workers.js
-├── public                  // Folder to share static assets (css/images/..)
-│   ├── app.css
-│   ├── app.js
-│   └── favicon.ico
-└── views                   // Templates and views to be rendered
-│    └── index.html
-│    └── components          // Folder for html templates
-└── .gitignore    
-└── package.json            // Place to define project scripts
-└── README.md               // The current file. Hello 😄!  
+localhost:3000
 ```
 
-## Api requests
-The server currently responds to the following api paths
-```
-POST    /upload            -> upload a csv file, offers some metadata in return
-GET     /csv/{filename}    -> returns a json matrix of the parsed csv
-GET     /datasets          -> returns a list of all available datasets
-```
+## Known issues
+
+Displaying big datasets takes a long time in the node-link diagrams, that is why we had to set a limit to only show the 10.000 edges with the highest weights.
+
+## Roadmap
+
+In the last week, we will polish up the whole tool for a better user experience, connect interactions of node-link diagrams with the adjacency matrix. With some page updates some information is lost- needs to be a steady workflow.
+
+## Usage
+
+tbc...
+
+## Authors and acknowledgment
+
+Contributors: Adrian Cucos, Wouter Haneveer, Stijn Kuijper, Maxim Snoep,
+Bart van der Steenhoven, Luca Tudor, and Konstantin Velkov.
+
+And our tutor, who has guided us through this project: Delyana Stoyanova.
+
+## License
+
+We are not using a license.
+
+
+## Project status
+
+We are done with the project, the current state of the project, is the final state of the project, including all its bugs and forgotten features. Every student has put 140 hours of work into this project.
