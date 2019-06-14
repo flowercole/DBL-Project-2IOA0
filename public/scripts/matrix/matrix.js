@@ -17,14 +17,15 @@ var colorscaleValue = [
 document.getElementById("updateHeatmap").addEventListener("click",function() {UpdateGraph()} );
 document.getElementById("viewHeatmap3D").addEventListener("click",function() {ChangeDimention()} );
 
-var minSlider = document.getElementById("minWeightHeatmap");
-var maxSlider = document.getElementById("maxWeightHeatmap");
-minSlider.oninput = function() {
-    //document.getElementById('minWeightHeatmapValue').innerHTML = this.value;
-}
-maxSlider.oninput = function() {
-    //document.getElementById('maxWeightHeatmapValue').innerHTML = this.value;
-}
+var minSlider = document.getElementById("minWeight");
+var maxSlider = document.getElementById("maxWeight");
+
+//minSlider.oninput = function() {
+//    document.getElementById('minWeightHeatmapValue').innerHTML = this.value;
+//}
+//maxSlider.oninput = function() {
+//    document.getElementById('maxWeightHeatmapValue').innerHTML = this.value;
+//}
 
 loadMatrix = (box1) => {
 
@@ -293,8 +294,8 @@ function SelectGraphColor(xVal,yVal,zVal,box) {
   //Input data for heatmap
 }
 function SelectEdgeRange(xVal,yVal,zVal) {
-    var minWeightHeatmap = document.getElementById("minWeightHeatmap").value;
-    var maxWeightHeatmap = document.getElementById("maxWeightHeatmap").value;
+    var minWeightHeatmap = document.getElementById("minWeight").value;
+    var maxWeightHeatmap = document.getElementById("maxWeight").value;
     function matrix(rows, cols, defaultValue){
         var arr = [];
         // Creates all lines:

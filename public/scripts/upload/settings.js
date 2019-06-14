@@ -18,8 +18,6 @@ let allSettings = [
   ['selNodeColor', 'hex', false, false, 'slider', '#003DDE'],
   ['startColor', 'hex', false, false, 'slider', '#D3DFFF'],
   ['endColor', 'hex', false, false, 'slider', '#003DDE'],
-  ['minWeightHeatmap', 'int', 0, 10, 'slider', '0'],
-  ['maxWeightHeatmap', 'int', 0, 10, 'slider', '10'],
   ['selectReordering', 'str', false, false, 'selector', 'original']
 ]
 
