@@ -21,7 +21,8 @@ validateSetting = (setting, type, p1, p2) => {
       }
       break;
     case 'file':
-      if (/^[a-zA-Z0-9_-]+(.csv)$/.test(sharedValue)) {
+
+      if (/^[\w\-. ]+(.csv)$/.test(sharedValue)) {
         return sharedValue
       }
       break;
@@ -31,7 +32,7 @@ validateSetting = (setting, type, p1, p2) => {
 
 // request a share url
 getShareURL = () => {
-  var url = 'http://localhost:3000/visualization'
+  var url = location.protocol + '//' + location.host + location.pathname
   url += '?sharedSettings=true&'
   for (i = 0; i < allSettings.length; i++) {
     var setting = allSettings[i][0]
