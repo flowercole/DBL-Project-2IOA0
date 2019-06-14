@@ -1,4 +1,4 @@
-#Funsualization
+# Funsualization
 
 Funsualization is a data visualization tool made by Group 26 for the DBL HTI + Webtech (2IOA0) course, followed in Q4 of 2019 at the Eindhoven University of Technology.
 
