@@ -43,13 +43,13 @@ const upload = (file, name) => {
   .then(response => {
     console.log('File Upload Success:', JSON.stringify(response));
     if (response.type=='error') {
-      document.getElementById('file').innerHTML = 'An error has occured.';
+      //document.getElementById('file').innerHTML = 'An error has occured.';
       document.getElementById('msg').innerHTML = response.message;
-      document.getElementById('name').innerHTML = 'No file uploaded.';
+      //document.getElementById('name').innerHTML = 'No file uploaded.';
     } else {
-      document.getElementById('file').innerHTML = file.name;
+      //document.getElementById('file').innerHTML = file.name;
       document.getElementById('msg').innerHTML = response.message;
-      document.getElementById('name').innerHTML = response.file_name;
+      //document.getElementById('name').innerHTML = response.file_name;
       localStorage.setItem('selected_file', response.file_name);
       updateDataSelector();
     }

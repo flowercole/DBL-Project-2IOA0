@@ -39,7 +39,6 @@ getShareURL = () => {
     if (allSettings[i][1]=='hex') { sub = 1 } else { sub = 0 }
     url += `${setting}=${localStorage.getItem(setting).substring(sub)}&`
   }
-  console.log(url);
   document.getElementById('share-url').value = url;
 }
 

@@ -85,12 +85,12 @@ code by Maxim Snoep (1313517)
 
           <div class='setting'>
             <p>Min edge weight</p>
-            <input id="minWeight" type="range" min="0" max="100" value="0">
+            <input id="minWeight" type="range" min="0" max="1000" value="0">
           </div>
 
           <div class='setting'>
             <p>Max edge weight</p>
-            <input id="maxWeight" type="range" min="0" max="100" value="100">
+            <input id="maxWeight" type="range" min="0" max="1000" value="100">
           </div>
 
           <button type='button' id='filterEdges' class='button bordered'>Apply Filters</button>
@@ -152,21 +152,34 @@ code by Maxim Snoep (1313517)
             </div>
 -->
 
+         
+
+           
+            <button type='button' id='updateHeatmap' class='button bordered'>Update Heatmap</button>
+              
+            <button type='button' id='viewHeatmap3D' class='button bordered'>Switch to 3D</button>
+              
             <div class='setting'>
               <p>Select reordering</p>
               <select id="selectReordering", onchange="SelectReordering(this);">
                 <option value="original">Original</option>
                 <option value="alphabetical">Alphabetical</option>
                 <option value="sum">Sum</option>
+                <option value="colsum">Column Sum</option>
+                <option value="rowsum">Row Sum</option>
+                <option value="cuthill-mckee">Cuthill-Mckee</option>
                 <option value="average">Average</option>
               </select>
             </div>
+<<<<<<< HEAD
 
 
             <button type='button' id='updateHeatmap' class='button bordered'>Update Heatmap</button>
 
             <button type='button' id='viewHeatmap3D' class='button bordered'>Switch to 3D</button>
 
+=======
+>>>>>>> cbd838d795e1c9b73b931b43b0eaa8060395064d
           </div>
 
         </div>
@@ -198,7 +211,7 @@ code by Maxim Snoep (1313517)
   <script src="/public/scripts/graph/graphs/forceGraph.js"></script>
   <script src="/public/scripts/graph/graphs/radialGraph.js"></script>
   <script src="/public/scripts/graph/graphs/hierarchicalGraph.js"></script>
-
+  <script src="/public/Queue.js"></script>
   <script>
 
   // LOADING ABOUT CONTACT AND HELP

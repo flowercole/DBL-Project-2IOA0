@@ -14,11 +14,22 @@ var colorscaleValue = [
         [1, localStorage.getItem('endColor')]
     ];
 
-document.getElementById("updateHeatmap").addEventListener("click",function() {UpdateGraph()} );
-document.getElementById("viewHeatmap3D").addEventListener("click",function() {ChangeDimention()} );
+document.getElementById("updateSettings").addEventListener("click",function() {
+  if (localStorage.getItem('vis-1') == 'matrix' || localStorage.getItem('vis-2') == 'matrix' || localStorage.getItem('vis-3') == 'matrix' || localStorage.getItem('vis-4') == 'matrix'  ){
+    UpdateGraph()
+    SelectReordering(document.getElementById('selectReordering'))
+  }
+});
 
-var minSlider = document.getElementById("minWeightHeatmap");
-var maxSlider = document.getElementById("maxWeightHeatmap");
+document.getElementById("viewHeatmap3D").addEventListener("click",function() {
+  if (localStorage.getItem('vis-1') == 'matrix' || localStorage.getItem('vis-2') == 'matrix' || localStorage.getItem('vis-3') == 'matrix' || localStorage.getItem('vis-4') == 'matrix'  ){
+    ChangeDimention()
+    SelectReordering(document.getElementById('selectReordering'))
+  }
+});
+
+var minSlider = document.getElementById("minWeight");
+var maxSlider = document.getElementById("maxWeight");
 minSlider.oninput = function() {
     //document.getElementById('minWeightHeatmapValue').innerHTML = this.value;
 }
@@ -281,6 +292,313 @@ function OriginalOrder() {
         Display3DGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
     }
 }
+function ColSumOrder(xVal,yVal,matrix) {
+    var cols = new Array(matrix[0].length).fill(0);
+    for(var i = 0; i < matrix[0].length; i++){
+      for(var j = 0; j < matrix[0].length; j++){
+        cols[j] += matrix[i][j];
+      }
+    }
+
+    cols_index = [];
+    for(var i = 0; i < matrix[0].length; i++){
+      cols_index[i] = i;
+    }
+
+    function swap(a, b) {
+      return [b, a]
+    }
+
+    function partition(A, B, lo, hi){
+      var pivot = A[hi];
+      var i = lo;
+      for (j = lo; j < hi; j++){
+        if (A[j] < pivot){
+          [A[i],A[j]] = swap(A[i],A[j]);
+          [B[i],B[j]] = swap(B[i],B[j]);
+          i++;
+        }
+      }
+      [A[i],A[hi]] = swap(A[i],A[hi]);
+      [B[i],B[hi]] = swap(B[i],B[hi]);
+      return i;
+    }
+
+    function quicksort(A, B, lo, hi){
+      if (lo < hi){
+        var p = partition(A, B, lo, hi);
+        quicksort(A, B, lo, p - 1);
+        quicksort(A, B, p + 1, hi);
+      }
+    }
+
+    quicksort(cols, cols_index,0,cols.length-1);
+
+    var order_matrix = [];
+    for(var i = 0; i < matrix[0].length; i++){
+      order_matrix[i] = [];
+      for(var j = 0; j < matrix[0].length; j++){
+        order_matrix[i][j] = matrix[cols_index[i]][cols_index[j]];
+      }
+    }
+    var reorderedXValues = new Array(xVal.length).fill(0);
+    var reorderedYValues = new Array(yVal.length).fill(0);
+    for(var i = 0; i < xVal.length;i++) {
+        reorderedXValues[i] = xVal[cols_index[i]];
+        reorderedYValues[i] = yVal[cols_index[i]];
+    }
+
+    /*colorscaleValue = [
+        [0, '#D3DFFF'],
+        [1, '#003DDE']
+    ];*/
+    console.log("col sum");
+    if(dimention==2) {
+        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
+    } else {
+        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
+    }
+    //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
+    //return returnArray;
+    return;
+}
+function RowSumOrder(xVal,yVal,matrix) {
+    var rows = new Array(matrix[0].length).fill(0);
+    for(var i = 0; i < matrix[0].length; i++){
+      for(var j = 0; j < matrix[0].length; j++){
+        rows[i] += matrix[i][j];
+      }
+    }
+
+    rows_index = [];
+    for(var i = 0; i < matrix[0].length; i++){
+      rows_index[i] = i;
+    }
+
+    function swap(a, b) {
+      return [b, a]
+    }
+
+    function partition(A, B, lo, hi){
+      var pivot = A[hi];
+      var i = lo;
+      for (j = lo; j < hi; j++){
+        if (A[j] < pivot){
+          [A[i],A[j]] = swap(A[i],A[j]);
+          [B[i],B[j]] = swap(B[i],B[j]);
+          i++;
+        }
+      }
+      [A[i],A[hi]] = swap(A[i],A[hi]);
+      [B[i],B[hi]] = swap(B[i],B[hi]);
+      return i;
+    }
+
+    function quicksort(A, B, lo, hi){
+      if (lo < hi){
+        var p = partition(A, B, lo, hi);
+        quicksort(A, B, lo, p - 1);
+        quicksort(A, B, p + 1, hi);
+      }
+    }
+
+    quicksort(rows, rows_index,0,rows.length-1);
+
+    var order_matrix = [];
+    for(var i = 0; i < matrix[0].length; i++){
+      order_matrix[i] = [];
+      for(var j = 0; j < matrix[0].length; j++){
+        order_matrix[i][j] = matrix[rows_index[i]][rows_index[j]];
+      }
+    }
+    var reorderedXValues = new Array(xVal.length).fill(0);
+    var reorderedYValues = new Array(yVal.length).fill(0);
+    for(var i = 0; i < xVal.length;i++) {
+        reorderedXValues[i] = xVal[rows_index[i]];
+        reorderedYValues[i] = yVal[rows_index[i]];
+    }
+
+    /*colorscaleValue = [
+        [0, '#D3DFFF'],
+        [1, '#003DDE']
+    ];*/
+    console.log("row sum");
+    if(dimention==2) {
+        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
+    } else {
+        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
+    }
+    //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
+    //return returnArray;
+    return;
+}
+function Cuthill_Mckee(xVal,yVal,initial_matrix){
+  //var initial_matrix = [];
+  for(var i=0; i < initial_matrix[0].length;i++){
+    initial_matrix[i] = [];
+    for(var j=0;j<initial_matrix[0].length;j++){
+      initial_matrix[i][j]=initial_matrix[i][j];
+    }
+
+  }
+  for(var i = 0; i < initial_matrix[0].length; i++){
+      for(var j = 0; j <= i; j++){
+        if (initial_matrix[i][j] == 0 && initial_matrix[j][i] != 0) {
+          initial_matrix[i][j] = initial_matrix[j][i]
+        }else if (initial_matrix[i][j] != 0 && initial_matrix[j][i] != 0){
+          initial_matrix[j][i] = initial_matrix[i][j] = (initial_matrix[i][j] + initial_matrix [j][i])/2;
+        }else if (initial_matrix[i][j] != 0 && initial_matrix[j][i] == 0){
+          initial_matrix[j][i] = initial_matrix[i][j];
+        }
+    }
+  }
+  var maxValue = 0;
+    for (var i = 0; i < initial_matrix[0].length; i++) {
+      for (var j = 0; j < initial_matrix[0].length; j++){
+        if(maxValue < initial_matrix[i][j])
+          maxValue = initial_matrix[i][j];
+      }
+    }
+    console.log(maxValue);
+    var binary_matrix = [];
+    for(var i = 0; i < initial_matrix[0].length; i++){
+      binary_matrix[i] = [];
+      for(var j = 0; j < initial_matrix[0].length; j++){
+        if(initial_matrix[i][j] > 0 && initial_matrix[i][j] < 0.225*maxValue){
+          binary_matrix[i][j] = 1;
+        } else {
+          binary_matrix[i][j] = 0;
+        }
+        if(i == j){
+          binary_matrix[i][j] = 1;
+        }
+      }
+    }
+
+    function findIndex(a, x) {
+      for (var i = 0; i < a.length; i++)
+        if (a[i].index == x)
+            return i;
+      return -1;
+    }
+
+    function sumDegrees(a){
+      var sum = 0;
+      for(var i = 0; i < a.length; i++){
+        sum += a[i];
+      }
+      return sum;
+    }
+
+    Array.prototype.remove = function(from, to) {
+      var rest = this.slice((to || from) + 1 || this.length);
+      this.length = from < 0 ? this.length + from : from;
+      return this.push.apply(this, rest);
+    };
+    var perm_0 = cuthillMckee(binary_matrix);
+    function cuthillMckee(matrix) {
+      var n = matrix[0].length;
+      var result = [];
+      var queue = new Queue();
+      var added = new Array(n).fill(false);
+      var notVisited = [];
+      for(var i = 0; i < n; i++){
+        notVisited.push(i);
+      }
+      //step 6: Terminate this algorithm once all objects are included in R.
+      while(notVisited.length){
+        //step 1: We first find the object with minimum degree whose index has not yet been added to Result. Say, object corresponding to pth row has been identified as the object with a minimum degree. Add p to Result.
+        var minNodeIndex = 0;
+
+        for (var i = 1; i < notVisited.length; i++){
+          if (sumDegrees(matrix[notVisited[i]]) < sumDegrees(matrix[notVisited[minNodeIndex]])){
+            minNodeIndex = i;
+          }
+        }
+        queue.enqueue(notVisited[minNodeIndex]);
+
+        for(var i = 0; i < notVisited.length; i++){
+          if(notVisited[i] == queue.peek()){
+            notVisited.splice(i,1);
+          }
+        }
+        //step 2:As an index is added to Result, and add all neighbors of the corresponding object at the index, in increasing order of degree, to Q.
+        //step 3:Extract the first node in Q, say C. If C has not been inserted in R, add it to R, add to Q the neighbors of C in increasing order of degree.
+        //step 4:If Q is not empty, repeat S3.
+        while(!queue.isEmpty()){
+          var toSort = [];
+
+          for (var i = 0; i < n; i++) {
+            var found_i = -1;
+            for (var j = 0; j < notVisited.length; j++){
+              if (notVisited[j] == i){
+                found_i = j;
+                break;
+              }
+            }
+            if (i != queue.peek() && matrix[queue.peek()][i] == 1 && found_i != -1) {
+              toSort.push(i);
+              notVisited.splice(i,1);
+            }
+          }
+
+          toSort.sort(function(a, b){return a-b});
+
+          for (var i = 0; i < toSort.length; i++){
+            queue.enqueue(toSort[i]);
+          }
+          result.push(queue.peek());
+          queue.dequeue();
+        }
+      //If Q is empty, but there are objects in the matrix which have not been included in R, start from S1, once again. (This could happen if there are disjoint graphs)
+      }
+      return result;
+    }
+
+
+    console.log(perm_0);
+    var perm = [];
+    var exist = new Array(binary_matrix[0].length).fill(false);
+    for(var i = 0; i < perm_0.length; i++){
+      if(exist[perm_0[i]]){
+        ;
+      } else {
+        perm.push(perm_0[i]);
+        exist[perm_0[i]] = true;
+      }
+    }
+
+    for(var i = 0; i < initial_matrix[0].length; i++){
+      if(!exist[i]){
+        perm.splice(i,0,i);
+      }
+    }
+    console.log(binary_matrix[0]);
+    console.log(perm);
+
+    var order_matrix = [];
+    for(var i = 0; i < initial_matrix[0].length; i++){
+      order_matrix[i] = [];
+      for(var j = 0; j < initial_matrix[0].length; j++){
+        order_matrix[i][j] = initial_matrix[perm[i]][perm[j]];
+      }
+    }
+
+    var reorderedXValues = new Array(xVal.length).fill(0);
+    var reorderedYValues = new Array(yVal.length).fill(0);
+    for(var i = 0; i < xVal.length;i++) {
+        reorderedXValues[i] = xVal[perm[i]];
+        reorderedYValues[i] = yVal[perm[i]];
+    }
+
+     if(dimention==2) {
+        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
+    } else {
+        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
+    }
+
+
+}
 function SelectGraphColor(xVal,yVal,zVal,box) {
     let attributes = [];
     attributes[0] = document.getElementById('startColor').value;
@@ -293,8 +611,8 @@ function SelectGraphColor(xVal,yVal,zVal,box) {
   //Input data for heatmap
 }
 function SelectEdgeRange(xVal,yVal,zVal) {
-    var minWeightHeatmap = document.getElementById("minWeightHeatmap").value;
-    var maxWeightHeatmap = document.getElementById("maxWeightHeatmap").value;
+    var minWeightHeatmap = document.getElementById("minWeight").value;
+    var maxWeightHeatmap = document.getElementById("maxWeight").value;
     function matrix(rows, cols, defaultValue){
         var arr = [];
         // Creates all lines:
@@ -338,7 +656,8 @@ function UpdateGraph() {
         DisplayGraph(ret[0],ret[1],ret[2]);
      } else {
          Display3DGraph(ret[0],ret[1],ret[2]);
-        }
+    }
+
 }
 function SelectReordering(selectTag) {
             var selIndexes = "";
@@ -370,6 +689,18 @@ function SelectReordering(selectTag) {
                 if(selIndexes=="Average") {
                     console.log("Average");
                     AverageOrder(xValues,yValues,zValues);
+                }
+                if(selIndexes=="Column Sum") {
+                    console.log("Column Sum");
+                    ColSumOrder(xValues,yValues,zValues);
+                }
+                if(selIndexes=="Row Sum") {
+                    console.log("Row Sum");
+                    RowSumOrder(xValues,yValues,zValues);
+                }
+                if(selIndexes=="Cuthill-Mckee") {
+                    console.log("Cuthill-Mckee");
+                    //Cuthill_Mckee(xValues,yValues,zValues);
                 }
             }
             else {
@@ -483,6 +814,7 @@ yValuesOriginal = yValues;
 zValuesOriginal = zValues;
 
 DisplayGraph(xValues,yValues,zValues);
+SelectReordering(document.getElementById('selectReordering'))
 
 }
 function DisplayGraph(xVal,yVal,zVal) {
@@ -493,14 +825,18 @@ function DisplayGraph(xVal,yVal,zVal) {
     x: xVal,
     y: yVal,
     colorscale: colorscaleValue,
+    colorbar: { tickfont: {family: "\'Inconsolata\', monospace;", size:"9", color: "#f3f3f3"}},
     type: 'heatmap'
     }
   ];
     var layout = {
-  title: 'Heatmap of your data set',
+    xaxis: {linecolor: "#f3f3f3", linewidth: 1, mirror: true, tickfont:{color:"rgba(0,0,0,0)"}, tickcolor:"rgba(0,0,0,0)"},
+    yaxis: {linecolor: "#f3f3f3", linewidth: 1, mirror: true, tickfont:{color:"rgba(0,0,0,0)"}, tickcolor:"rgba(0,0,0,0)"},
+    margin: {b:'20', l:'20', r:'20', t:'20'},
+    paper_bgcolor: "rgba(0,0,0,0)"
 };
 
-  Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true,scrollZoom: true,displayModeBar: true,displaylogo: false,responsive: true});
+  Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true,scrollZoom: true,displayModeBar: false,displaylogo: false,responsive: true});
       myPlot = document.getElementById(`${box}`);
 myPlot.on('plotly_hover', function(data){
     console.log("hover");
@@ -530,6 +866,7 @@ function Display3DGraph(xVal,yVal,zVal) {
       y: yVal,
       z: zVal,
       type: 'surface',
+      colorbar: { tickfont: {family: "\'Inconsolata\', monospace;", size:"9", color: "#f3f3f3"}},
       colorscale: colorscaleValue,
       contours: {
         z: {
@@ -542,15 +879,15 @@ function Display3DGraph(xVal,yVal,zVal) {
     }];
 
     var layout = {
-      title: 'Your Heatmap in 3D',
-      scene: {camera: {eye: {x: 1.87, y: 0.88, z: 1}}},
-      autosize: true,
-      margin: {
-        l: 65,
-        r: 50,
-        b: 65,
-        t: 90,
-      }
+      scene: {
+        camera: {eye: {x: 1.87, y: 0.88, z: 1}},
+        xaxis: { color:"rgba(0,0,0,0)", gridwidth:"0", tickfont:{size:"1"}, title:{text:""} },
+        yaxis: { color:"rgba(0,0,0,0)", gridwidth:"0", tickfont:{size:"1"}, title:{text:""} },
+        zaxis: { color:"rgba(0,0,0,0)", gridwidth:"0", tickfont:{size:"1"}, title:{text:""} }
+      },
+      margin: {b:'20', l:'20', r:'20', t:'20'},
+      paper_bgcolor: "rgba(0,0,0,0)"
+
     };
-    Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true,displayModeBar: true,scrollZoom: true,displaylogo: false,responsive: true});
+    Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true,displayModeBar: false,scrollZoom: true,displaylogo: false,responsive: true});
 }

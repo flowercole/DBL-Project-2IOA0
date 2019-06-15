@@ -8,7 +8,7 @@
 
 body {
   height: auto;
-  background-image: linear-gradient(to bottom right, #1f1f1f, #393939);
+  background-image: linear-gradient(to bottom right, #1f1f1f, #454545);
   overflow: hidden;
 }
 
@@ -38,13 +38,17 @@ body {
   outline: none;
 }
 
+.button option {
+    background-color: #393939;
+}
+
 .special-button {
   color: #f3f3f3;
   font-family: 'Inconsolata', monospace;
   font-size: .8vw;
   text-align: center;
 
-  padding: 5px;
+  padding: 0px;
   margin: 5px;
   background: none;
 
@@ -58,6 +62,26 @@ body {
 }
 
 .special-button:focus {
+  outline: none;
+}
+
+.no-button {
+    color: #f3f3f3;
+    font-family: 'Inconsolata', monospace;
+    font-size: .8vw;
+    text-align: center;
+
+    padding: 5px;
+    margin: 5px;
+    background: none;
+}
+
+.no-button:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.no-button:focus {
   outline: none;
 }
 
@@ -108,11 +132,11 @@ body {
 }
 
 .logo .head {
-  font-size: 1.2vw;
+  font-size: 2.5vw;
 }
 
 .logo .sub {
-  font-size: .8vw;
+  font-size: 1vw;
 }
 
 
@@ -276,4 +300,55 @@ body {
   grid-template-areas:
   "a b"
   "c d";
+}
+
+.initial {
+  grid-area: a / a / d / d;
+}
+
+.pages-content {
+  padding: 30px;
+}
+
+.pages-content p {
+  color: #f3f3f3;
+  font-family: 'Inconsolata', monospace;
+  font-size: .8vw;
+}
+
+.pages-content li {
+  color: #f3f3f3;
+  font-family: 'Inconsolata', monospace;
+  font-size: .8vw;
+}
+
+.pages-content ul {
+  padding-left: 15px;
+}
+
+.pages-content h1 {
+  margin-top: 10px;
+  color: #f3f3f3;
+  font-family: 'Inconsolata', monospace;
+  font-size: 3vw;
+}
+
+.pages-content h2 {
+  margin-top: 10px;
+  color: #f3f3f3;
+  font-family: 'Inconsolata', monospace;
+  font-size: 2vw;
+}
+
+.center {
+  text-align: center;
+}
+
+.checkboxes input {
+  height: 15px;
+  margin-right: 2px;
+  vertical-align: bottom;
+  position: relative;
+  top: 2px;
+  *overflow: hidden;
 }

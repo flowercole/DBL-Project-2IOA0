@@ -53,8 +53,8 @@ function loadGraph(box, type) {
 
   renderSelectedBtn = document.getElementById('renderSelected');
   renderResetBtn = document.getElementById('renderReset');
-  updateViewBtn = document.getElementById('updateView');
-  filterEdgesBtn = document.getElementById('filterEdges');
+  updateViewBtn = document.getElementById('updateSettings');
+  filterEdgesBtn = document.getElementById('updateSettings');
 
   renderSelectedBtn.addEventListener('click', renderSelected, false);
   renderResetBtn.addEventListener('click', renderReset, false);
