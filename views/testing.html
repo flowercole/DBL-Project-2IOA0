@@ -1,0 +1,219 @@
+<!--
+HTML FOR VISUALIZATION TOOL
+code by Maxim Snoep (1313517)
+ -->
+<html>
+
+<head>
+  <meta charset="UTF-8">
+	<title>Funsualization</title>
+	<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
+	<link href="public/testing.css" rel="stylesheet">
+</head>
+
+
+<body>
+
+  <div class='container'>
+
+    <!-- Small Logo in Corner -->
+    <div class='logo component'>
+      <div class='image component'>
+        <p class='head bold'>Funsualization</p>
+        <p class='sub'>Making Visualizations Fun Again</p>
+      </div>
+    </div>
+
+    <div class='header'>
+        <div class='upload component'>
+          <div class='upload-left'>
+            <p class='bold'>1. Choose a dataset.</p>
+            <!-- File Select Button -->
+            <input id="input" type="file" class='input'>  <label for="input" id='input-placeholder' class='button'>Choose a file</label>
+            <p class='bold'>2. Give it a name (optional).</p>
+            <!-- File Name Field -->
+            <input id="filename" placeholder="Filename (Optional)" type="text" class='button' autocomplete="off" spellcheck="false">
+          </div>
+          <div class='upload-right'>
+            <p class='bold'>3. Click the button.</p>
+            <!-- Upload Button -->
+            <button type='button' id="submit" class='button'>Upload!</button>
+            <p class='bold'>4. Hope for a succesful upload.</p>
+            <div class='component bordered'>
+              <!-- <p>File: <span id='file'>No file uploaded.</span></p> -->
+              <p>Message:  <span id='msg'>No errors.</span></p>
+              <!-- <p>File Name: <span id='name'>No file uploaded.</span></p> -->
+            </div>
+          </div>
+        </div>
+
+        <div class='select component'>
+          <div class='select-left'>
+            <p class='bold'>5. Select the visualizations.</p>
+            <div class='component'>
+              <!-- Visualization Selector 1 -->
+              <p><input type="checkbox" id='force-select' onclick="updateLayoutSettings('force')">Force Directed Graph</p>
+              <!-- Visualization Selector 2 -->
+              <p><input type="checkbox" id='radial-select' onclick="updateLayoutSettings('radial')">Radial Graph</p>
+              <!-- Visualization Selector 3 -->
+              <p><input type="checkbox" id='hierarchical-select' onclick="updateLayoutSettings('hierarchical')">Hierarchical Graph</p>
+              <!-- Visualization Selector 4 -->
+              <p><input type="checkbox" id='matrix-select' onclick="updateLayoutSettings('matrix')">Matrix Heatmap</p>
+            </div>
+          </div>
+          <div class='select-right'>
+            <p class='bold'>6. Select a dataset.</p>
+            <!-- Dataset Selector -->
+            <select id="select_file" class='button'> <option>No options available</option> </select>
+            <p class='bold'>7. Click the button.</p>
+            <button type='button' id="updateLayout" class='button'>Visualize!</button>
+          </div>
+
+        </div>
+
+        <div class='pages component'>
+          <button id='about-btn' class='button'>about</button>
+          <button id='contact-btn' class='button'>contact</button>
+          <button id='help-btn' class='button'>help</button>
+        </div>
+
+    </div>
+
+    <div class='settings component'>
+
+      <div class='setting'>
+        <button type='button' id='share-btn' class='special-button setting-left'>Share Settings</button>
+        <input id="share-url" placeholder="Share URL" type="text" class='special-button setting-right' autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class='setting'>
+        <button type='button' id='reset-btn' class='special-button setting-both'>Reset Settings</button>
+      </div>
+
+      <div class='setting'>
+        <button type='button' id='renderSelected' class='special-button  setting-left'>Show Selected Nodes</button>
+        <button type='button' id='renderReset' class='special-button  setting-right'>Show All Nodes</button>
+      </div>
+
+      <div class='setting'>
+        <p class='setting-left'>Minimum Edge Weight</p>
+        <input class='setting-right special-button' id="minWeight" type="range" min="0" max="100" value="0">
+      </div>
+
+      <div class='setting'>
+        <p class='setting-left'>Maximum Edge Weight</p>
+        <input class='setting-right special-button' id="maxWeight" type="range" min="0" max="100" value="100">
+      </div>
+
+      <!-- <div class='setting'>
+        <button type='button' id='filterEdges' class='special-button setting-both'>Apply Filters</button>
+      </div> -->
+
+
+      <!-- <p class='bold'>Graph settings:</p>
+      <div class='component bordered'> -->
+
+        <div class='setting'>
+          <p class='setting-left'>Link Width</p>
+          <input class='setting-right special-button' id="linkWidth" type="range" min="0" max="250" value="10">
+        </div>
+        <div class='setting'>
+          <p class='setting-left'>Link Opacity</p>
+          <input class='setting-right special-button' id="linkOpacity" type="range" min="1" max="100" value="100">
+        </div>
+        <div class='setting'>
+          <p class='setting-left'>Node Size</p>
+          <input class='setting-right special-button' id="nodeSize" type="range" min="5" max="100" value="25">
+        </div>
+        <div class='setting'>
+          <p class='setting-left'>Node Color</p>
+          <input class='setting-right special-button' id="nodeColor" type="color" value="#0080ff">
+        </div>
+        <div class='setting'>
+          <p class='setting-left'>Selected node color</p>
+          <input class='setting-right special-button' id="selNodeColor" type="color" value="#ff88aa">
+        </div>
+      <!--  <div class='setting'>
+          <button type='button' id='updateView' class='special-button  setting-both'>Update Graph</button>
+        </div>
+       </div> -->
+
+      <!-- <p class='bold'>Heatmap settings:</p>
+      <div class='component bordered'> -->
+        <div class='setting'>
+          <p class='setting-left'>Heatmap start color</p>
+          <input class='setting-right special-button' id="startColor" type="color" value="#D3DFFF">
+        </div>
+        <div class='setting'>
+          <p class='setting-left'>Heatmap end color</p>
+          <input class='setting-right special-button' id="endColor" type="color" value="#003DDE">
+        </div>
+        <div class='setting'>
+          <p class='setting-left'>Select reordering</p>
+          <select class='setting-right special-button' id="selectReordering", onchange="SelectReordering(this);">
+            <option value="original">Original</option>
+            <option value="alphabetical">Alphabetical</option>
+            <option value="sum">Sum</option>
+            <option value="average">Average</option>
+          </select>
+        </div>
+
+        <div class='setting'>
+          <button type='button' id='viewHeatmap3D' class='special-button  setting-both'>Switch to 3D</button>
+        </div>
+      <!-- <div class='setting'>
+          <button type='button' id='updateHeatmap' class='special-button  setting-both'>Update Heatmap</button>
+        </div>
+      </div>-->
+
+      <div class='setting'>
+        <button type='button' id='updateSettings' class='special-button setting-both'>Apply Settings</button>
+      </div>
+    </div>
+
+
+
+    <div class='main' id='canvas'>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="/public/scripts/matrix/matrix.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="/public/scripts/graph/graph.js"></script>
+  <script src="/public/scripts/graph/graphs/forceGraph.js"></script>
+  <script src="/public/scripts/graph/graphs/radialGraph.js"></script>
+  <script src="/public/scripts/graph/graphs/hierarchicalGraph.js"></script>
+
+  <script>
+
+  // LOADING ABOUT CONTACT AND HELP
+  let aboutBtn = document.getElementById('about-btn');
+  aboutBtn.addEventListener('click', function(){
+    loadLayout('1');
+    loadVisualizationCanvas('about', 'box1')}
+  )
+
+  let contactBtn = document.getElementById('contact-btn');
+  contactBtn.addEventListener('click', function(){
+    loadLayout('1');
+    loadVisualizationCanvas('contact', 'box1')}
+  )
+
+  let helpBtn = document.getElementById('help-btn');
+  helpBtn.addEventListener('click', function(){
+    loadLayout('1');
+    loadVisualizationCanvas('help', 'box1')}
+  )
+
+  </script>
+
+  <script src='public/scripts/upload/settings.js'></script>
+  <script src='public/scripts/upload/upload.js'></script>
+  <script src='public/scripts/upload/dataselector.js'></script>
+  <script src='public/scripts/upload/visualizations.js'></script>
+  <script src='public/scripts/upload/share.js'></script>
+
+</body>
+</html>

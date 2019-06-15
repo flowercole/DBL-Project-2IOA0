@@ -1,0 +1,279 @@
+/* Initialize */
+
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: auto;
+  background-image: linear-gradient(to bottom right, #1f1f1f, #393939);
+  overflow: hidden;
+}
+
+/*** General Styling Classes ***/
+
+/* Button Class */
+.button {
+    color: #f3f3f3;
+    font-family: 'Inconsolata', monospace;
+    font-size: .8vw;
+    text-align: center;
+
+    padding: 5px;
+    margin: 5px;
+    background: none;
+
+    border: solid 1px #f3f3f3;
+    border-radius: 3px;
+}
+
+.button:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.special-button {
+  color: #f3f3f3;
+  font-family: 'Inconsolata', monospace;
+  font-size: .8vw;
+  text-align: center;
+
+  padding: 5px;
+  margin: 5px;
+  background: none;
+
+  border: solid 1px #f3f3f3;
+  border-radius: 3px;
+}
+
+.special-button:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.special-button:focus {
+  outline: none;
+}
+
+/* Component Class */
+.component {
+  padding: 5px;
+  margin: 5px;
+}
+
+/* Special Component Class */
+.special-component {
+  margin: 5px;
+}
+
+/* Bordered Class */
+.bordered {
+  border: solid 1px #f3f3f3;
+  border-radius: 3px;
+}
+
+/* Bold Class */
+.bold {
+  font-weight: 700;
+}
+
+/*** Actual Page Classes ***/
+
+/** Container **/
+.container {
+  overflow-y: auto;
+  height: 100%;
+  width: auto;
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+  "logo header header"
+  "settings main main";
+}
+
+/* Logo */
+.logo {
+  grid-area: logo;
+
+  color: #f3f3f3;
+  font-family: 'Inconsolata', monospace;
+}
+
+.logo .head {
+  font-size: 1.2vw;
+}
+
+.logo .sub {
+  font-size: .8vw;
+}
+
+
+
+/** Header **/
+.header {
+  grid-area: header;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  grid-template-rows: auto;
+  grid-template-areas:
+  "upload select pages";
+}
+
+/* Upload */
+.header .upload {
+  grid-area: upload;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+  "left right";
+
+  color: #f3f3f3;
+  font-family: 'Inconsolata', monospace;
+  font-size: .8vw;
+}
+
+.header .upload .upload-left {
+  grid-area: left;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* make input dissapear */
+.header .upload .upload-left .input {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.header .upload .upload-right {
+  grid-area: right;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* Select */
+
+.header .select {
+  grid-area: select;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+  "left right";
+
+  color: #f3f3f3;
+  font-family: 'Inconsolata', monospace;
+  font-size: .8vw;
+}
+
+.header .select .select-left {
+  grid-area: left;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.header .select .select-right {
+  grid-area: right;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+/* Pages*/
+
+.header .pages {
+  grid-area: pages;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 10vw;
+}
+
+
+
+/* Settings */
+.settings {
+  height: 500px;
+
+  grid-area: left;
+
+  overflow; auto;
+  grid-area: settings;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  color: #f3f3f3;
+  font-family: 'Inconsolata', monospace;
+  font-size: .8vw;
+}
+
+.settings .setting {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+  "left right";
+
+}
+
+.settings .setting .setting-left {
+  grid-area: left;
+
+  margin-right: 5px;
+
+  display: grid;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.settings .setting .setting-right  {
+  grid-area: right;
+
+  margin-left: 5px;
+
+  display: grid;
+  align-items: center;
+
+  width: auto;
+}
+
+.settings .setting .setting-both {
+  grid-area: left / left / right / right;
+}
+
+/* Main */
+.main {
+  grid-area: main;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+  "a b"
+  "c d";
+}

@@ -21,7 +21,7 @@ loadLayout = (num) => {
 
   for (i = 1; i <= parseInt(num); i++) {
     var box = document.createElement('div');
-    box.classList.add('component')
+    box.classList.add('special-component')
     box.classList.add('bordered')
     box.id = `box${i}`
     canvas.appendChild(box)

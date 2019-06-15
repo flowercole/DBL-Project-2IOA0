@@ -117,12 +117,12 @@ function csvJSON(csv) {
 	adjacency[target] = weights.slice(1, weights.length-1)
     for (j = 1; j < weights.length; j++) {
       if (weights[j] > 0) {
-        if (vertices[j] != target) 
+        if (vertices[j] != target)
           links.push({"source": target, "target": vertices[j], "value": weights[j]});
         }
       }
     }
-  
+
 
   graph_data = {"nodes": nodes, "links": links, "selected_nodes": [], "selected_links": [], "adjacency" : adjacency};
 
@@ -209,7 +209,7 @@ function nodeClick(node) {
 		radial_data.selected_nodes.splice(radial_data.selected_nodes.indexOf(radial_node), 1);
 	  }
   }
-  
+
     // Radial data
   if (showHierarchical) {
 	  console.log("Showing Hierarchical")
@@ -225,7 +225,7 @@ function nodeClick(node) {
 		hierarchical_data.selected_nodes.splice(hierarchical_data.selected_nodes.indexOf(hierarchical_node), 1);
 	  }
   }
-  
+
   //console.log(graph_data, force_data, radial_data);
 	if (showForce) {
   svg_force.selectAll("circle")
@@ -234,7 +234,7 @@ function nodeClick(node) {
       else { return document.getElementById("selNodeColor").value }
     })
 	}
-	
+
 	if (showRadial) {
   svg_radial.selectAll("circle")
     .attr("fill", function(d) {
@@ -242,7 +242,7 @@ function nodeClick(node) {
       else { return document.getElementById("selNodeColor").value }
     })
 	}
-	
+
 	if (showHierarchical) {
   svg_hierarchical.selectAll("circle")
     .attr("fill", function(d) {
@@ -250,7 +250,7 @@ function nodeClick(node) {
       else { return document.getElementById("selNodeColor").value }
     })
 	}
-	
+
   updateSelectedEdges();
   //console.log(graph_data, force_data, radial_data);
 
@@ -383,7 +383,7 @@ function renderReset() {
 
 function updateView() {
 	updateAttributes();
-	
+
 	if (showForce) {
 		svg_force.selectAll("circle")
 			.attr("r", attributes[2]) //sets the radius of circle
@@ -392,12 +392,12 @@ function updateView() {
 				if (!force_data.selected_nodes.includes(d)) { return attributes[3] }
 				else { return attributes[4] }
 		})
-		
+
 		svg_force.selectAll("line").data(force_data.links)
 			.attr("stroke-width", function(d) {return attributes[0] * Math.sqrt(d.value) / 5})
 			.attr("stroke-opacity", function(d) {return attributes[1] * Math.sqrt(d.value) / 5})
 	}
-	
+
 	if (showRadial) {
 		svg_radial.selectAll("circle")
 			.attr("r", attributes[2]) //sets the radius of circle
@@ -406,12 +406,12 @@ function updateView() {
 				if (!radial_data.selected_nodes.includes(d)) { return attributes[3] }
 				else { return attributes[4] }
 		})
-		
+
 		svg_radial.selectAll("line").data(radial_data.links)
 			.attr("stroke-width", function(d) {return attributes[0] * Math.sqrt(d.value) / 5})
 			.attr("stroke-opacity", function(d) {return attributes[1] * Math.sqrt(d.value) / 5})
 	}
-	
+
 	if (showHierarchical) {
 		svg_hierarchical.selectAll("circle")
 			.attr("r", attributes[2]) //sets the radius of circle
@@ -420,10 +420,10 @@ function updateView() {
 				if (!hierarchical_data.selected_nodes.includes(d)) { return attributes[3] }
 				else { return attributes[4] }
 		})
-		
+
 		svg_hierarchical.selectAll("line").data(hierarchical_data.links)
-			.attr("stroke-opacity", function(d) {return attributes[1] * 1.6/Math.sqrt(d.source.children.length)}) 
-			.attr("stroke-width", function(d) {return attributes[0] * 1.6/Math.sqrt(d.source.children.length)}) ;
+			.attr("stroke-opacity", function(d) {return attributes[1] * 2/Math.sqrt(d.source.children.length)})
+			.attr("stroke-width", function(d) {return attributes[0] * 2/Math.sqrt(d.source.children.length)}) ;
 	}
 }
 
@@ -459,10 +459,10 @@ function filterEdges() {
 			}
 		}
 	}
-	
+
 	if (showHierarchical) {
 	  svg_hierarchical.selectAll("line").remove();
-	
+
 		counter = 0;
 		for (i = 0; i < hierarchical_data.links.length && counter < showMax; i++) {
 			l_h = hierarchical_data.links[i]
