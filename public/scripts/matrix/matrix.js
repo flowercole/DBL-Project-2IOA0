@@ -17,14 +17,12 @@ var colorscaleValue = [
 document.getElementById("updateSettings").addEventListener("click",function() {
   if (localStorage.getItem('vis-1') == 'matrix' || localStorage.getItem('vis-2') == 'matrix' || localStorage.getItem('vis-3') == 'matrix' || localStorage.getItem('vis-4') == 'matrix'  ){
     UpdateGraph();
-    //SelectReordering(document.getElementById('selectReordering'))
   }
 });
 
 document.getElementById("viewHeatmap3D").addEventListener("click",function() {
   if (localStorage.getItem('vis-1') == 'matrix' || localStorage.getItem('vis-2') == 'matrix' || localStorage.getItem('vis-3') == 'matrix' || localStorage.getItem('vis-4') == 'matrix'  ){
-    ChangeDimention()
-    //SelectReordering(document.getElementById('selectReordering'))
+    ChangeDimention();
   }
 });
 
@@ -298,14 +296,86 @@ function SumOrder(xVal,yVal,matrix) {
     //return returnArray;
     return;
 }
-function ColSumOrder(xVal,yVal,matrix) {
-    var cols = new Array(matrix[0].length).fill(0);
+function OutDegreeOrder(xVal,yVal,matrix) {
+    var rows = new Array(matrix[0].length).fill(0);
     for(var i = 0; i < matrix[0].length; i++){
       for(var j = 0; j < matrix[0].length; j++){
-        cols[j] += matrix[i][j];
+        if(Number(matrix[i][j]) != 0){
+          rows[i]++;
+        }
+      }
+    }
+    rows_index = [];
+    for(var i = 0; i < matrix[0].length; i++){
+      rows_index[i] = i;
+    }
+
+    function swap(a, b) {
+      return [b, a]
+    }
+
+    function partition(A, B, lo, hi){
+      var pivot = A[hi];
+      var i = lo;
+      for (j = lo; j < hi; j++){
+        if (A[j] < pivot){
+          [A[i],A[j]] = swap(A[i],A[j]);
+          [B[i],B[j]] = swap(B[i],B[j]);
+          i++;
+        }
+      }
+      [A[i],A[hi]] = swap(A[i],A[hi]);
+      [B[i],B[hi]] = swap(B[i],B[hi]);
+      return i;
+    }
+
+    function quicksort(A, B, lo, hi){
+      if (lo < hi){
+        var p = partition(A, B, lo, hi);
+        quicksort(A, B, lo, p - 1);
+        quicksort(A, B, p + 1, hi);
       }
     }
 
+    quicksort(rows, rows_index,0,rows.length-1);
+
+    var order_matrix = [];
+    for(var i = 0; i < matrix[0].length; i++){
+      order_matrix[i] = [];
+      for(var j = 0; j < matrix[0].length; j++){
+        order_matrix[i][j] = matrix[rows_index[i]][rows_index[j]];
+      }
+    }
+    var reorderedXValues = new Array(xVal.length).fill(0);
+    var reorderedYValues = new Array(yVal.length).fill(0);
+    for(var i = 0; i < xVal.length;i++) {
+        reorderedXValues[i] = xVal[rows_index[i]];
+        reorderedYValues[i] = yVal[rows_index[i]];
+    }
+
+    /*colorscaleValue = [
+        [0, '#D3DFFF'],
+        [1, '#003DDE']
+    ];*/
+    if(dimention==2) {
+        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
+    } else {
+        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
+    }
+    //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
+    //return returnArray;
+    return;
+}
+function InDegreeOrder(xVal,yVal,matrix) {
+    var cols = new Array(matrix[0].length).fill(0);
+    for(var i = 0; i < matrix[0].length; i++){
+      for(var j = 0; j < matrix[0].length; j++){
+        if(Number(matrix[i][j]) != 0){
+          cols[j]++;
+        }
+      }
+    }
+    console.log(cols);
     cols_index = [];
     for(var i = 0; i < matrix[0].length; i++){
       cols_index[i] = i;
@@ -358,7 +428,75 @@ function ColSumOrder(xVal,yVal,matrix) {
         [0, '#D3DFFF'],
         [1, '#003DDE']
     ];*/
-    console.log("col sum");
+    if(dimention==2) {
+        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
+    } else {
+        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
+    }
+    //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
+    //return returnArray;
+    return;
+}
+function ColSumOrder(xVal,yVal,matrix) {
+    var cols = new Array(matrix[0].length).fill(0);
+    for(var i = 0; i < matrix[0].length; i++){
+      for(var j = 0; j < matrix[0].length; j++){
+        cols[j] += Number(matrix[i][j]);
+      }
+    }
+    console.log(cols);
+    cols_index = [];
+    for(var i = 0; i < matrix[0].length; i++){
+      cols_index[i] = i;
+    }
+
+    function swap(a, b) {
+      return [b, a]
+    }
+
+    function partition(A, B, lo, hi){
+      var pivot = A[hi];
+      var i = lo;
+      for (j = lo; j < hi; j++){
+        if (A[j] < pivot){
+          [A[i],A[j]] = swap(A[i],A[j]);
+          [B[i],B[j]] = swap(B[i],B[j]);
+          i++;
+        }
+      }
+      [A[i],A[hi]] = swap(A[i],A[hi]);
+      [B[i],B[hi]] = swap(B[i],B[hi]);
+      return i;
+    }
+
+    function quicksort(A, B, lo, hi){
+      if (lo < hi){
+        var p = partition(A, B, lo, hi);
+        quicksort(A, B, lo, p - 1);
+        quicksort(A, B, p + 1, hi);
+      }
+    }
+
+    quicksort(cols, cols_index,0,cols.length-1);
+
+    var order_matrix = [];
+    for(var i = 0; i < matrix[0].length; i++){
+      order_matrix[i] = [];
+      for(var j = 0; j < matrix[0].length; j++){
+        order_matrix[i][j] = matrix[cols_index[i]][cols_index[j]];
+      }
+    }
+    var reorderedXValues = new Array(xVal.length).fill(0);
+    var reorderedYValues = new Array(yVal.length).fill(0);
+    for(var i = 0; i < xVal.length;i++) {
+        reorderedXValues[i] = xVal[cols_index[i]];
+        reorderedYValues[i] = yVal[cols_index[i]];
+    }
+
+    /*colorscaleValue = [
+        [0, '#D3DFFF'],
+        [1, '#003DDE']
+    ];*/
     if(dimention==2) {
         DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
     } else {
@@ -439,38 +577,51 @@ function RowSumOrder(xVal,yVal,matrix) {
     return;
 }
 function Cuthill_Mckee(xVal,yVal,initial_matrix){
-  //var initial_matrix = [];
-  for(var i=0; i < initial_matrix[0].length;i++){
-    initial_matrix[i] = [];
-    for(var j=0;j<initial_matrix[0].length;j++){
-      initial_matrix[i][j]=initial_matrix[i][j];
-    }
-
+  function matrix(rows, cols, defaultValue){
+        var arr = [];
+        // Creates all lines:
+        for(var i=0; i < rows; i++){
+          // Creates an empty line
+          arr.push([]);
+          // Adds cols to the empty line:
+          arr[i].push( new Array(cols));
+          for(var j=0; j < cols; j++){
+            // Initializes:
+            arr[i][j] = defaultValue;
+          }
+        }
+        return arr;
   }
+  var sym_matrix = matrix(initial_matrix[0].length,initial_matrix[0].length,0);
   for(var i = 0; i < initial_matrix[0].length; i++){
+    for(var j = 0; j < initial_matrix[0].length; j++){
+      sym_matrix[i][j] = initial_matrix[i][j];
+    }
+  }
+  console.log(sym_matrix);
+  for(var i = 0; i < sym_matrix[0].length; i++){
       for(var j = 0; j <= i; j++){
-        if (initial_matrix[i][j] == 0 && initial_matrix[j][i] != 0) {
-          initial_matrix[i][j] = initial_matrix[j][i]
-        }else if (initial_matrix[i][j] != 0 && initial_matrix[j][i] != 0){
-          initial_matrix[j][i] = initial_matrix[i][j] = (initial_matrix[i][j] + initial_matrix [j][i])/2;
-        }else if (initial_matrix[i][j] != 0 && initial_matrix[j][i] == 0){
-          initial_matrix[j][i] = initial_matrix[i][j];
+        if (sym_matrix[i][j] == 0 && sym_matrix[j][i] != 0) {
+          sym_matrix[j][i] = 0;
+        }else if (sym_matrix[i][j] != 0 && sym_matrix[j][i] != 0){
+          sym_matrix[j][i] = sym_matrix[i][j] = (sym_matrix[i][j] + sym_matrix [j][i])/2;
+        }else if (sym_matrix[i][j] != 0 && sym_matrix[j][i] == 0){
+          sym_matrix[i][j] = 0;
         }
     }
   }
   var maxValue = 0;
-    for (var i = 0; i < initial_matrix[0].length; i++) {
-      for (var j = 0; j < initial_matrix[0].length; j++){
-        if(maxValue < initial_matrix[i][j])
-          maxValue = initial_matrix[i][j];
+    for (var i = 0; i < sym_matrix[0].length; i++) {
+      for (var j = 0; j < sym_matrix[0].length; j++){
+        if(maxValue < sym_matrix[i][j])
+          maxValue = sym_matrix[i][j];
       }
     }
     console.log(maxValue);
-    var binary_matrix = [];
-    for(var i = 0; i < initial_matrix[0].length; i++){
-      binary_matrix[i] = [];
-      for(var j = 0; j < initial_matrix[0].length; j++){
-        if(initial_matrix[i][j] > 0 && initial_matrix[i][j] < 0.225*maxValue){
+    var binary_matrix = matrix(initial_matrix[0].length,initial_matrix[0].length,0);
+    for(var i = 0; i < sym_matrix[0].length; i++){
+      for(var j = 0; j < sym_matrix[0].length; j++){
+        if(sym_matrix[i][j] > 0.7*maxValue && sym_matrix[i][j] <= maxValue){
           binary_matrix[i][j] = 1;
         } else {
           binary_matrix[i][j] = 0;
@@ -481,12 +632,12 @@ function Cuthill_Mckee(xVal,yVal,initial_matrix){
       }
     }
 
-    function findIndex(a, x) {
-      for (var i = 0; i < a.length; i++)
-        if (a[i].index == x)
-            return i;
-      return -1;
-    }
+    function findIndex(a, x) { 
+      for (var i = 0; i < a.length; i++) 
+        if (a[i].index == x) 
+            return i; 
+      return -1; 
+    } 
 
     function sumDegrees(a){
       var sum = 0;
@@ -501,7 +652,7 @@ function Cuthill_Mckee(xVal,yVal,initial_matrix){
       this.length = from < 0 ? this.length + from : from;
       return this.push.apply(this, rest);
     };
-    var perm_0 = cuthillMckee(binary_matrix);
+
     function cuthillMckee(matrix) {
       var n = matrix[0].length;
       var result = [];
@@ -514,11 +665,11 @@ function Cuthill_Mckee(xVal,yVal,initial_matrix){
       //step 6: Terminate this algorithm once all objects are included in R.
       while(notVisited.length){
         //step 1: We first find the object with minimum degree whose index has not yet been added to Result. Say, object corresponding to pth row has been identified as the object with a minimum degree. Add p to Result.
-        var minNodeIndex = 0;
-
+        var minNodeIndex = 0; 
+  
         for (var i = 1; i < notVisited.length; i++){
-          if (sumDegrees(matrix[notVisited[i]]) < sumDegrees(matrix[notVisited[minNodeIndex]])){
-            minNodeIndex = i;
+          if (sumDegrees(matrix[notVisited[i]]) < sumDegrees(matrix[notVisited[minNodeIndex]])){ 
+            minNodeIndex = i; 
           }
         }
         queue.enqueue(notVisited[minNodeIndex]);
@@ -532,36 +683,36 @@ function Cuthill_Mckee(xVal,yVal,initial_matrix){
         //step 3:Extract the first node in Q, say C. If C has not been inserted in R, add it to R, add to Q the neighbors of C in increasing order of degree.
         //step 4:If Q is not empty, repeat S3.
         while(!queue.isEmpty()){
-          var toSort = [];
-
-          for (var i = 0; i < n; i++) {
+          var toSort = []; 
+  
+          for (var i = 0; i < n; i++) { 
             var found_i = -1;
             for (var j = 0; j < notVisited.length; j++){
-              if (notVisited[j] == i){
-                found_i = j;
+              if (notVisited[j] == i){ 
+                found_i = j; 
                 break;
               }
             }
-            if (i != queue.peek() && matrix[queue.peek()][i] == 1 && found_i != -1) {
-              toSort.push(i);
-              notVisited.splice(i,1);
-            }
-          }
-
+            if (i != queue.peek() && matrix[queue.peek()][i] == 1 && found_i != -1) { 
+              toSort.push(i); 
+              notVisited.splice(i,1); 
+            } 
+          } 
+  
           toSort.sort(function(a, b){return a-b});
-
+  
           for (var i = 0; i < toSort.length; i++){
-            queue.enqueue(toSort[i]);
+            queue.enqueue(toSort[i]); 
           }
-          result.push(queue.peek());
-          queue.dequeue();
+          result.push(queue.peek()); 
+          queue.dequeue(); 
         }
-      //If Q is empty, but there are objects in the matrix which have not been included in R, start from S1, once again. (This could happen if there are disjoint graphs)
+      //If Q is empty, but there are objects in the matrix which have not been included in R, start from S1, once again. (This could happen if there are disjoint graphs) 
       }
       return result;
     }
 
-
+    var perm_0 = cuthillMckee(binary_matrix);
     console.log(perm_0);
     var perm = [];
     var exist = new Array(binary_matrix[0].length).fill(false);
@@ -579,16 +730,17 @@ function Cuthill_Mckee(xVal,yVal,initial_matrix){
         perm.splice(i,0,i);
       }
     }
-    console.log(binary_matrix[0]);
+    console.log(binary_matrix);
     console.log(perm);
 
-    var order_matrix = [];
+    var order_matrix = matrix(initial_matrix[0].length,initial_matrix[0].length,0);
     for(var i = 0; i < initial_matrix[0].length; i++){
-      order_matrix[i] = [];
       for(var j = 0; j < initial_matrix[0].length; j++){
         order_matrix[i][j] = initial_matrix[perm[i]][perm[j]];
       }
     }
+    console.log("ord");
+    console.log(order_matrix+"last one to show");
 
     var reorderedXValues = new Array(xVal.length).fill(0);
     var reorderedYValues = new Array(yVal.length).fill(0);
@@ -707,11 +859,19 @@ function SelectReordering(selectTag) {
                 }
                 if(selIndexes=="Cuthill-Mckee") {
                     console.log("Cuthill-Mckee");
-                    //Cuthill_Mckee(xValues,yValues,zValues);
+                    Cuthill_Mckee(xValues,yValues,zValues);
+                }
+                if(selIndexes=="In Degree"){
+                    console.log("InDegreeOrder");
+                    InDegreeOrder(xValues,yValues,zValues);
+                }
+                if(selIndexes=="Out Degree"){
+                    console.log("OutDegreeOrder");
+                    OutDegreeOrder(xValues,yValues,zValues);
                 }
             }
             else {
-                console.log("There is no selected option");
+                console.log("something went bad");
             }
 }
 function ChangeDimention() {
@@ -808,7 +968,7 @@ function Visualise(file, box) {
   // Fill in array with correct z-values
   for(var i = 0; i < array[0].length-1; i++) {
     for(var j = 0; j < array[0].length-1; j++) {
-      zValues[i][j]=array[i+1][j+1];
+        zValues[i][j]=Number(array[i+1][j+1]);
     }
   }
 
