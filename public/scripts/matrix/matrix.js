@@ -56,7 +56,7 @@ loadMatrix = (box1) => {
         [1, localStorage.getItem('endColor')]
     ];
     Visualise(file, box);
-     
+
   });
 
 }
@@ -632,12 +632,12 @@ function Cuthill_Mckee(xVal,yVal,initial_matrix){
       }
     }
 
-    function findIndex(a, x) { 
-      for (var i = 0; i < a.length; i++) 
-        if (a[i].index == x) 
-            return i; 
-      return -1; 
-    } 
+    function findIndex(a, x) {
+      for (var i = 0; i < a.length; i++)
+        if (a[i].index == x)
+            return i;
+      return -1;
+    }
 
     function sumDegrees(a){
       var sum = 0;
@@ -665,11 +665,11 @@ function Cuthill_Mckee(xVal,yVal,initial_matrix){
       //step 6: Terminate this algorithm once all objects are included in R.
       while(notVisited.length){
         //step 1: We first find the object with minimum degree whose index has not yet been added to Result. Say, object corresponding to pth row has been identified as the object with a minimum degree. Add p to Result.
-        var minNodeIndex = 0; 
-  
+        var minNodeIndex = 0;
+
         for (var i = 1; i < notVisited.length; i++){
-          if (sumDegrees(matrix[notVisited[i]]) < sumDegrees(matrix[notVisited[minNodeIndex]])){ 
-            minNodeIndex = i; 
+          if (sumDegrees(matrix[notVisited[i]]) < sumDegrees(matrix[notVisited[minNodeIndex]])){
+            minNodeIndex = i;
           }
         }
         queue.enqueue(notVisited[minNodeIndex]);
@@ -683,31 +683,31 @@ function Cuthill_Mckee(xVal,yVal,initial_matrix){
         //step 3:Extract the first node in Q, say C. If C has not been inserted in R, add it to R, add to Q the neighbors of C in increasing order of degree.
         //step 4:If Q is not empty, repeat S3.
         while(!queue.isEmpty()){
-          var toSort = []; 
-  
-          for (var i = 0; i < n; i++) { 
+          var toSort = [];
+
+          for (var i = 0; i < n; i++) {
             var found_i = -1;
             for (var j = 0; j < notVisited.length; j++){
-              if (notVisited[j] == i){ 
-                found_i = j; 
+              if (notVisited[j] == i){
+                found_i = j;
                 break;
               }
             }
-            if (i != queue.peek() && matrix[queue.peek()][i] == 1 && found_i != -1) { 
-              toSort.push(i); 
-              notVisited.splice(i,1); 
-            } 
-          } 
-  
-          toSort.sort(function(a, b){return a-b});
-  
-          for (var i = 0; i < toSort.length; i++){
-            queue.enqueue(toSort[i]); 
+            if (i != queue.peek() && matrix[queue.peek()][i] == 1 && found_i != -1) {
+              toSort.push(i);
+              notVisited.splice(i,1);
+            }
           }
-          result.push(queue.peek()); 
-          queue.dequeue(); 
+
+          toSort.sort(function(a, b){return a-b});
+
+          for (var i = 0; i < toSort.length; i++){
+            queue.enqueue(toSort[i]);
+          }
+          result.push(queue.peek());
+          queue.dequeue();
         }
-      //If Q is empty, but there are objects in the matrix which have not been included in R, start from S1, once again. (This could happen if there are disjoint graphs) 
+      //If Q is empty, but there are objects in the matrix which have not been included in R, start from S1, once again. (This could happen if there are disjoint graphs)
       }
       return result;
     }
@@ -849,11 +849,11 @@ function SelectReordering(selectTag) {
                     console.log("Average");
                     AverageOrder(xValuesOriginal,yValuesOriginal,zValuesOriginal);
                 }
-                if(selIndexes=="Column Sum") {
+                if(selIndexes=="ColumnSum") {
                     console.log("Column Sum");
                     ColSumOrder(xValuesOriginal,yValuesOriginal,zValuesOriginal);
                 }
-                if(selIndexes=="Row Sum") {
+                if(selIndexes=="RowSum") {
                     console.log("Row Sum");
                     RowSumOrder(xValuesOriginal,yValuesOriginal,zValuesOriginal);
                 }
@@ -861,17 +861,17 @@ function SelectReordering(selectTag) {
                     console.log("Cuthill-Mckee");
                     Cuthill_Mckee(xValues,yValues,zValues);
                 }
-                if(selIndexes=="In Degree"){
+                if(selIndexes=="InDegree"){
                     console.log("InDegreeOrder");
                     InDegreeOrder(xValues,yValues,zValues);
                 }
-                if(selIndexes=="Out Degree"){
+                if(selIndexes=="OutDegree"){
                     console.log("OutDegreeOrder");
                     OutDegreeOrder(xValues,yValues,zValues);
                 }
             }
             else {
-                console.log("something went bad");
+                console.log("something went wrong");
             }
 }
 function ChangeDimention() {
@@ -1025,7 +1025,7 @@ function DisplayGraph(xVal,yVal,zVal) {
     type: 'heatmap'
     }
   ];
-     var layout = {   
+     var layout = {
     xaxis: {
         showticklabels: true,
         tickangle: 'auto',
@@ -1103,7 +1103,7 @@ function Display3DGraph(xVal,yVal,zVal) {
         font: {
         color: 'white'
       }
-    },    
+    },
     xaxis: {
         showticklabels: true,
         tickangle: 'auto',
