@@ -42,27 +42,40 @@ body {
     background-color: #393939;
 }
 
-.special-button {
+.selector {
   color: #f3f3f3;
   font-family: 'Inconsolata', monospace;
   font-size: .8vw;
   text-align: center;
 
-  padding: 0px;
-  margin: 5px;
+  padding: 3px;
+  margin: 3px;
   background: none;
 
   border: solid 1px #f3f3f3;
   border-radius: 3px;
 }
 
-.special-button:hover {
+.selector:hover {
   cursor: pointer;
-  opacity: 0.5;
 }
 
-.special-button:focus {
-  outline: none;
+.special-selector {
+  color: #f3f3f3;
+  font-family: 'Inconsolata', monospace;
+  font-size: .8vw;
+  text-align: center;
+
+  padding: 0px;
+  margin: 6px;
+  background: none;
+
+  border: solid 1px #f3f3f3;
+  border-radius: 3px;
+}
+
+.special-selector:hover {
+  cursor: pointer;
 }
 
 .no-button {
