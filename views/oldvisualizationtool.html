@@ -1,0 +1,238 @@
+<!--
+HTML FOR VISUALIZATION TOOL
+code by Maxim Snoep (1313517)
+ -->
+<html>
+
+<head>
+  <meta charset="UTF-8">
+	<title>Funsualization</title>
+	<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
+	<link href="public/test.css" rel="stylesheet">
+</head>
+
+
+<body>
+	<div class='container'>
+
+    <!-- Logo in Corner -->
+    <div class='logo component bordered'>
+      <p class='head'>Funsualization</p>
+      <p class='sub'>Making Visualizations Fun Again</p>
+    </div>
+
+    <!-- Top Header, with upload and select datasets fuctions -->
+    <div class='header'>
+      <!-- Upload Datasets -->
+      <div class='upload component'>
+        <!-- Left Upload Component -->
+        <div class='upload-left'>
+          <input id="input" type="file" class='input'><label for="input" id='input-placeholder' class='input-placeholder button bordered'>Choose a file</label>
+          <input id="filename" placeholder="Filename (Optional)" type="text" class='file-name button bordered' autocomplete="off" spellcheck="false">
+          <button type='button' id="submit" class='file-upload button bordered'>Upload!</button>
+        </div>
+        <!-- Right Upload Component -->
+        <div class='upload-right'>
+          <p class='file-info'>
+          File: <span id='file'>No file uploaded.</span><br>
+          Error:  <span id='msg'>No errors.</span><br>
+          File Name: <span id='name'>No file uploaded.</span>
+          </p>
+        </div>
+      </div>
+      <!-- Select Datasets-->
+      <div class='select component'>
+        <!-- Data Selector Component -->
+        <select id="select_file">
+
+        </select>
+      </div>
+
+      <div class='layout component'>
+        <div class='checkboxes'>
+          <!-- Visualization Selector 1 -->
+          <p><input type="checkbox" id='force-select' onclick="updateLayoutSettings('force')">Force Directed Graph</p>
+          <!-- Visualization Selector 2 -->
+          <p><input type="checkbox" id='radial-select' onclick="updateLayoutSettings('radial')">Radial Graph</p>
+          <!-- Visualization Selector 3 -->
+          <p><input type="checkbox" id='hierarchical-select' onclick="updateLayoutSettings('hierarchical')">Hierarchical Graph</p>
+          <!-- Visualization Selector 4 -->
+          <p><input type="checkbox" id='matrix-select' onclick="updateLayoutSettings('matrix')">Matrix Heatmap</p>
+        </div>
+        <div class='visualize-btn'>
+          <button type='button' id="updateLayout" class='button bordered'>Visualize!</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- About Component-->
+    <div class='about component'>
+      <button id='about-btn' class='button bordered'>about</button>
+      <button id='contact-btn' class='button bordered'>contact</button>
+      <button id='help-btn' class='button bordered'>help</button>
+    </div>
+
+    <!-- Left Settings Component -->
+    <div class='left component'>
+
+      <div class='component'>
+        <p>Graph settings:</p>
+        <div class='component bordered'>
+
+          <button type='button' id='renderSelected' class='button bordered'>Show Selected</button>
+          <button type='button' id='renderReset' class='button bordered'>Show All</button>
+
+          <div class='setting'>
+            <p>Min edge weight</p>
+            <input id="minWeight" type="range" min="0" max="1000" value="0">
+          </div>
+
+          <div class='setting'>
+            <p>Max edge weight</p>
+            <input id="maxWeight" type="range" min="0" max="1000" value="100">
+          </div>
+
+          <button type='button' id='filterEdges' class='button bordered'>Apply Filters</button>
+
+          <div class='setting'>
+            <p>Link width</p>
+            <input id="linkWidth" type="range" min="0" max="250" value="10">
+          </div>
+
+          <div class='setting'>
+            <p>Link opacity</p>
+            <input id="linkOpacity" type="range" min="1" max="100" value="100">
+          </div>
+
+          <div class='setting'>
+            <p>Node size</p>
+            <input id="nodeSize" type="range" min="5" max="100" value="25">
+          </div>
+
+          <div class='setting'>
+            <p>Node color</p>
+            <input id="nodeColor" type="color" value="#0080ff">
+          </div>
+
+          <div class='setting'>
+            <p>Selected node color</p>
+            <input id="selNodeColor" type="color" value="#ff88aa">
+          </div>
+
+          <button type='button' id='updateView' class='button bordered'>Update Graph</button>
+
+          </div>
+        </div>
+
+        <div class='component'>
+          <p>Heatmap settings:</p>
+          <div class='component bordered'>
+            <div class='setting'>
+              <p>Heatmap start color</p>
+              <input id="startColor" type="color" value="#D3DFFF">
+            </div>
+
+            <div class='setting'>
+              <p>Heatmap end color</p>
+              <input id="endColor" type="color" value="#003DDE">
+            </div>
+<!--
+
+            <div class='setting'>
+              <p>Min edge weight</p>
+              <input id="minWeightHeatmap" type="range" min="0" max="10" step="0.01" value="0">
+              <label id="minWeightHeatmapValue" style="color: white">0.00</label>
+              </div>
+
+            <div class='setting'>
+              <p>Max edge weight</p>
+              <input id="maxWeightHeatmap" type="range" min="0" max="10" step="0.01" value="100">
+              <label id="maxWeightHeatmapValue" style="color: white">10</label>
+            </div>
+-->
+
+
+
+
+            <button type='button' id='updateHeatmap' class='button bordered'>Update Heatmap</button>
+
+            <button type='button' id='viewHeatmap3D' class='button bordered'>Switch to 3D</button>
+
+            <div class='setting'>
+              <p>Select reordering</p>
+              <select id="selectReordering", onchange="SelectReordering(this);">
+                <option value="original">Original</option>
+                <option value="alphabetical">Alphabetical</option>
+                <option value="sum">Sum</option>
+                <option value="colsum">Column Sum</option>
+                <option value="rowsum">Row Sum</option>
+                <option value="cuthill-mckee">Cuthill-Mckee</option>
+                <option value="average">Average</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+
+        <button type='button' id='reset-btn' class='button bordered'>Reset Settings</button>
+        <button type='button' id='share-btn' class='button bordered'>Share Settings</button>
+        <input id="share-url" placeholder="Share URL" type="text" class='button bordered' autocomplete="off" spellcheck="false">
+
+    </div>
+
+    <div class='main component' id='canvas'>
+      <div class='initial component bordered'>
+      </div>
+    </div>
+
+    <div class='right component'>
+
+
+    </div>
+
+	</div>
+
+
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="/public/scripts/matrix/matrix.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="/public/scripts/graph/graph.js"></script>
+  <script src="/public/scripts/graph/graphs/forceGraph.js"></script>
+  <script src="/public/scripts/graph/graphs/radialGraph.js"></script>
+  <script src="/public/scripts/graph/graphs/hierarchicalGraph.js"></script>
+  <script src="/public/Queue.js"></script>
+  <script>
+
+  // LOADING ABOUT CONTACT AND HELP
+  let aboutBtn = document.getElementById('about-btn');
+  aboutBtn.addEventListener('click', function(){
+    loadLayout('1');
+    loadVisualizationCanvas('about', 'box1')}
+  )
+
+  let contactBtn = document.getElementById('contact-btn');
+  contactBtn.addEventListener('click', function(){
+    loadLayout('1');
+    loadVisualizationCanvas('contact', 'box1')}
+  )
+
+  let helpBtn = document.getElementById('help-btn');
+  helpBtn.addEventListener('click', function(){
+    loadLayout('1');
+    loadVisualizationCanvas('help', 'box1')}
+  )
+
+  </script>
+
+  <!-- Include All Scripts -->
+  <script src='public/scripts/upload/settings.js'></script>
+  <script src='public/scripts/upload/upload.js'></script>
+  <script src='public/scripts/upload/dataselector.js'></script>
+  <script src='public/scripts/upload/visualizations.js'></script>
+  <script src='public/scripts/upload/share.js'></script>
+
+
+</body>
+</html>

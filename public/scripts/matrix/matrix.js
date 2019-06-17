@@ -984,11 +984,11 @@ function SelectReordering(selectTag) {
                     console.log("Average");
                     AverageOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
-                if(selIndexes=="Column Sum") {
+                if(selIndexes=="ColumnSum") {
                     console.log("Column Sum");
                     ColSumOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
-                if(selIndexes=="Row Sum") {
+                if(selIndexes=="RowSum") {
                     console.log("Row Sum");
                     RowSumOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }

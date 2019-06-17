@@ -7,19 +7,26 @@ code by Maxim Snoep (1313517)
 <head>
   <meta charset="UTF-8">
 	<title>Funsualization</title>
-	<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
-	<link href="public/styles/frontpage.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=VT323&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css?family=Major+Mono+Display&display=swap" rel="stylesheet">
+
+  <link href="public/styles/frontpage.css" rel="stylesheet">
 </head>
 
 
 <body>
 
+  <div id="particles-js"></div>
   <div class='container'>
 
     <div class='main component center'>
       <p class='head bold'>Funsualization</p>
-      <p class='sub'>Making Visualizations Fun Again</p>
-      <a href='/tool'><button class='cool-button'>Start Visualizing!</button></a>
+      <div class="typewriter">
+        <p class='sub'>Making Visualizations Fun Again.</p>
+      </div>
+      <a href='/tool'><button class='cool-button'>BEGIN VISUALIZING!</button></a>
     </div>
 
     <!--
@@ -34,5 +41,7 @@ code by Maxim Snoep (1313517)
 
   </div>
 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="public/scripts/particle.js"></script>
 </body>
 </html>
