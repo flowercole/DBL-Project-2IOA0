@@ -29,7 +29,6 @@ document.getElementById("viewHeatmap3D").addEventListener("click",function() {
 var minSlider = document.getElementById("minWeight");
 var maxSlider = document.getElementById("maxWeight");
 minSlider.oninput = function() {
-    //document.getElementById('minWeightHeatmapValue').innerHTML = this.value;
     console.log(this.value);
 }
 maxSlider.oninput = function() {
@@ -772,7 +771,7 @@ function SelectEdgeRange(xVal,yVal,zVal) {
     var minWeightHeatmap = document.getElementById("minWeight").value;
     var maxWeightHeatmap = document.getElementById("maxWeight").value;
     console.log(minWeightHeatmap+"in edge")
-    console.log(minWeightHeatmap+"in edge")
+    console.log(maxWeightHeatmap+"in edge")
     function matrix(rows, cols, defaultValue){
         var arr = [];
         // Creates all lines:
@@ -883,27 +882,16 @@ function ChangeDimention() {
         dimention=3;
         console.log("to3d")
         SelectReordering(document.getElementById('selectReordering'))
-        //Display3DGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
-        //document.getElementById("selectReordering").selectedIndex = 0;
-        //document.getElementById('minWeightHeatmapValue').innerHTML = 0.00;
-        //document.getElementById('maxWeightHeatmapValue').innerHTML = 10;
     }
     else {
         console.log("to2d")
         document.getElementById("viewHeatmap3D").innerHTML = "Switch to 3D";
         dimention=2;
         SelectReordering(document.getElementById('selectReordering'))
-        //DisplayGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
-        //document.getElementById("selectReordering").selectedIndex = 0;
-        //document.getElementById('minWeightHeatmapValue').innerHTML = 0.00;
-        //document.getElementById('maxWeightHeatmapValue').innerHTML = 10;
     }
     console.log("end"+dimention);
 }
 function Visualise(file, box) {
-    //document.getElementById("selectReordering").selectedIndex = 0;
-    //document.getElementById('minWeightHeatmapValue').innerHTML = 0.00;
-    //document.getElementById('maxWeightHeatmapValue').innerHTML = 10;
   xValues = [];
   yValues = [];
   // Build the name values
@@ -972,11 +960,6 @@ function Visualise(file, box) {
     }
   }
 
-    //var returnAlphaBeticalOrder = AlphabeticalOrder(xValues,yValues,zValues);
-    //var returnSumOrder = SumOrder(xValues,yValues,zValues);
-    //var returnAverageOrder = AverageOrder(xValues,yValues,zValues);
-    //console.log(zValues);
-    //console.log(returnSumOrder[2]);
   //Input data for heatmap
 
 xValuesOriginal = xValues;
@@ -997,7 +980,6 @@ for(var i = 0; i < zValues[0].length; i++) {
   }*/
  var maximum=0;
  for(var j = 0; j < zValues[0].length; j++) {
-      //console.log(Math.max(...zValues[j]));
      if(maximum<Math.max(...zValues[j]))
          {
              maximum = Math.max(...zValues[j]);
@@ -1078,7 +1060,7 @@ function DisplayGraph(xVal,yVal,zVal) {
     });
 }
 function Display3DGraph(xVal,yVal,zVal) {
-
+    console.log("in3DDD");
     document.getElementById("viewHeatmap3D").innerHTML = "Switch to 2D";
      var data = [{
       x: xVal,
@@ -1098,39 +1080,65 @@ function Display3DGraph(xVal,yVal,zVal) {
     }];
 
     var layout = {
-      title: {
-        text:'Heatmap of your data set',
-        font: {
-        color: 'white'
-      }
-    },
+    margin: {b:'0', l:'24', r:'24', t:'24'},
+    plot_bgcolor:"#2b2b2b",
+    paper_bgcolor:"#2b2b2b",
+    scene: {
+    camera: {eye: {x: 2.2, y: -1, z: 1}},
     xaxis: {
+        titlefont: {
+        color: "white"
+        },
         showticklabels: true,
         tickangle: 'auto',
         tickfont: {
-          //family: 'Old Standard TT, serif',
-          color: 'white'
+          color:'white',     
         },
+        backgroundcolor: "#2b2b2b",
+        gridcolor: "rgb(255, 255, 255)",
+        showbackground: true,
+        zerolinecolor: "rgb(255, 255, 255)"
     },
     yaxis: {
+        titlefont: {
+        color: "white"
+        },
         showticklabels: true,
         tickangle: 'auto',
         tickfont: {
-          //family: 'Old Standard TT, serif'
-          color: 'white'
+          color:'white',
+  		 //family:'Old Standard TT, serif',
+  		 //size: 14
         },
-        autorange:'reversed'
+        backgroundcolor: "#2b2b2b",
+        gridcolor: "rgb(255, 255, 255)",
+        showbackground: true,
+        zerolinecolor: "rgb(255, 255, 255)"
     },
-    plot_bgcolor:"#2b2b2b",
-    //paper_bgcolor:"#2b2b2b",
-      scene: {camera: {eye: {x: 2.2, y: -0.4, z: 1}}},
+    zaxis: {
+        titlefont: {
+        color: "white"
+        },
+        showticklabels: true,
+        tickangle: 'auto',
+        tickfont: {
+          color:'white',
+        },
+        backgroundcolor: "#2b2b2b",
+        gridcolor: "rgb(255, 255, 255)",
+        showbackground: true,
+        zerolinecolor: "rgb(255, 255, 255)"
+    },
       autosize: true,
       margin: {
         l: 65,
         r: 50,
         b: 65,
         t: 90,
-      }
+      },
+     
+        //autorange:'reversed'
+    }  
     };
     Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true,displayModeBar: true,scrollZoom: true,displaylogo: false,responsive: true});
 }

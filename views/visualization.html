@@ -96,12 +96,12 @@ code by Maxim Snoep (1313517)
       </div>
 
       <div class='setting'>
-        <p class='setting-left'>Minimum Edge Weight</p>
+        <p class='setting-left'>Minimum Link Weight</p>
         <input class='setting-right selector' id="minWeight" type="range" min="0" max="100" value="0">
       </div>
 
       <div class='setting'>
-        <p class='setting-left'>Maximum Edge Weight</p>
+        <p class='setting-left'>Maximum Link Weight</p>
         <input class='setting-right selector' id="maxWeight" type="range" min="0" max="100" value="100">
       </div>
 
@@ -130,7 +130,7 @@ code by Maxim Snoep (1313517)
           <input class='setting-right special-selector' id="nodeColor" type="color" value="#0080ff">
         </div>
         <div class='setting'>
-          <p class='setting-left'>Selected node color</p>
+          <p class='setting-left'>Selected Node Color</p>
           <input class='setting-right special-selector' id="selNodeColor" type="color" value="#ff88aa">
         </div>
       <!--  <div class='setting'>
@@ -141,23 +141,23 @@ code by Maxim Snoep (1313517)
       <!-- <p class='bold'>Heatmap settings:</p>
       <div class='component bordered'> -->
         <div class='setting'>
-          <p class='setting-left'>Heatmap start color</p>
+          <p class='setting-left'>Heatmap Start Color</p>
           <input class='setting-right special-selector' id="startColor" type="color" value="#D3DFFF">
         </div>
         <div class='setting'>
-          <p class='setting-left'>Heatmap end color</p>
+          <p class='setting-left'>Heatmap End Color</p>
           <input class='setting-right special-selector' id="endColor" type="color" value="#003DDE">
         </div>
         <div class='setting'>
-          <p class='setting-left'>Select reordering</p>
+          <p class='setting-left'>Heatmap Reordering</p>
           <select class='setting-right button' id="selectReordering", onchange="SelectReordering(this);">
             <option value="Original">Original</option>
             <option value="Alphabetical">Alphabetical</option>
             <option value="InDegree">InDegree</option>
             <option value="OutDegree">OutDegree</option>
             <option value="Sum">Sum</option>
-            <option value="ColumnSum">ColumnSum</option>
-            <option value="RowSum">RowSum</option>
+            <option value="Column Sum">Column Sum</option>
+            <option value="Row Sum">Row Sum</option>
             <option value="Cuthill-Mckee">Cuthill-Mckee</option>
             <option value="Average">Average</option>
           </select>
@@ -189,14 +189,18 @@ code by Maxim Snoep (1313517)
   <script src="https://d3js.org/d3.v4.min.js"></script>
 
   <script src="/public/scripts/matrix/matrix.js"></script>
-  <script src='/public/scripts/Queue.js'></script>
+  <script src="/public/scripts/queue.js"></script>
 
   <script src="/public/scripts/graph/graph.js"></script>
   <script src="/public/scripts/graph/forceGraph.js"></script>
-  <script src="/public/scripts/graph/radialGraph.js"></script>
+  <script src="/public/scripts/graph//radialGraph.js"></script>
   <script src="/public/scripts/graph/hierarchicalGraph.js"></script>
 
-
+  <script src='public/scripts/upload/settings.js'></script>
+  <script src='public/scripts/upload/upload.js'></script>
+  <script src='public/scripts/upload/dataselector.js'></script>
+  <script src='public/scripts/upload/visualizations.js'></script>
+  <script src='public/scripts/upload/share.js'></script>
 
   <script>
 
@@ -227,12 +231,6 @@ code by Maxim Snoep (1313517)
   })
 
   </script>
-
-  <script src='public/scripts/upload/settings.js'></script>
-  <script src='public/scripts/upload/upload.js'></script>
-  <script src='public/scripts/upload/dataselector.js'></script>
-  <script src='public/scripts/upload/visualizations.js'></script>
-  <script src='public/scripts/upload/share.js'></script>
 
 </body>
 </html>
