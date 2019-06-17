@@ -166,6 +166,7 @@ function setDisplayRadial(svg) {
 function nodeClick(node) {
 
   // Main data
+
   for (n = 0; n < graph_data.nodes.length; n++) {
     if (graph_data.nodes[n].id == node.id) {
       new_node = graph_data.nodes[n];
@@ -333,34 +334,43 @@ function updateSelectedEdges() {
 }
 
 function renderSelected() {
+	//for(i)
+ var smth = graph_data.selected_nodes.length;
+ 
+  if(smth>0) {
+    SelectOnMatrix(graph_data.selected_nodes);
 
-  graph_data.nodes = graph_data.selected_nodes;
-  graph_data.links = graph_data.selected_links;
+    graph_data.nodes = graph_data.selected_nodes;
+    graph_data.links = graph_data.selected_links;
 
 
-  graph_data.selected_nodes = [];
-  graph_data.selected_links = [];
+    graph_data.selected_nodes = [];
+    graph_data.selected_links = [];
 
-  updateAttributes();
+    updateAttributes();
 
-	if (showForce) {
-		force_data = JSON.parse(JSON.stringify(graph_data));
-		loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
-	}
-	if (showRadial) {
-		radial_data = JSON.parse(JSON.stringify(graph_data));
-		loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
-	}
-	if (showHierarchical) {
-		hierarchical_data = JSON.parse(JSON.stringify(graph_data));
-		loadHierarchicalGraph(hierarchical_data.nodes, hierarchical_data.links, hierarchical_data.adjacency, svg_hierarchical, attributes);
-	}
+    if (showForce) {
+            force_data = JSON.parse(JSON.stringify(graph_data));
+            loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
+        }
+        if (showRadial) {
+            radial_data = JSON.parse(JSON.stringify(graph_data));
+            loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
+        }
+        if (showHierarchical) {
+            hierarchical_data = JSON.parse(JSON.stringify(graph_data));
+            loadHierarchicalGraph(hierarchical_data.nodes, hierarchical_data.links, hierarchical_data.adjacency, svg_hierarchical, attributes);
+        }
 
-  getMaxValue(graph_data.links);
+      getMaxValue(graph_data.links);
 
+    } else {
+            MatrixEdges();
+    }
 }
-
 function renderReset() {
+console.log("in reset");
+  ResetMatrix();
   graph_data = JSON.parse(JSON.stringify(data_copy));
     updateAttributes();
 
@@ -382,7 +392,6 @@ function renderReset() {
 }
 
 function updateView() {
-	updateAttributes();
 
 	if (showForce) {
 		svg_force.selectAll("circle")
@@ -428,6 +437,7 @@ function updateView() {
 }
 
 function filterEdges() {
+    
   minWeight = document.getElementById("minWeight").value * filter_var;
   maxWeight = document.getElementById("maxWeight").value * filter_var;
 

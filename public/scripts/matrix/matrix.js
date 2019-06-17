@@ -4,9 +4,14 @@
 var xValues = [];
 var yValues  = [];
 var zValues;
+var xValuesCurrent=[];
+var yValuesCurrent=[];
+var zValuesCurrent=[];
 var xValuesOriginal=[];
 var yValuesOriginal=[];
 var zValuesOriginal=[];
+var selectedEdges=[];
+var selectedNodeNames = []
 var box;
 var dimention=2;
 var colorscaleValue = [
@@ -34,7 +39,138 @@ minSlider.oninput = function() {
 maxSlider.oninput = function() {
     console.log(this.value);
 }
+function matrix(rows, cols, defaultValue){
+        var arr = [];
+        // Creates all lines:
+        for(var i=0; i < rows; i++){
+          // Creates an empty line
+          arr.push([]);
+          // Adds cols to the empty line:
+          arr[i].push( new Array(cols));
+          for(var j=0; j < cols; j++){
+            // Initializes:
+            arr[i][j] = defaultValue;
+          }
+        }
+        return arr;
+    }
+function MatrixEdges() {
+    var edgeIndexes = [];
+    if(selectedEdges.length>0) {
+        for(var i = 0; i < selectedEdges.length; i++) {
+        for(var j = 0; j < selectedEdges[0].length; j++) {
+            edgeIndexes.push(selectedEdges[i][j]);
+        }
+    }
+    edgeIndexes = [...new Set(edgeIndexes)];
+    console.log(edgeIndexes);
+    console.log(xValuesCurrent);
+    for(var j = 0; j < edgeIndexes.length; j++) {
+            selectedNodeNames.push(xValuesCurrent[edgeIndexes[j]]);
+        }
+     console.log(selectedNodeNames);
+    
+    ///////////////////////////////////////
+    var nodesSelected  = [];
+    //var zValuesCut = matrix(zValuesOriginal[0].length,zValuesOriginal[0].length,"*")
+     function matrix(rows, cols, defaultValue){
+        var arr = [];
+        // Creates all lines:
+        for(var i=0; i < rows; i++){
+          // Creates an empty line
+          arr.push([]);
+          // Adds cols to the empty line:
+          arr[i].push( new Array(cols));
+          for(var j=0; j < cols; j++){
+            // Initializes:
+            arr[i][j] = defaultValue;
+          }
+        }
+        return arr;
+    }
+   
+    var zValuesCut = matrix(edgeIndexes.length,edgeIndexes.length,0);
+    console.log(zValuesCut);
+    for(var i = 0; i < edgeIndexes.length; i++) {
+      for(var j = 0; j < edgeIndexes.length; j++) {
+         zValuesCut[i][j] = Number(zValuesCurrent[edgeIndexes[i]][edgeIndexes[j]]);
+      }
+    }
+    xValuesCurrent = selectedNodeNames.slice();
+    yValuesCurrent = selectedNodeNames.slice();
+    zValuesCurrent = zValuesCut.slice();
+    console.log(zValuesCut);
+    SelectReordering(document.getElementById('selectReordering'));
+    }
+    edgeIndexes=[];
+    selectedEdges = [];
+    selectedNodeNames = [];
+}
+function SelectOnMatrix(nodes) {
+    var xValuesCut  = [];
+    var yValuesCut  = [];
+    var nodesSelected  = [];
+    //var zValuesCut = matrix(zValuesOriginal[0].length,zValuesOriginal[0].length,"*")
+     function matrix(rows, cols, defaultValue){
+        var arr = [];
+        // Creates all lines:
+        for(var i=0; i < rows; i++){
+          // Creates an empty line
+          arr.push([]);
+          // Adds cols to the empty line:
+          arr[i].push( new Array(cols));
+          for(var j=0; j < cols; j++){
+            // Initializes:
+            arr[i][j] = defaultValue;
+          }
+        }
+        return arr;
+    }
+     for(var j = 0; j < nodes.length; j++) {
+         nodesSelected.push(nodes[j].id);
+        }
+    console.log(nodesSelected);
+    for(var i = 0; i < nodes.length; i++) {
+        for(var j = 0; j < xValuesOriginal.length; j++) {
+            if(nodes[i].id==xValuesOriginal[j]) {
+                xValuesCut.push(j);
+                break;
+            }
+        }
+    }
+     for(var i = 0; i < nodes.length; i++) {
+        for(var j = 0; j < yValuesOriginal.length; j++) {
+            if(nodes[i].id==yValuesOriginal[j]) {
+                yValuesCut.push(j);
+                break;
+            }
+        }
+    }
+    var zValuesCut = matrix(xValuesCut.length,xValuesCut.length,0);
+    console.log(xValuesCut);
+    console.log(yValuesCut);
+    console.log(zValuesCut);
+    for(var i = 0; i < xValuesCut.length; i++) {
+      for(var j = 0; j < xValuesCut.length; j++) {
+         zValuesCut[i][j] = Number(zValuesOriginal[xValuesCut[i]][yValuesCut[j]]);
+      }
+    }
+    xValuesCurrent = nodesSelected.slice();
+    yValuesCurrent = nodesSelected.slice();
+    zValuesCurrent = zValuesCut.slice();
+    console.log(zValuesCut);
+    SelectReordering(document.getElementById('selectReordering'));
 
+}
+function ResetMatrix() {
+    console.log("in matrix reset");
+    selectedEdges = [];
+    selectedNodeNames = [];
+    xValuesCurrent=xValuesOriginal.slice();
+    yValuesCurrent=yValuesOriginal.slice();
+    zValuesCurrent=zValuesOriginal.slice();
+    SelectReordering(document.getElementById('selectReordering'));
+}
 loadMatrix = (box1) => {
 
   // Initialize
@@ -120,9 +256,9 @@ function OriginalOrder() {
     //zValues=zValuesOriginal;
 
     if(dimention==2) {
-        DisplayGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
+        DisplayGraph(xValuesCurrent,yValuesCurrent,zValuesCurrent);
     } else {
-        Display3DGraph(xValuesOriginal,yValuesOriginal,zValuesOriginal);
+        Display3DGraph(xValuesCurrent,yValuesCurrent,zValuesCurrent);
     }
 }
 function AverageOrder(xVal,yVal,initial_matrix) {
@@ -838,35 +974,35 @@ function SelectReordering(selectTag) {
                 }
                 if(selIndexes=="Alphabetical") {
                     console.log("Alphabetical");
-                    AlphabeticalOrder(xValuesOriginal,yValuesOriginal,zValuesOriginal);
+                    AlphabeticalOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="Sum") {
                     console.log("Sum");
-                    SumOrder(xValuesOriginal,yValuesOriginal,zValuesOriginal);
+                    SumOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="Average") {
                     console.log("Average");
-                    AverageOrder(xValuesOriginal,yValuesOriginal,zValuesOriginal);
+                    AverageOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="Column Sum") {
                     console.log("Column Sum");
-                    ColSumOrder(xValuesOriginal,yValuesOriginal,zValuesOriginal);
+                    ColSumOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="Row Sum") {
                     console.log("Row Sum");
-                    RowSumOrder(xValuesOriginal,yValuesOriginal,zValuesOriginal);
+                    RowSumOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="Cuthill-Mckee") {
                     console.log("Cuthill-Mckee");
-                    Cuthill_Mckee(xValues,yValues,zValues);
+                    Cuthill_Mckee(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="InDegree"){
                     console.log("InDegreeOrder");
-                    InDegreeOrder(xValues,yValues,zValues);
+                    InDegreeOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="OutDegree"){
                     console.log("OutDegreeOrder");
-                    OutDegreeOrder(xValues,yValues,zValues);
+                    OutDegreeOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
             }
             else {
@@ -962,20 +1098,26 @@ function Visualise(file, box) {
 
   //Input data for heatmap
 
-xValuesOriginal = xValues;
-yValuesOriginal = yValues;
-zValuesOriginal = zValues;
+xValuesCurrent = xValues.slice();
+yValuesCurrent = yValues.slice();
+zValuesCurrent = zValues.slice();
+console.log("splicezvalues");
+console.log(zValuesCurrent);
+    
+xValuesOriginal = xValues.slice();
+yValuesOriginal = yValues.slice();
+zValuesOriginal = zValues.slice();
 /*for(var j = 0; j < xValues[0].length; j++) {
-      xValuesOriginal[j]=xValues[j];
+      xValuesCurrent[j]=xValues[j];
 }
 
 for(var j = 0; j < yValues[0].length; j++) {
-      yValuesOriginal[j]=yValues[j];
+      yValuesCurrent[j]=yValues[j];
 }
 
 for(var i = 0; i < zValues[0].length; i++) {
     for(var j = 0; j < zValues[0].length; j++) {
-      zValuesOriginal[i][j]=zValues[i][j];
+      zValuesCurrent[i][j]=zValues[i][j];
     }
   }*/
  var maximum=0;
@@ -990,7 +1132,7 @@ document.getElementById('minWeight').max = maximum;
 document.getElementById('maxWeight').max = maximum;
 document.getElementById('maxWeight').step = maximum/100;
 document.getElementById('minWeight').step = maximum/100;
-DisplayGraph(xValues,yValues,zValues);
+DisplayGraph(xValuesCurrent,yValuesCurrent,zValuesCurrent);
 SelectReordering(document.getElementById('selectReordering'))
 
 }
@@ -1035,28 +1177,12 @@ function DisplayGraph(xVal,yVal,zVal) {
 
   Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true,scrollZoom: true,displayModeBar: true,displaylogo: false,responsive: true});
       myPlot = document.getElementById(`${box}`);
-    myPlot.on('plotly_hover', function(data){
-        console.log("hover");
-        //pn = data.points[0].pointNumber;
-        //console.log("pointnumber"+pn);
-        //colors[0] = '#00000';
 
-        /*var update = {
-            z: tempZ
-        };*/
-        //Plotly.restyle(`${box}`, update);
-    });
-
-    myPlot.on('plotly_unhover', function(data){
-     console.log("unhover")
-    });
-    /*var update = {
-        z: tempZ
-    };*/
     //Plotly.restyle(`${box}`, update);
     myPlot.on('plotly_click', function(data){
       pn = data.points[0].pointNumber;
         console.log("clicked on"+pn);
+        selectedEdges.push(pn);
     });
 }
 function Display3DGraph(xVal,yVal,zVal) {
