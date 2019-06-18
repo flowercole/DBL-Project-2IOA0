@@ -464,8 +464,8 @@ function filterEdges() {
 		for (i = 0; i < radial_data.links.length && counter < showMax; i++) {
 			l_r = radial_data.links[i]
 			//if (l_r.value >= minWeight && l_r.value <= maxWeight) {
-				counter++
-				//appendLineRadial(l_r);
+				//counter++
+				appendLineRadial(l_r);
 			//}
 		}
 	}
