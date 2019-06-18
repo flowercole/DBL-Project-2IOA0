@@ -450,10 +450,10 @@ function filterEdges() {
 		let counter = 0;
 		for (i = 0; i < force_data.links.length && counter < showMax; i++) {
 			l_f = force_data.links[i]
-			if (l_f.value >= minWeight && l_f.value <= maxWeight) {
-				counter++
+			//if (l_f.value >= minWeight && l_f.value <= maxWeight) {
+				//counter++
 				appendLineForce(l_f);
-			}
+			//}
 	  }
 	}
 
@@ -463,10 +463,10 @@ function filterEdges() {
 		counter = 0;
 		for (i = 0; i < radial_data.links.length && counter < showMax; i++) {
 			l_r = radial_data.links[i]
-			if (l_r.value >= minWeight && l_r.value <= maxWeight) {
+			//if (l_r.value >= minWeight && l_r.value <= maxWeight) {
 				counter++
-				appendLineRadial(l_r);
-			}
+				//appendLineRadial(l_r);
+			//}
 		}
 	}
 
