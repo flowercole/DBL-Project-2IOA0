@@ -244,11 +244,15 @@ function AlphabeticalOrder(xVal,yVal,zVal) {
       }
     }
 
-    if(dimention==2) {
+    /*if(dimention==2) {
         DisplayGraph(sortAr,sortAr,reorderedZValues)
     } else {
         Display3DGraph(sortAr,sortAr,reorderedZValues)
-    }
+    }*/
+    xValuesCurrent = sortAr.slice();
+    yValuesCurrent = sortAr.slice();
+    zValuesCurrent = alphaZValues.slice();
+    UpdateGraph();
 
     //var returnArray = [sortAr,sortAr,reorderedZValues];
     //return returnArray;
@@ -259,11 +263,15 @@ function OriginalOrder() {
     //yValues=yValuesOriginal;
     //zValues=zValuesOriginal;
 
-    if(dimention==2) {
+    xValuesCurrent = xValuesOriginal.slice();
+    yValuesCurrent = yValuesOriginal.slice();
+    zValuesCurrent = zValuesOriginal.slice();
+    UpdateGraph();
+    /*if(dimention==2) {
         DisplayGraph(xValuesCurrent,yValuesCurrent,zValuesCurrent);
     } else {
         Display3DGraph(xValuesCurrent,yValuesCurrent,zValuesCurrent);
-    }
+    }*/
 }
 function AverageOrder(xVal,yVal,initial_matrix) {
 
@@ -344,13 +352,12 @@ function AverageOrder(xVal,yVal,initial_matrix) {
     }
 
   console.log(zValues);
-    DisplayGraph(reorderedXValues,reorderedYValues,order_matrix)
+    //DisplayGraph(reorderedXValues,reorderedYValues,order_matrix)
 
-    if(dimention==2) {
-        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
-    } else {
-        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
-    }
+    xValuesCurrent = reorderedXValues.slice();
+    yValuesCurrent = reorderedYValues.slice();
+    zValuesCurrent = order_matrix.slice();
+    UpdateGraph();
     //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     //return returnArray;
     return;
@@ -426,11 +433,10 @@ function SumOrder(xVal,yVal,matrix) {
         [0, '#D3DFFF'],
         [1, '#003DDE']
     ];*/
-    if(dimention==2) {
-        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
-    } else {
-        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
-    }
+    xValuesCurrent = reorderedXValues.slice();
+    yValuesCurrent = reorderedYValues.slice();
+    zValuesCurrent = order_matrix.slice();
+    UpdateGraph();
     //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     //return returnArray;
     return;
@@ -496,11 +502,10 @@ function OutDegreeOrder(xVal,yVal,matrix) {
         [0, '#D3DFFF'],
         [1, '#003DDE']
     ];*/
-    if(dimention==2) {
-        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
-    } else {
-        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
-    }
+    xValuesCurrent = reorderedXValues.slice();
+    yValuesCurrent = reorderedYValues.slice();
+    zValuesCurrent = order_matrix.slice();
+    UpdateGraph();
     //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     //return returnArray;
     return;
@@ -567,11 +572,10 @@ function InDegreeOrder(xVal,yVal,matrix) {
         [0, '#D3DFFF'],
         [1, '#003DDE']
     ];*/
-    if(dimention==2) {
-        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
-    } else {
-        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
-    }
+    xValuesCurrent = reorderedXValues.slice();
+    yValuesCurrent = reorderedYValues.slice();
+    zValuesCurrent = order_matrix.slice();
+    UpdateGraph();
     //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     //return returnArray;
     return;
@@ -636,11 +640,10 @@ function ColSumOrder(xVal,yVal,matrix) {
         [0, '#D3DFFF'],
         [1, '#003DDE']
     ];*/
-    if(dimention==2) {
-        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
-    } else {
-        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
-    }
+    xValuesCurrent = reorderedXValues.slice();
+    yValuesCurrent = reorderedYValues.slice();
+    zValuesCurrent = order_matrix.slice();
+    UpdateGraph();
     //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     //return returnArray;
     return;
@@ -706,11 +709,10 @@ function RowSumOrder(xVal,yVal,matrix) {
         [1, '#003DDE']
     ];*/
     console.log("row sum");
-    if(dimention==2) {
-        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
-    } else {
-        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
-    }
+    xValuesCurrent = reorderedXValues.slice();
+    yValuesCurrent = reorderedYValues.slice();
+    zValuesCurrent = order_matrix.slice();
+    UpdateGraph();
     //var returnArray = [reorderedXValues,reorderedYValues,order_matrix]
     //return returnArray;
     return;
@@ -888,11 +890,10 @@ function Cuthill_Mckee(xVal,yVal,initial_matrix){
         reorderedYValues[i] = yVal[perm[i]];
     }
 
-     if(dimention==2) {
-        DisplayGraph(reorderedXValues,reorderedYValues,order_matrix);
-    } else {
-        Display3DGraph(reorderedXValues,reorderedYValues,order_matrix);
-    }
+     xValuesCurrent = reorderedXValues.slice();
+    yValuesCurrent = reorderedYValues.slice();
+    zValuesCurrent = order_matrix.slice();
+    UpdateGraph();
 
 
 }
@@ -950,7 +951,7 @@ function SelectEdgeRange(xVal,yVal,zVal) {
 function UpdateGraph() {
     console.log("smth");
     var ret=[];
-    ret=SelectEdgeRange(xValues,yValues,zValues);
+    ret=SelectEdgeRange(xValuesCurrent,yValuesCurrent,zValuesCurrent);
     SelectGraphColor(ret[0],ret[1],ret[2],box);
     console.log(ret);
 
