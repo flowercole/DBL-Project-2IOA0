@@ -145,11 +145,13 @@ body {
 }
 
 .logo .head {
-  font-size: 2.5vw;
+  font-size: 1.5vw;
+  font-family: 'Major Mono Display', monospace;
 }
 
 .logo .sub {
   font-size: 1vw;
+  font-family: 'VT323', monospace;
 }
 
 
