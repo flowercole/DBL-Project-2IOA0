@@ -10,6 +10,10 @@ updateLayout_btn.addEventListener('click', function(){ submitLayout(localStorage
 // Update Layout Function
 submitLayout = (num) => {
   graphPreload();
+  showMatrix = false;
+  showForce = false;
+  showRadial = false;
+  showHierarchical = false;
     loadLayout(num);
     for (i = 1; i <= num; i++) {
       loadVisualization(i);
@@ -56,7 +60,7 @@ loadVisualization = (i) => {
   var vis = localStorage.getItem(`vis-${i}`)
   var box = `box${i}`
   loadVisualizationCanvas(vis, box);
-  setTimeout(function(){ loadVisualizationScript(vis, box)}, 200 )
+  setTimeout(function(){ loadVisualizationScript(vis, box)}, 1000 )
 }
 
 // Load the correct Visualization Canvas

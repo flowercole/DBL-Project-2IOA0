@@ -409,6 +409,7 @@ function renderSelected() {
 
     } else {
             console.log("MatrixEdges();")
+            //showMatrix = true;
             MatrixEdges();
     }
 }

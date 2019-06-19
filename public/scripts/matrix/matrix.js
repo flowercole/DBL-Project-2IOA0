@@ -953,6 +953,7 @@ function SelectEdgeRange(xVal,yVal,zVal) {
     return returnArray;
 }
 function UpdateGraph() {
+  //showMatrix = true;
     console.log("smth");
     var ret=[];
     ret=SelectEdgeRange(xValuesCurrent,yValuesCurrent,zValuesCurrent);
@@ -1150,6 +1151,8 @@ SelectReordering(document.getElementById('selectReordering'))
 
 }
 function DisplayGraph(xVal,yVal,zVal) {
+if (showMatrix) {
+
     console.log(zVal);
     document.getElementById("viewHeatmap3D").innerHTML = "Switch to 3D";
     var data = [
@@ -1163,6 +1166,9 @@ function DisplayGraph(xVal,yVal,zVal) {
     }
   ];
      var layout = {
+      modebar: {
+        bgcolor: "rgba(0,0,0,0)"
+      }, 
     xaxis: {
         showticklabels: true,
         tickangle: 'auto',
@@ -1170,7 +1176,8 @@ function DisplayGraph(xVal,yVal,zVal) {
           //family: 'Old Standard TT, serif',
           color: 'rgba(0,0,0,0)'
         },
-        tickcolor:"rgba(0,0,0,0)"
+        tickcolor:"rgba(0,0,0,0)",
+        gridcolor:"rgba(0,0,0,0)"
     },
     yaxis: {
         showticklabels: true,
@@ -1180,11 +1187,12 @@ function DisplayGraph(xVal,yVal,zVal) {
           color: 'rgba(0,0,0,0)'
         },
         tickcolor:"rgba(0,0,0,0)",
-        autorange:'reversed'
+        autorange:'reversed',
+        gridcolor:"rgba(0,0,0,0)"
     },
     margin: {b:'24', l:'24', r:'24', t:'24'},
-    plot_bgcolor:"#2b2b2b",
-    paper_bgcolor:"#2b2b2b"
+    plot_bgcolor:"rgba(0,0,0,0)",
+    paper_bgcolor:"rgba(0,0,0,0)"
 };
 //};
 
@@ -1206,7 +1214,9 @@ function DisplayGraph(xVal,yVal,zVal) {
         selectedEdges.push(pn);
     });
 }
+}
 function Display3DGraph(xVal,yVal,zVal) {
+  if (showMatrix) {
     console.log("in3DDD");
     document.getElementById("viewHeatmap3D").innerHTML = "Switch to 2D";
      var data = [{
@@ -1227,9 +1237,12 @@ function Display3DGraph(xVal,yVal,zVal) {
     }];
 
     var layout = {
+      modebar: {
+        bgcolor: "rgba(0,0,0,0)"
+      }, 
     margin: {b:'0', l:'24', r:'24', t:'24'},
-    plot_bgcolor:"#2b2b2b",
-    paper_bgcolor:"#2b2b2b",
+    plot_bgcolor:"rgba(0,0,0,0)",
+    paper_bgcolor:"rgba(0,0,0,0)",
     scene: {
     camera: {eye: {x: 2.2, y: -1, z: 1}},
     xaxis: {
@@ -1241,7 +1254,7 @@ function Display3DGraph(xVal,yVal,zVal) {
         tickfont: {
           color:'white',
         },
-        backgroundcolor: "#2b2b2b",
+        backgroundcolor: "rgba(0,0,0,0)",
         gridcolor: "rgb(255, 255, 255)",
         showbackground: true,
         zerolinecolor: "rgb(255, 255, 255)"
@@ -1257,7 +1270,7 @@ function Display3DGraph(xVal,yVal,zVal) {
   		 //family:'Old Standard TT, serif',
   		 //size: 14
         },
-        backgroundcolor: "#2b2b2b",
+        backgroundcolor: "rgba(0,0,0,0)",
         gridcolor: "rgb(255, 255, 255)",
         showbackground: true,
         zerolinecolor: "rgb(255, 255, 255)"
@@ -1271,7 +1284,7 @@ function Display3DGraph(xVal,yVal,zVal) {
         tickfont: {
           color:'white',
         },
-        backgroundcolor: "#2b2b2b",
+        backgroundcolor: "rgba(0,0,0,0)",
         gridcolor: "rgb(255, 255, 255)",
         showbackground: true,
         zerolinecolor: "rgb(255, 255, 255)"
@@ -1288,4 +1301,5 @@ function Display3DGraph(xVal,yVal,zVal) {
     }
     };
     Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true,displayModeBar: true,scrollZoom: true,displaylogo: false,responsive: true});
+  }
 }
