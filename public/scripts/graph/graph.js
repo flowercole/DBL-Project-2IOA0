@@ -349,20 +349,22 @@ function renderSelected() {
 
     updateAttributes();
 
+    //MatrixEdges();
+
     if (showForce) {
             force_data = JSON.parse(JSON.stringify(graph_data));
             loadForceGraph(force_data.nodes, force_data.links, svg_force, attributes);
-        }
-        if (showRadial) {
+    }
+    if (showRadial) {
             radial_data = JSON.parse(JSON.stringify(graph_data));
             loadRadialGraph(radial_data.nodes, radial_data.links, svg_radial, attributes);
-        }
-        if (showHierarchical) {
+    }
+    if (showHierarchical) {
             hierarchical_data = JSON.parse(JSON.stringify(graph_data));
             loadHierarchicalGraph(hierarchical_data.nodes, hierarchical_data.links, hierarchical_data.adjacency, svg_hierarchical, attributes);
-        }
+    }
 
-      getMaxValue(graph_data.links);
+    getMaxValue(graph_data.links);
 
     } else {
             MatrixEdges();
@@ -482,10 +484,10 @@ function filterEdges() {
 		let counter = 0;
 		for (i = 0; i < force_data.links.length && counter < showMax; i++) {
 			l_f = force_data.links[i]
-			//if (l_f.value >= minWeight && l_f.value <= maxWeight) {
-				//counter++
+			if (l_f.value >= minWeight && l_f.value <= maxWeight) {
+				counter++
 				appendLineForce(l_f);
-			//}
+			}
 	  }
 	}
 
@@ -495,10 +497,10 @@ function filterEdges() {
 		counter = 0;
 		for (i = 0; i < radial_data.links.length && counter < showMax; i++) {
 			l_r = radial_data.links[i]
-			//if (l_r.value >= minWeight && l_r.value <= maxWeight) {
-				//counter++
+			if (l_r.value >= minWeight && l_r.value <= maxWeight) {
+				counter++
 				appendLineRadial(l_r);
-			//}
+			}
 		}
 	}
 
@@ -508,9 +510,9 @@ function filterEdges() {
 		counter = 0;
 		for (i = 0; i < hierarchical_data.links.length && counter < showMax; i++) {
 			l_h = hierarchical_data.links[i]
-		//	if (l_r.value >= minWeight && l_r.value <= maxWeight) {
+		  	if (l_r.value >= minWeight && l_r.value <= maxWeight) {
 				appendLineHierarchical(l_h);
-		//	}
+			}
 		}
 	}
 }
