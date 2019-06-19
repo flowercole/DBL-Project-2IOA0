@@ -18,6 +18,7 @@ var colorscaleValue = [
         [0, localStorage.getItem('startColor')],
         [1, localStorage.getItem('endColor')]
     ];
+var filterEdge = 0;
 
 document.getElementById("updateSettings").addEventListener("click",function() {
   if (localStorage.getItem('vis-1') == 'matrix' || localStorage.getItem('vis-2') == 'matrix' || localStorage.getItem('vis-3') == 'matrix' || localStorage.getItem('vis-4') == 'matrix'  ){
@@ -907,10 +908,12 @@ function SelectGraphColor(xVal,yVal,zVal,box) {
   //Input data for heatmap
 }
 function SelectEdgeRange(xVal,yVal,zVal) {
-    var minWeightHeatmap = document.getElementById("minWeight").value * filter_var;
-    var maxWeightHeatmap = document.getElementById("maxWeight").value * filter_var;
+    console.log(filterEdge);
+    var minWeightHeatmap = document.getElementById("minWeight").value * filterEdge;
+    var maxWeightHeatmap =  document.getElementById("maxWeight").value * filterEdge;
     console.log(minWeightHeatmap+"in edge")
     console.log(maxWeightHeatmap+"in edge")
+    
     function matrix(rows, cols, defaultValue){
         var arr = [];
         // Creates all lines:
@@ -978,6 +981,7 @@ function SelectReordering(selectTag) {
                 if(selIndexes=="Alphabetical") {
                     console.log("Alphabetical");
                     AlphabeticalOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
+                
                 }
                 if(selIndexes=="Sum") {
                     console.log("Sum");
@@ -1123,7 +1127,7 @@ for(var i = 0; i < zValues[0].length; i++) {
       zValuesCurrent[i][j]=zValues[i][j];
     }
   }*/
-maximumEdge=0;
+var maximumEdge=0;
  for(var j = 0; j < zValues[0].length; j++) {
      if(maximumEdge<Math.max(...zValues[j]))
          {
@@ -1131,6 +1135,7 @@ maximumEdge=0;
          }
     }
 console.log(maximumEdge);
+filterEdge = maximumEdge/100;
 //document.getElementById('minWeight').max = maximum;
 //document.getElementById('maxWeight').max = maximum;
 //document.getElementById('maxWeight').step = maximum/100;
