@@ -24,6 +24,8 @@ function graphPreload() {
     file = JSON.parse(JSON.stringify(myJson));
 
     graph_data = csvJSON(file);
+
+    data_copy = JSON.parse(JSON.stringify(graph_data));
     //console.log(graph_data);
   })
 
@@ -448,7 +450,7 @@ console.log("in reset");
   if (showMatrix) {
     ResetMatrix();
   }
-  
+
   graph_data = JSON.parse(JSON.stringify(data_copy));
     updateAttributes();
 
