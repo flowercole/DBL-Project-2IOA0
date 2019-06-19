@@ -583,9 +583,13 @@ function getMaxValue(links) {
       max = links[i].value;
     }
   }
-
+  console.log('MAX VALUE!!!', max)
   filter_var = max / 100;
 
+}
+
+getMaximumGraph = () => {
+  return filter_var
 }
 
 //filters the an array of edges to contain only a certain amount with the highest weights, return that array with those edges

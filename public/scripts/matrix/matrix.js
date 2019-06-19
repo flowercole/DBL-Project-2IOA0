@@ -752,6 +752,7 @@ function Cuthill_Mckee(xVal,yVal,initial_matrix){
           maxValue = sym_matrix[i][j];
       }
     }
+
     console.log(maxValue);
     var binary_matrix = matrix(initial_matrix[0].length,initial_matrix[0].length,0);
     for(var i = 0; i < sym_matrix[0].length; i++){
@@ -1131,6 +1132,9 @@ var maximumEdge=0;
          }
     }
 console.log(maximumEdge);
+getMaximum = () => {
+  return maximumEdge
+}
 filterEdge = maximumEdge/100;
 //document.getElementById('minWeight').max = maximum;
 //document.getElementById('maxWeight').max = maximum;

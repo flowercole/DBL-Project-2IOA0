@@ -75,10 +75,22 @@ listenForChange2 = () => {
       var exp;
       switch (this.id) {
         case 'minWeight':
-          exp = 1;
+          if(showMatrix) {
+            exp = 100/getMaximum()
+          } else if (showForce || showRadial || showHierarchical) {
+            exp = 1/getMaximumGraph()
+          } else {
+            exp = 1
+          }
           break;
         case 'maxWeight':
-          exp = 1;
+          if(showMatrix) {
+            exp = 100/getMaximum()
+          } else if (showForce || showRadial || showHierarchical) {
+            exp = 1/getMaximumGraph()
+          } else {
+            exp = 1
+          }
           break;
         case 'linkWidth':
           exp = 10;
@@ -90,7 +102,7 @@ listenForChange2 = () => {
           exp = 10;
           break;
       }
-      document.getElementById(`${this.id}Value`).innerHTML = this.value / exp;
+      document.getElementById(`${this.id}Value`).innerHTML = Math.round((this.value / exp)*100)/100;
     })
   }
 }
