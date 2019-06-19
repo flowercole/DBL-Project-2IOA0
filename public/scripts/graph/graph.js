@@ -474,6 +474,10 @@ console.log("in reset");
 
 function updateView() {
 
+  updateAttributes();
+
+  console.log("Update View");
+
 	if (showForce) {
 		svg_force.selectAll("circle")
 			.attr("r", attributes[2]) //sets the radius of circle
