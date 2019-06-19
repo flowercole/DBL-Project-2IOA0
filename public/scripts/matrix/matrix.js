@@ -33,16 +33,6 @@ document.getElementById("viewHeatmap3D").addEventListener("click",function() {
   }
 });
 
-var minSlider = document.getElementById("minWeight");
-var maxSlider = document.getElementById("maxWeight");
-minSlider.oninput = function() {
-    console.log(this.value);
-    document.getElementById('minWeightHeatmapValue').innerHTML = this.value;
-}
-maxSlider.oninput = function() {
-    console.log(this.value);
-    document.getElementById('maxWeightHeatmapValue').innerHTML = this.value;
-}
 function matrix(rows, cols, defaultValue){
         var arr = [];
         // Creates all lines:
@@ -918,7 +908,7 @@ function SelectEdgeRange(xVal,yVal,zVal) {
     var maxWeightHeatmap =  document.getElementById("maxWeight").value * filterEdge;
     console.log(minWeightHeatmap+"in edge")
     console.log(maxWeightHeatmap+"in edge")
-    
+
     function matrix(rows, cols, defaultValue){
         var arr = [];
         // Creates all lines:
@@ -987,7 +977,7 @@ function SelectReordering(selectTag) {
                 if(selIndexes=="Alphabetical") {
                     console.log("Alphabetical");
                     AlphabeticalOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
-                
+
                 }
                 if(selIndexes=="Sum") {
                     console.log("Sum");
@@ -1168,7 +1158,7 @@ if (showMatrix) {
      var layout = {
       modebar: {
         bgcolor: "rgba(0,0,0,0)"
-      }, 
+      },
     xaxis: {
         showticklabels: true,
         tickangle: 'auto',
@@ -1239,7 +1229,7 @@ function Display3DGraph(xVal,yVal,zVal) {
     var layout = {
       modebar: {
         bgcolor: "rgba(0,0,0,0)"
-      }, 
+      },
     margin: {b:'0', l:'24', r:'24', t:'24'},
     plot_bgcolor:"rgba(0,0,0,0)",
     paper_bgcolor:"rgba(0,0,0,0)",

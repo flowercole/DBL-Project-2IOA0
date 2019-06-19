@@ -68,6 +68,22 @@ listenForChange = () => {
   }
 }
 
+// Event Listeners to listen for change
+listenForChange2 = () => {
+  for (i = 6; i < 11; i++) {
+    document.getElementById(allSettings[i][0]).addEventListener('change', function() {
+      document.getElementById(`${this.id}Value`).innerHTML = this.value;
+    })
+  }
+}
+
+// Event Listeners to listen for change
+setInitial = () => {
+  for (i = 6; i < 11; i++) {
+    document.getElementById(`${allSettings[i][0]}Value`).innerHTML = localStorage.getItem(allSettings[i][0]);
+  }
+}
+
 // Initialize Layout Settings
 initializeLayoutSettings = () => {
   initializeLocalStorage('selected_file', 'GephiMatrix_author_similarity.csv', false)
@@ -87,6 +103,8 @@ resetSettings = (forced) => {
 }
 
 listenForChange();
+listenForChange2();
+setInitial();
 initializeLayoutSettings();
 resetSettings(false);
 
