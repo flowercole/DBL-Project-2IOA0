@@ -10,6 +10,35 @@ let showMax = 10000;
 let showForce = false;
 let showRadial = false;
 let showHierarchical = false;
+//let graph_data;
+
+function graphPreload() {
+  let filename = localStorage.getItem("selected_file");
+
+  fetch('/csv/'+filename)
+  .then(function(response) {
+    //console.log(response);
+    return response.json();
+  })
+  .then(function(myJson) {
+    file = JSON.parse(JSON.stringify(myJson));
+
+    graph_data = csvJSON(file);
+    //console.log(graph_data);
+  })
+
+  renderSelectedBtn = document.getElementById('renderSelected');
+  renderResetBtn = document.getElementById('renderReset');
+  updateViewBtn = document.getElementById('updateSettings');
+  filterEdgesBtn = document.getElementById('updateSettings');
+
+  renderSelectedBtn.addEventListener('click', renderSelected, false);
+  renderResetBtn.addEventListener('click', renderReset, false);
+  updateViewBtn.addEventListener('click', updateView, false);
+  filterEdgesBtn.addEventListener('click', filterEdges, false);
+
+  //console.log(graph_data);
+}
 
 function loadGraph(box, type) {
 
@@ -102,6 +131,8 @@ function loadGraph(box, type) {
 
 function csvJSON(csv) {
 
+  console.log("test");
+
   var vertices = csv[0]
   var nodes = []
   var links = []
@@ -125,6 +156,8 @@ function csvJSON(csv) {
 
 
   graph_data = {"nodes": nodes, "links": links, "selected_nodes": [], "selected_links": [], "adjacency" : adjacency};
+
+  console.log(graph_data);
 
   return graph_data;
 
@@ -334,8 +367,11 @@ function updateSelectedEdges() {
 }
 
 function renderSelected() {
+
+  console.log("test");
 	//for(i)
  var smth = graph_data.selected_nodes.length;
+ console.log(smth);
  
   if(smth>0) {
     SelectOnMatrix(graph_data.selected_nodes);
