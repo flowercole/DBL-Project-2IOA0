@@ -12,7 +12,7 @@ let allSettings = [
   ['minWeight', 'int', 0, 100, 'slider', '0'],
   ['maxWeight', 'int', 0, 100, 'slider', '100'],
   ['linkWidth', 'int', 1, 250, 'slider', '10'],
-  ['linkOpacity', 'int', 1, 100, 'slider', '100'],
+  ['linkOpacity', 'int', 0, 50, 'slider', '25'],
   ['nodeSize', 'int', 1, 200, 'slider', '25'],
   ['nodeColor', 'hex', false, false, 'slider', '#D3DFFF'],
   ['selNodeColor', 'hex', false, false, 'slider', '#003DDE'],
@@ -84,7 +84,7 @@ listenForChange2 = () => {
           exp = 10;
           break;
         case 'linkOpacity':
-          exp = 1;
+          exp = .5;
           break;
         case 'nodeSize':
           exp = 10;
@@ -109,7 +109,7 @@ setInitial = () => {
         exp = 10;
         break;
       case 9:
-        exp = 1;
+        exp = .5;
         break;
       case 10:
         exp = 10;
