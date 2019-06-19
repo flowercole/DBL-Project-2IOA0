@@ -35,9 +35,11 @@ var minSlider = document.getElementById("minWeight");
 var maxSlider = document.getElementById("maxWeight");
 minSlider.oninput = function() {
     console.log(this.value);
+    document.getElementById('minWeightHeatmapValue').innerHTML = this.value;
 }
 maxSlider.oninput = function() {
     console.log(this.value);
+    document.getElementById('maxWeightHeatmapValue').innerHTML = this.value;
 }
 function matrix(rows, cols, defaultValue){
         var arr = [];
@@ -69,7 +71,7 @@ function MatrixEdges() {
             selectedNodeNames.push(xValuesCurrent[edgeIndexes[j]]);
         }
      console.log(selectedNodeNames);
-    
+
     selectFromMatrixArray(selectedNodeNames);
     ///////////////////////////////////////
     var nodesSelected  = [];
@@ -89,7 +91,7 @@ function MatrixEdges() {
         }
         return arr;
     }
-   
+
     var zValuesCut = matrix(edgeIndexes.length,edgeIndexes.length,0);
     console.log(zValuesCut);
     for(var i = 0; i < edgeIndexes.length; i++) {
@@ -1104,7 +1106,7 @@ yValuesCurrent = yValues.slice();
 zValuesCurrent = zValues.slice();
 console.log("splicezvalues");
 console.log(zValuesCurrent);
-    
+
 xValuesOriginal = xValues.slice();
 yValuesOriginal = yValues.slice();
 zValuesOriginal = zValues.slice();
@@ -1227,7 +1229,7 @@ function Display3DGraph(xVal,yVal,zVal) {
         showticklabels: true,
         tickangle: 'auto',
         tickfont: {
-          color:'white',     
+          color:'white',
         },
         backgroundcolor: "#2b2b2b",
         gridcolor: "rgb(255, 255, 255)",
@@ -1271,9 +1273,9 @@ function Display3DGraph(xVal,yVal,zVal) {
         b: 65,
         t: 90,
       },
-     
+
         //autorange:'reversed'
-    }  
+    }
     };
     Plotly.newPlot(`${box}`, data, layout,{showSendToCloud: true,displayModeBar: true,scrollZoom: true,displaylogo: false,responsive: true});
 }
