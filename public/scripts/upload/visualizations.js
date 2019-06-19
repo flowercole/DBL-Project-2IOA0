@@ -9,6 +9,7 @@ updateLayout_btn.addEventListener('click', function(){ submitLayout(localStorage
 
 // Update Layout Function
 submitLayout = (num) => {
+  graphPreload();
     loadLayout(num);
     for (i = 1; i <= num; i++) {
       loadVisualization(i);
