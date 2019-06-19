@@ -58,6 +58,7 @@ function matrix(rows, cols, defaultValue){
         return arr;
     }
 function MatrixEdges() {
+    console.log("matrixEdges")
     var edgeIndexes = [];
     if(selectedEdges.length>0) {
         for(var i = 0; i < selectedEdges.length; i++) {
@@ -111,6 +112,7 @@ function MatrixEdges() {
     selectedNodeNames = [];
 }
 function SelectOnMatrix(nodes) {
+    console.log("selectonMatrix")
     var xValuesCut  = [];
     var yValuesCut  = [];
     var nodesSelected  = [];
@@ -167,7 +169,7 @@ function SelectOnMatrix(nodes) {
 
 }
 function ResetMatrix() {
-    console.log("in matrix reset");
+    console.log("matrix reset");
     selectedEdges = [];
     selectedNodeNames = [];
     xValuesCurrent=xValuesOriginal.slice();
@@ -263,9 +265,9 @@ function OriginalOrder() {
     //yValues=yValuesOriginal;
     //zValues=zValuesOriginal;
 
-    xValuesCurrent = xValuesOriginal.slice();
-    yValuesCurrent = yValuesOriginal.slice();
-    zValuesCurrent = zValuesOriginal.slice();
+    //xValuesCurrent = xValuesOriginal.slice();
+    //yValuesCurrent = yValuesOriginal.slice();
+    //zValuesCurrent = zValuesOriginal.slice();
     UpdateGraph();
     /*if(dimention==2) {
         DisplayGraph(xValuesCurrent,yValuesCurrent,zValuesCurrent);
@@ -1141,7 +1143,7 @@ filterEdge = maximumEdge/100;
 //document.getElementById('maxWeight').max = maximum;
 //document.getElementById('maxWeight').step = maximum/100;
 //document.getElementById('minWeight').step = maximum/100;
-DisplayGraph(xValuesCurrent,yValuesCurrent,zValuesCurrent);
+//DisplayGraph(xValuesCurrent,yValuesCurrent,zValuesCurrent);
 SelectReordering(document.getElementById('selectReordering'))
 
 }

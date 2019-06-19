@@ -374,6 +374,7 @@ function renderSelected() {
  console.log(smth);
  
   if(smth>0) {
+    console.log(" SelectOnMatrix(graph_data.selected_nodes);")
     SelectOnMatrix(graph_data.selected_nodes);
 
     graph_data.nodes = graph_data.selected_nodes;
@@ -403,6 +404,7 @@ function renderSelected() {
     getMaxValue(graph_data.links);
 
     } else {
+            console.log("MatrixEdges();")
             MatrixEdges();
     }
 }
