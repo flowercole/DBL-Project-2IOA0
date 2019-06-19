@@ -70,6 +70,7 @@ function MatrixEdges() {
         }
      console.log(selectedNodeNames);
     
+    selectFromMatrixArray(selectedNodeNames);
     ///////////////////////////////////////
     var nodesSelected  = [];
     //var zValuesCut = matrix(zValuesOriginal[0].length,zValuesOriginal[0].length,"*")
@@ -904,8 +905,8 @@ function SelectGraphColor(xVal,yVal,zVal,box) {
   //Input data for heatmap
 }
 function SelectEdgeRange(xVal,yVal,zVal) {
-    var minWeightHeatmap = document.getElementById("minWeight").value;
-    var maxWeightHeatmap = document.getElementById("maxWeight").value;
+    var minWeightHeatmap = document.getElementById("minWeight").value * filter_var;
+    var maxWeightHeatmap = document.getElementById("maxWeight").value * filter_var;
     console.log(minWeightHeatmap+"in edge")
     console.log(maxWeightHeatmap+"in edge")
     function matrix(rows, cols, defaultValue){
@@ -1120,18 +1121,18 @@ for(var i = 0; i < zValues[0].length; i++) {
       zValuesCurrent[i][j]=zValues[i][j];
     }
   }*/
- var maximum=0;
+maximumEdge=0;
  for(var j = 0; j < zValues[0].length; j++) {
-     if(maximum<Math.max(...zValues[j]))
+     if(maximumEdge<Math.max(...zValues[j]))
          {
-             maximum = Math.max(...zValues[j]);
+          maximumEdge = Math.max(...zValues[j]);
          }
     }
-console.log(maximum);
-document.getElementById('minWeight').max = maximum;
-document.getElementById('maxWeight').max = maximum;
-document.getElementById('maxWeight').step = maximum/100;
-document.getElementById('minWeight').step = maximum/100;
+console.log(maximumEdge);
+//document.getElementById('minWeight').max = maximum;
+//document.getElementById('maxWeight').max = maximum;
+//document.getElementById('maxWeight').step = maximum/100;
+//document.getElementById('minWeight').step = maximum/100;
 DisplayGraph(xValuesCurrent,yValuesCurrent,zValuesCurrent);
 SelectReordering(document.getElementById('selectReordering'))
 
@@ -1182,6 +1183,14 @@ function DisplayGraph(xVal,yVal,zVal) {
     myPlot.on('plotly_click', function(data){
       pn = data.points[0].pointNumber;
         console.log("clicked on"+pn);
+        if (xVal[pn[0]] == xVal[pn[1]]) {
+          selectFromMatrix(xVal[pn[0]]);
+        } else {
+          selectFromMatrix(xVal[pn[0]]);
+          selectFromMatrix(xVal[pn[1]]);
+        }
+        //console.log(xVal[pn[0]])
+        //console.log(xVal[pn[1]])
         selectedEdges.push(pn);
     });
 }

@@ -368,6 +368,38 @@ function renderSelected() {
             MatrixEdges();
     }
 }
+
+function selectFromMatrix(name) {
+  for(i = 0; i < graph_data.nodes.length; i++) {
+    if (graph_data.nodes[i].id == name) {
+      console.log(graph_data.nodes[i]);
+      // if it is, perform the actions to select that node
+      nodeClick(graph_data.nodes[i]);
+    }
+  }
+}
+
+function selectFromMatrixArray(names) {
+
+  //console.log(names);
+
+  // loop over the names of the nodes that should be selected
+  for (name = 0; name < names.length; name++) {
+    name_string = names[name];
+
+    // loop over all nodes and check if the name is equal to their id
+    for(i = 0; i < graph_data.nodes.length; i++) {
+      if (graph_data.nodes[i].id == name_string) {
+        // if it is, perform the actions to select that node
+        nodeClick(graph_data.nodes[i]);
+      }
+    }
+  }
+
+  renderSelected();
+
+}
+
 function renderReset() {
 console.log("in reset");
   ResetMatrix();
