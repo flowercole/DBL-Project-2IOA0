@@ -22,13 +22,20 @@ var colorscaleValue = [
 var filterEdge = 0;
 
 document.getElementById("updateSettings").addEventListener("click",function() {
-  if (localStorage.getItem('vis-1') == 'matrix' || localStorage.getItem('vis-2') == 'matrix' || localStorage.getItem('vis-3') == 'matrix' || localStorage.getItem('vis-4') == 'matrix'  ){
+  if (showMatrix){
     UpdateGraph();
   }
 });
 
+document.getElementById("reset-btn").addEventListener("click",function() {
+  console.log('kike')
+  if (showMatrix){
+    setTimeout(function(){ UpdateGraph()}, 500 )
+  }
+});
+
 document.getElementById("viewHeatmap3D").addEventListener("click",function() {
-  if (localStorage.getItem('vis-1') == 'matrix' || localStorage.getItem('vis-2') == 'matrix' || localStorage.getItem('vis-3') == 'matrix' || localStorage.getItem('vis-4') == 'matrix'  ){
+  if (showMatrix){
     ChangeDimention();
   }
 });

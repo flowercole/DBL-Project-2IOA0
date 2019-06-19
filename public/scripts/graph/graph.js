@@ -86,12 +86,13 @@ function loadGraph(box, type) {
   renderResetBtn = document.getElementById('renderReset');
   updateViewBtn = document.getElementById('updateSettings');
   filterEdgesBtn = document.getElementById('updateSettings');
+  resetSettingsBtn = document.getElementById('reset-btn')
 
   renderSelectedBtn.addEventListener('click', renderSelected, false);
   renderResetBtn.addEventListener('click', renderReset, false);
   updateViewBtn.addEventListener('click', updateView, false);
   filterEdgesBtn.addEventListener('click', filterEdges, false);
-
+  resetSettingsBtn.addEventListener('click', updateView, false);
 
   // Parse the csv file into a json object
   let filename = localStorage.getItem('selected_file');
