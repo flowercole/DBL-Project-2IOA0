@@ -375,7 +375,9 @@ function renderSelected() {
  
   if(smth>0) {
     console.log(" SelectOnMatrix(graph_data.selected_nodes);")
-    SelectOnMatrix(graph_data.selected_nodes);
+    if (showMatrix) {
+      SelectOnMatrix(graph_data.selected_nodes);
+    }
 
     graph_data.nodes = graph_data.selected_nodes;
     graph_data.links = graph_data.selected_links;
@@ -442,7 +444,11 @@ function selectFromMatrixArray(names) {
 
 function renderReset() {
 console.log("in reset");
-  ResetMatrix();
+
+  if (showMatrix) {
+    ResetMatrix();
+  }
+  
   graph_data = JSON.parse(JSON.stringify(data_copy));
     updateAttributes();
 

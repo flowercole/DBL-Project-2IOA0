@@ -1,6 +1,7 @@
 //// MATRIX SCRIPT ////
 
 // Function to initialize the matrix (Gets called from main file)
+let showMatrix = false;
 var xValues = [];
 var yValues  = [];
 var zValues;
@@ -179,6 +180,7 @@ function ResetMatrix() {
 }
 loadMatrix = (box1) => {
 
+  showMatrix = true;
   // Initialize
   var filename = localStorage.getItem('selected_file');
   var file;
