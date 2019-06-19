@@ -164,39 +164,6 @@ function csvJSON(csv) {
   return graph_data;
 
 }
-/*
-//apply settings to change appearance
-function setDisplayForce(svg) {
-	svg_force.selectAll("circle")
-    .attr("r", document.getElementById("nodeSize").value) //sets the radius of circle
-    .attr("stroke-width", document.getElementById("nodeSize").value/3)
-    .attr("fill", function(d) {
-      if (!graph_data.selected_nodes.includes(d)) { return document.getElementById("nodeColor").value }
-      else { return document.getElementById("selNodeColor").value }
-    })
-
-  svg_force.selectAll("circle").attr("fill", function(d) {
-      if (!graph_data.selected_nodes.includes(d)) { return document.getElementById("nodeColor").value }
-      else { return document.getElementById("selNodeColor").value }
-    })
-	svg_force.selectAll("line")
-		.attr("stroke-width", document.getElementById("linkWidth").value)
-		.attr("stroke-opacity", document.getElementById("linkOpacity").value/100)
-}
-
-function setDisplayRadial(svg) {
-	svg_radial.selectAll("circle")
-		//.attr("fill", document.getElementById("nodeColorRad").value) //sets the color of circle
-    .attr("r", document.getElementById("nodeSizeRad").value) //sets the radius of circle
-    .attr("stroke-width", document.getElementById("nodeSizeRad").value/3)
-    .attr("fill", function(d) {
-      if (!graph_data.selected_nodes.includes(d)) { return document.getElementById("nodeColorRad").value }
-      else { return document.getElementById("selNodeColorRad").value }
-    })
-	svg_radial.selectAll("line")
-		.attr("stroke-width", document.getElementById("linkWidthRad").value)
-		.attr("stroke-opacity", document.getElementById("linkOpacityRad").value/100)
-}*/
 
 function nodeClick(node) {
 
@@ -516,8 +483,8 @@ function updateView() {
 		})
 
 		svg_hierarchical.selectAll("line").data(hierarchical_data.links)
-			.attr("stroke-opacity", function(d) {return attributes[1] * 2/Math.sqrt(d.source.children.length)})
-			.attr("stroke-width", function(d) {return attributes[0] * 2/Math.sqrt(d.source.children.length)}) ;
+			.attr("stroke-width", function(d) {return attributes[0] * Math.sqrt(d.value) / 5})
+			.attr("stroke-opacity", function(d) {return attributes[1] * Math.sqrt(d.value) / 5})
 	}
 }
 
@@ -561,7 +528,8 @@ function filterEdges() {
 		counter = 0;
 		for (i = 0; i < hierarchical_data.links.length && counter < showMax; i++) {
 			l_h = hierarchical_data.links[i]
-		  	if (l_r.value >= minWeight && l_r.value <= maxWeight) {
+		  	if (l_h.value >= minWeight && l_h.value <= maxWeight) {
+				counter ++
 				appendLineHierarchical(l_h);
 			}
 		}

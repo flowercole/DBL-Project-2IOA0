@@ -65,15 +65,30 @@ function loadHierarchicalGraph(nodes, links, adjacents, svg, attributes) {
 	}
 
 
+	//create reference list for getting edge values
+	let refLinks = {}
+	for (link in hierarchical_data.links) {
+		refLinks[hierarchical_data.links[link].source + hierarchical_data.links[link].target] = hierarchical_data.links[link].value 
+	}
+
 	//replace nodes and links with those of the tree in hierarchical_data
 	hierarchical_data.nodes = []
 	hierarchical_data.links = []
 
+	//replace hierachical data
 	for (rootNode in roots) {
 		hierarchical_data.nodes = hierarchical_data.nodes.concat(roots[rootNode].descendants())
 		hierarchical_data.links = hierarchical_data.links.concat(roots[rootNode].links())
 	}
+	
 
+	//put values for links
+	for (link in hierarchical_data.links) {
+		link = hierarchical_data.links[link]
+		link.value = refLinks[link.source.data.id + link.target.data.id]
+	}
+	
+		
 	//draw links
 	hierarchicalLink = svg.append("g")
 	  .attr("stroke", "#fff")
@@ -87,8 +102,8 @@ function loadHierarchicalGraph(nodes, links, adjacents, svg, attributes) {
       .attr("y1", link.source.y)
       .attr("x2", link.target.x)
       .attr("y2", link.target.y)
-	  .attr("stroke-opacity", attributes[1] * 1.6/Math.sqrt(link.source.children.length))
-	  .attr("stroke-width", attributes[0] * 1.6/Math.sqrt(link.source.children.length)) ;
+	  .attr("stroke-width", attributes[0] * Math.sqrt(link.value) / 5)
+	  .attr("stroke-opacity", attributes[1] * Math.sqrt(link.value) / 5)
 	}
 
 	//draw nodes
@@ -214,6 +229,6 @@ function appendLineHierarchical(l) {
       .attr("y1", l.source.y )
       .attr("x2", l.target.x )
       .attr("y2", l.target.y )
-	  .attr("stroke-opacity", attributes[1] * 1.6/Math.sqrt(l.source.children.length))
-	  .attr("stroke-width", attributes[0] * 1.6/Math.sqrt(l.source.children.length)) ;
+		.attr("stroke-width", attributes[0] * Math.sqrt(l.value) / 5)
+		.attr("stroke-opacity", attributes[1] * Math.sqrt(l.value) / 5)
 }
