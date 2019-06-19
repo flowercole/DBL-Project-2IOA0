@@ -11,9 +11,9 @@ let allSettings = [
   ['vis-4', 'str', false, false, 'visualization', ''],
   ['minWeight', 'int', 0, 100, 'slider', '0'],
   ['maxWeight', 'int', 0, 100, 'slider', '100'],
-  ['linkWidth', 'int', 0, 250, 'slider', '10'],
-  ['linkOpacity', 'int', 0, 100, 'slider', '100'],
-  ['nodeSize', 'int', 5, 100, 'slider', '25'],
+  ['linkWidth', 'int', 1, 250, 'slider', '10'],
+  ['linkOpacity', 'int', 1, 100, 'slider', '100'],
+  ['nodeSize', 'int', 1, 200, 'slider', '25'],
   ['nodeColor', 'hex', false, false, 'slider', '#D3DFFF'],
   ['selNodeColor', 'hex', false, false, 'slider', '#003DDE'],
   ['startColor', 'hex', false, false, 'slider', '#D3DFFF'],
@@ -72,7 +72,25 @@ listenForChange = () => {
 listenForChange2 = () => {
   for (i = 6; i < 11; i++) {
     document.getElementById(allSettings[i][0]).addEventListener('change', function() {
-      document.getElementById(`${this.id}Value`).innerHTML = this.value;
+      var exp;
+      switch (this.id) {
+        case 'minWeight':
+          exp = 1;
+          break;
+        case 'maxWeight':
+          exp = 1;
+          break;
+        case 'linkWidth':
+          exp = 10;
+          break;
+        case 'linkOpacity':
+          exp = 1;
+          break;
+        case 'nodeSize':
+          exp = 10;
+          break;
+      }
+      document.getElementById(`${this.id}Value`).innerHTML = this.value / exp;
     })
   }
 }
@@ -80,7 +98,24 @@ listenForChange2 = () => {
 // Event Listeners to listen for change
 setInitial = () => {
   for (i = 6; i < 11; i++) {
-    document.getElementById(`${allSettings[i][0]}Value`).innerHTML = localStorage.getItem(allSettings[i][0]);
+    switch (i) {
+      case 6:
+        exp = 1;
+        break;
+      case 7:
+        exp = 1;
+        break;
+      case 8:
+        exp = 10;
+        break;
+      case 9:
+        exp = 1;
+        break;
+      case 10:
+        exp = 10;
+        break;
+    }
+    document.getElementById(`${allSettings[i][0]}Value`).innerHTML = localStorage.getItem(allSettings[i][0]) / exp;
   }
 }
 
@@ -100,6 +135,7 @@ resetSettings = (forced) => {
     initializeLocalStorage(allSettings[i][0], allSettings[i][5], forced);
     setSetting(allSettings[i][4], allSettings[i][0])
   }
+  setInitial();
 }
 
 listenForChange();

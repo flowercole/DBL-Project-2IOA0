@@ -7,24 +7,24 @@
  */
 
 function loadHierarchicalGraph(nodes, links, adjacents, svg, attributes) {
-	
+
 	//clear svg
 	svg.selectAll("*").remove()
-	
+
 	width = +svg.attr("width"),
     height = +svg.attr("height");
-	
+
 	//assign it to new variables for comfort
 	vertices = nodes
 	edgesHier = links
 	adjacency = adjacents
-	
+
 	//get a starting node (TO BE IMPROVED: pick a node in a smarter way!!)
 	startingNode = [vertices[0]]
-	
+
 	//run bfs to get a tree
 	bfs({"nodes" : vertices, "links" : links, "adjacency" : adjacency}, startingNode[0], true)
-	
+
 	let allBlack = false;
 	while (!allBlack) {
 		for (let i = 0; i < nodes.length; i++) {
@@ -39,14 +39,14 @@ function loadHierarchicalGraph(nodes, links, adjacents, svg, attributes) {
 			}
 		}
 	}
-	
-	
+
+
 	//transform it into data in shape of tree
 	data = []
 	for (node in startingNode) {
 		data.push(createTree(startingNode[node]))
 	}
-	
+
 	//calculate coordinates for each node
 	roots = []
 	let offset_scale = 10
@@ -64,16 +64,16 @@ function loadHierarchicalGraph(nodes, links, adjacents, svg, attributes) {
 		//console.log(tempRoot)
 	}
 
-	
+
 	//replace nodes and links with those of the tree in hierarchical_data
 	hierarchical_data.nodes = []
 	hierarchical_data.links = []
-	
+
 	for (rootNode in roots) {
 		hierarchical_data.nodes = hierarchical_data.nodes.concat(roots[rootNode].descendants())
 		hierarchical_data.links = hierarchical_data.links.concat(roots[rootNode].links())
 	}
-	
+
 	//draw links
 	hierarchicalLink = svg.append("g")
 	  .attr("stroke", "#fff")
@@ -87,10 +87,10 @@ function loadHierarchicalGraph(nodes, links, adjacents, svg, attributes) {
       .attr("y1", link.source.y)
       .attr("x2", link.target.x)
       .attr("y2", link.target.y)
-	  .attr("stroke-opacity", attributes[1] * 1.6/Math.sqrt(link.source.children.length)) 
+	  .attr("stroke-opacity", attributes[1] * 1.6/Math.sqrt(link.source.children.length))
 	  .attr("stroke-width", attributes[0] * 1.6/Math.sqrt(link.source.children.length)) ;
 	}
-	  
+
 	//draw nodes
 	node = svg.append("g")
 		 .attr("stroke", "#3e3e3e")
@@ -106,12 +106,12 @@ function loadHierarchicalGraph(nodes, links, adjacents, svg, attributes) {
 		  .attr("cx", function(d) {return d.x})
 		  .attr("cy", function(d) {return d.y})
 		  .on("click", function(d) {nodeClick(d.data)})
-		  
-		  
+
+
 	node.append("title")
 		.text(function(d) { return d.data.id; })
-	  
-	
+
+
 	    // Zooming and panning function
     zoomed = () => {
         const {x,y,k} = d3.event.transform
@@ -127,12 +127,12 @@ function loadHierarchicalGraph(nodes, links, adjacents, svg, attributes) {
 		svg.call(zoom);
 
 		zoom.transform(svg, d3.zoomIdentity);
-}			
+}
 
 //runs bfs on the graph given a name of the starting node, assigns children and distance to each node
 function bfs(graph, startNode, first) {
 	let queue = []
-	
+
 	if (first) {
 		for (node in graph.nodes) {
 			if (graph.nodes[node] == startNode) {
@@ -147,14 +147,14 @@ function bfs(graph, startNode, first) {
 
 		}
 	}
-	
-	//set for starting node 
+
+	//set for starting node
 	startNode.color = 1
 	startNode.dis = 0
 	startNode.children = []
-	
+
 	queue.push(startNode)
-	
+
 	while (queue.length > 0) {
 		curNode = queue[0]
 		queue.shift()
@@ -167,7 +167,7 @@ function bfs(graph, startNode, first) {
 				curNode.children.push(node)
 				queue.push(node)
 			}
-			
+
 		}
 		curNode.color = 2
 	}
@@ -195,8 +195,8 @@ function adjacent(graph, nodeFrom) {
 //converts the bfs result recursively to the right data format
 function createTree(rootNode) {
 	if (rootNode.children.length == 0) {
-		return { "id" : rootNode.id} 
-	} else {	
+		return { "id" : rootNode.id}
+	} else {
 		let tree = {"id" : rootNode.id, "children" : []}
 		for (child in rootNode.children) {
 			child = rootNode.children[child]
@@ -208,14 +208,12 @@ function createTree(rootNode) {
 
 //draw a single line
 function appendLineHierarchical(l) {
-		
+
 	hierarchicalLink.append("line")
 	  .attr("x1", l.source.x )
       .attr("y1", l.source.y )
       .attr("x2", l.target.x )
       .attr("y2", l.target.y )
-	  .attr("stroke-opacity", attributes[1] * 1.6/Math.sqrt(l.source.children.length)) 
-	  .attr("stroke-width", attributes[0] * 1.6/Math.sqrt(l.source.children.length)) ; 
+	  .attr("stroke-opacity", attributes[1] * 1.6/Math.sqrt(l.source.children.length))
+	  .attr("stroke-width", attributes[0] * 1.6/Math.sqrt(l.source.children.length)) ;
 }
-
-	  

@@ -374,7 +374,7 @@ function renderSelected() {
 	//for(i)
  var smth = graph_data.selected_nodes.length;
  console.log(smth);
- 
+
   if(smth>0) {
     console.log(" SelectOnMatrix(graph_data.selected_nodes);")
     if (showMatrix) {
@@ -518,7 +518,7 @@ function updateView() {
 }
 
 function filterEdges() {
-    
+
   minWeight = document.getElementById("minWeight").value * filter_var;
   maxWeight = document.getElementById("maxWeight").value * filter_var;
 
