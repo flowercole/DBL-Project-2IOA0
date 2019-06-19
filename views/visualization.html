@@ -10,7 +10,7 @@ code by Maxim Snoep (1313517)
   <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=VT323&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Major+Mono+Display&display=swap" rel="stylesheet">
-  
+
 	<link href="public/styles/tool.css" rel="stylesheet">
 </head>
 
@@ -22,8 +22,8 @@ code by Maxim Snoep (1313517)
     <!-- Small Logo in Corner -->
     <div class='logo component'>
       <div class='image component'>
-        <p class='head bold'>Funsualization</p>
-        <p class='sub'>Making Visualizations Fun Again</p>
+        <p class='head bold'>funsualization</p>
+        <p class='sub'>Making Visualizations Fun Again.</p>
       </div>
     </div>
 
@@ -95,67 +95,81 @@ code by Maxim Snoep (1313517)
 
       <div class='setting'>
         <button type='button' id='renderSelected' class='button  setting-left'>Show Selected Nodes</button>
-        <button type='button' id='renderReset' class='button  setting-right'>Show All Nodes</button>
+        <button type='button' id='renderReset' class='button setting-right'>Show All Nodes</button>
       </div>
 
       <div class='setting'>
         <p class='setting-left'>Minimum Link Weight</p>
-        <input class='setting-right selector' id="minWeight" type="range" min="0" max="100" value="0">
-        <label id="minWeightHeatmapValue" style="color: white">0</label>
+        <div class='setting-right'>
+          <input class='setting-right-left selector' id="minWeight" type="range" min="0" max="100">
+          <p class='setting-right-right'><span id="minWeightValue"></span></p>
+        </div>
       </div>
 
       <div class='setting'>
         <p class='setting-left'>Maximum Link Weight</p>
-        <input class='setting-right selector' id="maxWeight" type="range" min="0" max="100" value="100">
-        <label id="maxWeightHeatmapValue" style="color: white">100</label>
+        <div class='setting-right'>
+          <input class='setting-right-left selector' id="maxWeight" type="range" min="0" max="100">
+          <p class='setting-right-right'><span id="maxWeightValue"></span></p>
+        </div>
       </div>
 
-      <!-- <div class='setting'>
-        <button type='button' id='filterEdges' class='special-button setting-both'>Apply Filters</button>
-      </div> -->
+      <div class='setting'>
+        <p class='setting-left'>Link Width</p>
+        <div class='setting-right'>
+          <input class='setting-right-left selector' id="linkWidth" type="range" min="1" max="250">
+          <p class='setting-right-right'><span id="linkWidthValue"></span>px</p>
+        </div>
+      </div>
 
+      <div class='setting'>
+        <p class='setting-left'>Link Opacity</p>
+        <div class='setting-right'>
+          <input class='setting-right-left selector' id="linkOpacity" type="range" min="1" max="100">
+          <p class='setting-right-right'><span id="linkOpacityValue"></span>%</p>
+        </div>
+      </div>
 
-      <!-- <p class='bold'>Graph settings:</p>
-      <div class='component bordered'> -->
+      <div class='setting'>
+        <p class='setting-left'>Node Size</p>
+        <div class='setting-right'>
+          <input class='setting-right-left selector' id="nodeSize" type="range" min="1" max="200">
+          <p class='setting-right-right'><span id="nodeSizeValue"></span>px</p>
+        </div>
+      </div>
 
-        <div class='setting'>
-          <p class='setting-left'>Link Width</p>
-          <input class='setting-right selector' id="linkWidth" type="range" min="0" max="250" value="10">
+      <div class='setting'>
+        <p class='setting-left'>Node Color</p>
+        <div class='setting-right'>
+          <input class='setting-right-both special-selector' id="nodeColor" type="color" value="#0080ff">
         </div>
-        <div class='setting'>
-          <p class='setting-left'>Link Opacity</p>
-          <input class='setting-right selector' id="linkOpacity" type="range" min="1" max="100" value="100">
-        </div>
-        <div class='setting'>
-          <p class='setting-left'>Node Size</p>
-          <input class='setting-right selector' id="nodeSize" type="range" min="5" max="100" value="25">
-        </div>
-        <div class='setting'>
-          <p class='setting-left'>Node Color</p>
-          <input class='setting-right special-selector' id="nodeColor" type="color" value="#0080ff">
-        </div>
-        <div class='setting'>
-          <p class='setting-left'>Selected Node Color</p>
-          <input class='setting-right special-selector' id="selNodeColor" type="color" value="#ff88aa">
-        </div>
-      <!--  <div class='setting'>
-          <button type='button' id='updateView' class='special-button  setting-both'>Update Graph</button>
-        </div>
-       </div> -->
+      </div>
 
-      <!-- <p class='bold'>Heatmap settings:</p>
-      <div class='component bordered'> -->
-        <div class='setting'>
-          <p class='setting-left'>Heatmap Start Color</p>
-          <input class='setting-right special-selector' id="startColor" type="color" value="#D3DFFF">
+      <div class='setting'>
+        <p class='setting-left'>Selected Node Color</p>
+        <div class='setting-right'>
+          <input class='setting-right-both special-selector' id="selNodeColor" type="color" value="#ff88aa">
         </div>
-        <div class='setting'>
-          <p class='setting-left'>Heatmap End Color</p>
-          <input class='setting-right special-selector' id="endColor" type="color" value="#003DDE">
+      </div>
+
+      <div class='setting'>
+        <p class='setting-left'>Heatmap Start Color</p>
+        <div class='setting-right'>
+          <input class='setting-right-both special-selector' id="startColor" type="color" value="#D3DFFF">
         </div>
-        <div class='setting'>
-          <p class='setting-left'>Heatmap Reordering</p>
-          <select class='setting-right button' id="selectReordering", onchange="SelectReordering(this);">
+      </div>
+
+      <div class='setting'>
+        <p class='setting-left'>Heatmap End Color</p>
+        <div class='setting-right'>
+          <input class='setting-right-both special-selector' id="endColor" type="color" value="#003DDE">
+        </div>
+      </div>
+
+      <div class='setting'>
+        <p class='setting-left'>Heatmap Reordering</p>
+        <div class='setting-right'>
+          <select class='setting-right-both button' id="selectReordering", onchange="SelectReordering(this);">
             <option value="Original">Original</option>
             <option value="Alphabetical">Alphabetical</option>
             <option value="InDegree">InDegree</option>
@@ -167,14 +181,11 @@ code by Maxim Snoep (1313517)
             <option value="Average">Average</option>
           </select>
         </div>
+      </div>
 
-        <div class='setting'>
-          <button type='button' id='viewHeatmap3D' class='button  setting-both'>Switch to 3D</button>
-        </div>
-      <!-- <div class='setting'>
-          <button type='button' id='updateHeatmap' class='special-button  setting-both'>Update Heatmap</button>
-        </div>
-      </div>-->
+      <div class='setting'>
+        <button type='button' id='viewHeatmap3D' class='button  setting-both'>Switch to 3D</button>
+      </div>
 
       <div class='setting'>
         <button type='button' id='updateSettings' class='button setting-both'>Apply Settings</button>
@@ -201,11 +212,11 @@ code by Maxim Snoep (1313517)
   <script src="/public/scripts/matrix/matrix.js"></script>
   <script src="/public/scripts/queue.js"></script>
 
-  <script src='public/scripts/upload/settings.js'></script>
-  <script src='public/scripts/upload/upload.js'></script>
-  <script src='public/scripts/upload/dataselector.js'></script>
-  <script src='public/scripts/upload/visualizations.js'></script>
-  <script src='public/scripts/upload/share.js'></script>
+  <script src='public/scripts/visualization/settings.js'></script>
+  <script src='public/scripts/visualization/upload.js'></script>
+  <script src='public/scripts/visualization/dataselector.js'></script>
+  <script src='public/scripts/visualization/visualizations.js'></script>
+  <script src='public/scripts/visualization/share.js'></script>
 
   <script>
 
@@ -234,6 +245,8 @@ code by Maxim Snoep (1313517)
       })
     }, 200 )
   })
+
+
 
   </script>
 

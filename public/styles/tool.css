@@ -145,12 +145,12 @@ body {
 }
 
 .logo .head {
-  font-size: 1.5vw;
+  font-size: 1.7vw;
   font-family: 'Major Mono Display', monospace;
 }
 
 .logo .sub {
-  font-size: 1vw;
+  font-size: 1.2vw;
   font-family: 'VT323', monospace;
 }
 
@@ -256,9 +256,6 @@ body {
 .settings {
   height: 500px;
 
-  grid-area: left;
-
-  overflow; auto;
   grid-area: settings;
 
   display: flex;
@@ -296,8 +293,27 @@ body {
   margin-left: 5px;
 
   display: grid;
-  align-items: center;
+  grid-template-columns: 4fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+  "leftleft rightright";
 
+  width: auto;
+  align-items: center;
+}
+
+.settings .setting .setting-right .setting-right-right {
+  grid-area: rightright;
+
+  text-align: center;
+}
+
+.settings .setting .setting-right .setting-right-left {
+  grid-area: leftleft;
+}
+
+.settings .setting .setting-right-both {
+  grid-area: leftleft / leftleft / rightright / rightright;
   width: auto;
 }
 
