@@ -62,9 +62,12 @@ Displaying big datasets takes a long time in the node-link diagrams, that is why
 
 In the last week, we will polish up the whole tool for a better user experience, connect interactions of node-link diagrams with the adjacency matrix. With some page updates some information is lost- needs to be a steady workflow.
 
-## Usage
+## Examples
 
-tbc...
+![Screenshot](images/screenshot.jpg?raw=true "A screenshot of the visualization tool")
+![Force-directed graph](images/forcedirected.jpg?raw=true "A force-directed graph")
+![Heatmap in three dimensions](images/heatmap3d.jpg?raw=true "A three dimensional view of a heatmap")
+
 
 ## Authors and acknowledgment
 
