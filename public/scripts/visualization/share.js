@@ -47,6 +47,7 @@ readShareURL = () => {
   for (i = 0; i < allSettings.length; i++) {
     changeSettings(allSettings[i][0], validateSetting(allSettings[i][0], allSettings[i][1], allSettings[i][2], allSettings[i][3]))
   }
+  setSettings();
 }
 
 let searchParams = new URLSearchParams(location.search);

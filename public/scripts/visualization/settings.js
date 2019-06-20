@@ -150,6 +150,12 @@ resetSettings = (forced) => {
   setInitial();
 }
 
+setSettings = () => {
+  for (i = 0; i < allSettings.length; i++) {
+    setSetting(allSettings[i][4], allSettings[i][0])
+  }
+}
+
 listenForChange();
 listenForChange2();
 setInitial();
