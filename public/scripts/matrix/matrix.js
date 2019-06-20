@@ -103,7 +103,7 @@ function MatrixEdges() {
          zValuesCut[i][j] = Number(zValuesOriginal[edgeIndexes[i]][edgeIndexes[j]]);
       }
     }
-    
+
     xValuesCurrent = selectedNodeNames.slice();
     yValuesCurrent = selectedNodeNames.slice();
     zValuesCurrent = zValuesCut.slice();
@@ -165,12 +165,12 @@ function SelectOnMatrix(nodes) {
          zValuesCut[i][j] = Number(zValuesOriginal[xValuesCut[i]][yValuesCut[j]]);
       }
     }
-    
+
     xValuesCutOriginal=nodesSelected.slice();
     yValuesCutOriginal=nodesSelected.slice();
     zValuesCutOriginal=zValuesCut.slice();
     console.log(zValuesCutOriginal);
-    
+
     xValuesCurrent = nodesSelected.slice();
     yValuesCurrent = nodesSelected.slice();
     zValuesCurrent = zValuesCut.slice();
@@ -997,12 +997,12 @@ function SelectReordering(selectTag) {
                 if(selIndexes=="Original") {
                     console.log("Original");
                     if(zoomedSelected == 0) {
-                        
+
                         xValuesCurrent = xValuesOriginal.slice();
                         yValuesCurrent = yValuesOriginal.slice();
                         zValuesCurrent = zValuesOriginal.slice();
 
-                    } else {   
+                    } else {
                         xValuesCurrent = xValuesCutOriginal.slice();
                         yValuesCurrent = yValuesCutOriginal.slice();
                         zValuesCurrent = zValuesCutOriginal.slice();
@@ -1016,11 +1016,11 @@ function SelectReordering(selectTag) {
                         yValuesCurrent = yValuesOriginal.slice();
                         zValuesCurrent = zValuesOriginal.slice();
 
-                    } else {   
+                    } else {
                         xValuesCurrent = xValuesCutOriginal.slice();
                         yValuesCurrent = yValuesCutOriginal.slice();
                         zValuesCurrent = zValuesCutOriginal.slice();
-                    }     
+                    }
                     AlphabeticalOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
 
                 }
@@ -1031,7 +1031,7 @@ function SelectReordering(selectTag) {
                         yValuesCurrent = yValuesOriginal.slice();
                         zValuesCurrent = zValuesOriginal.slice();
 
-                    } else {   
+                    } else {
                         xValuesCurrent = xValuesCutOriginal.slice();
                         yValuesCurrent = yValuesCutOriginal.slice();
                         zValuesCurrent = zValuesCutOriginal.slice();
@@ -1045,7 +1045,7 @@ function SelectReordering(selectTag) {
                         yValuesCurrent = yValuesOriginal.slice();
                         zValuesCurrent = zValuesOriginal.slice();
 
-                    } else {   
+                    } else {
                         xValuesCurrent = xValuesCutOriginal.slice();
                         yValuesCurrent = yValuesCutOriginal.slice();
                         zValuesCurrent = zValuesCutOriginal.slice();
@@ -1059,7 +1059,7 @@ function SelectReordering(selectTag) {
                         yValuesCurrent = yValuesOriginal.slice();
                         zValuesCurrent = zValuesOriginal.slice();
 
-                    } else {   
+                    } else {
                         xValuesCurrent = xValuesCutOriginal.slice();
                         yValuesCurrent = yValuesCutOriginal.slice();
                         zValuesCurrent = zValuesCutOriginal.slice();
@@ -1073,11 +1073,11 @@ function SelectReordering(selectTag) {
                         yValuesCurrent = yValuesOriginal.slice();
                         zValuesCurrent = zValuesOriginal.slice();
 
-                    } else {   
+                    } else {
                         xValuesCurrent = xValuesCutOriginal.slice();
                         yValuesCurrent = yValuesCutOriginal.slice();
                         zValuesCurrent = zValuesCutOriginal.slice();
-                    } 
+                    }
                     RowSumOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="Cuthill-Mckee") {
@@ -1087,11 +1087,11 @@ function SelectReordering(selectTag) {
                         yValuesCurrent = yValuesOriginal.slice();
                         zValuesCurrent = zValuesOriginal.slice();
 
-                    } else {   
+                    } else {
                         xValuesCurrent = xValuesCutOriginal.slice();
                         yValuesCurrent = yValuesCutOriginal.slice();
                         zValuesCurrent = zValuesCutOriginal.slice();
-                    }   
+                    }
                     Cuthill_Mckee(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="InDegree"){
@@ -1101,11 +1101,11 @@ function SelectReordering(selectTag) {
                         yValuesCurrent = yValuesOriginal.slice();
                         zValuesCurrent = zValuesOriginal.slice();
 
-                    } else {   
+                    } else {
                         xValuesCurrent = xValuesCutOriginal.slice();
                         yValuesCurrent = yValuesCutOriginal.slice();
                         zValuesCurrent = zValuesCutOriginal.slice();
-                    }  
+                    }
                     InDegreeOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="OutDegree"){
@@ -1115,11 +1115,11 @@ function SelectReordering(selectTag) {
                         yValuesCurrent = yValuesOriginal.slice();
                         zValuesCurrent = zValuesOriginal.slice();
 
-                    } else {   
+                    } else {
                         xValuesCurrent = xValuesCutOriginal.slice();
                         yValuesCurrent = yValuesCutOriginal.slice();
                         zValuesCurrent = zValuesCutOriginal.slice();
-                    }   
+                    }
                     OutDegreeOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
             }
@@ -1361,7 +1361,8 @@ function Display3DGraph(xVal,yVal,zVal) {
         showticklabels: true,
         tickangle: 'auto',
         tickfont: {
-          color:'white',
+          color:"rgba(0,0,0,0)",
+          size: 1
         },
         backgroundcolor: "rgba(0,0,0,0)",
         gridcolor: "rgb(255, 255, 255)",
@@ -1375,9 +1376,8 @@ function Display3DGraph(xVal,yVal,zVal) {
         showticklabels: true,
         tickangle: 'auto',
         tickfont: {
-          color:'white',
-  		 //family:'Old Standard TT, serif',
-  		 //size: 14
+          color:"rgba(0,0,0,0)",
+          size: 1
         },
         backgroundcolor: "rgba(0,0,0,0)",
         gridcolor: "rgb(255, 255, 255)",
@@ -1391,7 +1391,8 @@ function Display3DGraph(xVal,yVal,zVal) {
         showticklabels: true,
         tickangle: 'auto',
         tickfont: {
-          color:'white',
+          color:"rgba(0,0,0,0)",
+          size: 1
         },
         backgroundcolor: "rgba(0,0,0,0)",
         gridcolor: "rgb(255, 255, 255)",
