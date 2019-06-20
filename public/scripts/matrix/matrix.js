@@ -12,7 +12,11 @@ var xValuesOriginal=[];
 var yValuesOriginal=[];
 var zValuesOriginal=[];
 var selectedEdges=[];
-var selectedNodeNames = []
+var zValuesCutOriginal=[];
+var xValuesCutOriginal=[];
+var yValuesCutOriginal=[];
+var selectedNodeNames = [];
+var zoomedSelected = 0;
 var box;
 var dimention=2;
 var colorscaleValue = [
@@ -57,6 +61,7 @@ function matrix(rows, cols, defaultValue){
     }
 function MatrixEdges() {
     console.log("matrixEdges")
+    zoomedSelected = 1;
     var edgeIndexes = [];
     if(selectedEdges.length>0) {
         for(var i = 0; i < selectedEdges.length; i++) {
@@ -68,14 +73,13 @@ function MatrixEdges() {
     console.log(edgeIndexes);
     console.log(xValuesCurrent);
     for(var j = 0; j < edgeIndexes.length; j++) {
-            selectedNodeNames.push(xValuesCurrent[edgeIndexes[j]]);
+            selectedNodeNames.push(xValuesOriginal[edgeIndexes[j]]);
         }
      console.log(selectedNodeNames);
 
     selectFromMatrixArray(selectedNodeNames);
     ///////////////////////////////////////
     var nodesSelected  = [];
-    //var zValuesCut = matrix(zValuesOriginal[0].length,zValuesOriginal[0].length,"*")
      function matrix(rows, cols, defaultValue){
         var arr = [];
         // Creates all lines:
@@ -96,9 +100,10 @@ function MatrixEdges() {
     console.log(zValuesCut);
     for(var i = 0; i < edgeIndexes.length; i++) {
       for(var j = 0; j < edgeIndexes.length; j++) {
-         zValuesCut[i][j] = Number(zValuesCurrent[edgeIndexes[i]][edgeIndexes[j]]);
+         zValuesCut[i][j] = Number(zValuesOriginal[edgeIndexes[i]][edgeIndexes[j]]);
       }
     }
+    
     xValuesCurrent = selectedNodeNames.slice();
     yValuesCurrent = selectedNodeNames.slice();
     zValuesCurrent = zValuesCut.slice();
@@ -110,6 +115,7 @@ function MatrixEdges() {
     selectedNodeNames = [];
 }
 function SelectOnMatrix(nodes) {
+    zoomedSelected = 1;
     console.log("selectonMatrix")
     var xValuesCut  = [];
     var yValuesCut  = [];
@@ -159,6 +165,12 @@ function SelectOnMatrix(nodes) {
          zValuesCut[i][j] = Number(zValuesOriginal[xValuesCut[i]][yValuesCut[j]]);
       }
     }
+    
+    xValuesCutOriginal=nodesSelected.slice();
+    yValuesCutOriginal=nodesSelected.slice();
+    zValuesCutOriginal=zValuesCut.slice();
+    console.log(zValuesCutOriginal);
+    
     xValuesCurrent = nodesSelected.slice();
     yValuesCurrent = nodesSelected.slice();
     zValuesCurrent = zValuesCut.slice();
@@ -168,6 +180,7 @@ function SelectOnMatrix(nodes) {
 }
 function ResetMatrix() {
     console.log("matrix reset");
+    zoomedSelected = 0;
     selectedEdges = [];
     selectedNodeNames = [];
     xValuesCurrent=xValuesOriginal.slice();
@@ -252,7 +265,7 @@ function AlphabeticalOrder(xVal,yVal,zVal) {
     }*/
     xValuesCurrent = sortAr.slice();
     yValuesCurrent = sortAr.slice();
-    zValuesCurrent = alphaZValues.slice();
+    zValuesCurrent = reorderedZValues.slice();
     UpdateGraph();
 
     //var returnArray = [sortAr,sortAr,reorderedZValues];
@@ -912,6 +925,7 @@ function SelectGraphColor(xVal,yVal,zVal,box) {
 }
 function SelectEdgeRange(xVal,yVal,zVal) {
     console.log(filterEdge);
+        console.log(zVal);
     var minWeightHeatmap = document.getElementById("minWeight").value * filterEdge;
     var maxWeightHeatmap =  document.getElementById("maxWeight").value * filterEdge;
     console.log(minWeightHeatmap+"in edge")
@@ -932,11 +946,13 @@ function SelectEdgeRange(xVal,yVal,zVal) {
         }
         return arr;
     }
-
     var zValuesReduced = matrix(zVal[0].length,zVal[0].length,"*")
+    console.log(zVal[0].length);
+
+    console.log(zValuesReduced)
     for(var i = 0; i < zVal[0].length; i++) {
         for(var j = 0; j < zVal[0].length; j++) {
-            zValuesReduced[i][j]=zVal[i][j];
+            zValuesReduced[i][j]=Number(zVal[i][j]);
         }
     }
 
@@ -980,39 +996,130 @@ function SelectReordering(selectTag) {
                 console.log("Selected options: " + selIndexes);
                 if(selIndexes=="Original") {
                     console.log("Original");
+                    if(zoomedSelected == 0) {
+                        
+                        xValuesCurrent = xValuesOriginal.slice();
+                        yValuesCurrent = yValuesOriginal.slice();
+                        zValuesCurrent = zValuesOriginal.slice();
+
+                    } else {   
+                        xValuesCurrent = xValuesCutOriginal.slice();
+                        yValuesCurrent = yValuesCutOriginal.slice();
+                        zValuesCurrent = zValuesCutOriginal.slice();
+                    }
                     OriginalOrder();
                 }
                 if(selIndexes=="Alphabetical") {
                     console.log("Alphabetical");
+                     if(zoomedSelected == 0) {
+                        xValuesCurrent = xValuesOriginal.slice();
+                        yValuesCurrent = yValuesOriginal.slice();
+                        zValuesCurrent = zValuesOriginal.slice();
+
+                    } else {   
+                        xValuesCurrent = xValuesCutOriginal.slice();
+                        yValuesCurrent = yValuesCutOriginal.slice();
+                        zValuesCurrent = zValuesCutOriginal.slice();
+                    }     
                     AlphabeticalOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
 
                 }
                 if(selIndexes=="Sum") {
                     console.log("Sum");
+                    if(zoomedSelected == 0) {
+                        xValuesCurrent = xValuesOriginal.slice();
+                        yValuesCurrent = yValuesOriginal.slice();
+                        zValuesCurrent = zValuesOriginal.slice();
+
+                    } else {   
+                        xValuesCurrent = xValuesCutOriginal.slice();
+                        yValuesCurrent = yValuesCutOriginal.slice();
+                        zValuesCurrent = zValuesCutOriginal.slice();
+                    }
                     SumOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="Average") {
                     console.log("Average");
+                    if(zoomedSelected == 0) {
+                        xValuesCurrent = xValuesOriginal.slice();
+                        yValuesCurrent = yValuesOriginal.slice();
+                        zValuesCurrent = zValuesOriginal.slice();
+
+                    } else {   
+                        xValuesCurrent = xValuesCutOriginal.slice();
+                        yValuesCurrent = yValuesCutOriginal.slice();
+                        zValuesCurrent = zValuesCutOriginal.slice();
+                    }
                     AverageOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
-                if(selIndexes=="ColumnSum") {
+                if(selIndexes=="Column Sum") {
                     console.log("Column Sum");
+                    if(zoomedSelected == 0) {
+                        xValuesCurrent = xValuesOriginal.slice();
+                        yValuesCurrent = yValuesOriginal.slice();
+                        zValuesCurrent = zValuesOriginal.slice();
+
+                    } else {   
+                        xValuesCurrent = xValuesCutOriginal.slice();
+                        yValuesCurrent = yValuesCutOriginal.slice();
+                        zValuesCurrent = zValuesCutOriginal.slice();
+                    }
                     ColSumOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
-                if(selIndexes=="RowSum") {
+                if(selIndexes=="Row Sum") {
                     console.log("Row Sum");
+                    if(zoomedSelected == 0) {
+                        xValuesCurrent = xValuesOriginal.slice();
+                        yValuesCurrent = yValuesOriginal.slice();
+                        zValuesCurrent = zValuesOriginal.slice();
+
+                    } else {   
+                        xValuesCurrent = xValuesCutOriginal.slice();
+                        yValuesCurrent = yValuesCutOriginal.slice();
+                        zValuesCurrent = zValuesCutOriginal.slice();
+                    } 
                     RowSumOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="Cuthill-Mckee") {
                     console.log("Cuthill-Mckee");
+                    if(zoomedSelected == 0) {
+                        xValuesCurrent = xValuesOriginal.slice();
+                        yValuesCurrent = yValuesOriginal.slice();
+                        zValuesCurrent = zValuesOriginal.slice();
+
+                    } else {   
+                        xValuesCurrent = xValuesCutOriginal.slice();
+                        yValuesCurrent = yValuesCutOriginal.slice();
+                        zValuesCurrent = zValuesCutOriginal.slice();
+                    }   
                     Cuthill_Mckee(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="InDegree"){
                     console.log("InDegreeOrder");
+                    if(zoomedSelected == 0) {
+                        xValuesCurrent = xValuesOriginal.slice();
+                        yValuesCurrent = yValuesOriginal.slice();
+                        zValuesCurrent = zValuesOriginal.slice();
+
+                    } else {   
+                        xValuesCurrent = xValuesCutOriginal.slice();
+                        yValuesCurrent = yValuesCutOriginal.slice();
+                        zValuesCurrent = zValuesCutOriginal.slice();
+                    }  
                     InDegreeOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
                 if(selIndexes=="OutDegree"){
                     console.log("OutDegreeOrder");
+                    if(zoomedSelected == 0) {
+                        xValuesCurrent = xValuesOriginal.slice();
+                        yValuesCurrent = yValuesOriginal.slice();
+                        zValuesCurrent = zValuesOriginal.slice();
+
+                    } else {   
+                        xValuesCurrent = xValuesCutOriginal.slice();
+                        yValuesCurrent = yValuesCutOriginal.slice();
+                        zValuesCurrent = zValuesCutOriginal.slice();
+                    }   
                     OutDegreeOrder(xValuesCurrent,yValuesCurrent,zValuesCurrent);
                 }
             }
@@ -1039,6 +1146,7 @@ function ChangeDimention() {
     console.log("end"+dimention);
 }
 function Visualise(file, box) {
+  zoomedSelected = 0;
   xValues = [];
   yValues = [];
   // Build the name values
