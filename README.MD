@@ -64,9 +64,9 @@ In the last week, we will polish up the whole tool for a better user experience,
 
 ## Examples
 
-![Screenshot](images/screenshot.jpg?raw=true "A screenshot of the visualization tool")
-![Force-directed graph](images/forcedirected.jpg?raw=true "A force-directed graph")
-![Heatmap in three dimensions](images/heatmap3d.jpg?raw=true "A three dimensional view of a heatmap")
+![Screenshot](examples/screenshot.jpg?raw=true "A screenshot of the visualization tool")
+![Force-directed graph](examples/forcedirected.jpg?raw=true "A force-directed graph")
+![Heatmap in three dimensions](examples/heatmap3d.jpg?raw=true "A three dimensional view of a heatmap")
 
 
 ## Authors and acknowledgment
