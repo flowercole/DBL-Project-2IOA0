@@ -17,7 +17,7 @@ code by Maxim Snoep (1313517)
 
 <body>
 
-  <div class='container'>
+  <div class='container noselect'>
 
     <!-- Small Logo in Corner -->
     <div class='logo component'>
@@ -55,13 +55,13 @@ code by Maxim Snoep (1313517)
             <p class='bold'>5. Select the visualizations.</p>
             <div class='component checkboxes'>
               <!-- Visualization Selector 1 -->
-              <p><input type="checkbox" id='force-select' onclick="updateLayoutSettings('force')">Force Directed Graph</p>
+              <p><input type="checkbox" class='special-special-selector' id='force-select' onclick="updateLayoutSettings('force')">Force Directed Graph</p>
               <!-- Visualization Selector 2 -->
-              <p><input type="checkbox" id='radial-select' onclick="updateLayoutSettings('radial')">Radial Graph</p>
+              <p><input type="checkbox" class='special-special-selector' id='radial-select' onclick="updateLayoutSettings('radial')">Radial Graph</p>
               <!-- Visualization Selector 3 -->
-              <p><input type="checkbox" id='hierarchical-select' onclick="updateLayoutSettings('hierarchical')">Hierarchical Graph</p>
+              <p><input type="checkbox" class='special-special-selector' id='hierarchical-select' onclick="updateLayoutSettings('hierarchical')">Hierarchical Graph</p>
               <!-- Visualization Selector 4 -->
-              <p><input type="checkbox" id='matrix-select' onclick="updateLayoutSettings('matrix')">Matrix Heatmap</p>
+              <p><input type="checkbox" class='special-special-selector' id='matrix-select' onclick="updateLayoutSettings('matrix')">Matrix Heatmap</p>
             </div>
           </div>
           <div class='select-right'>

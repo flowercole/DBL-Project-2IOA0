@@ -60,6 +60,15 @@ body {
   cursor: pointer;
 }
 
+.special-special-selector:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.special-special-selector:focus {
+  outline: none;
+}
+
 .special-selector {
   color: #f3f3f3;
   font-family: 'Inconsolata', monospace;
@@ -382,4 +391,14 @@ body {
   position: relative;
   top: 2px;
   *overflow: hidden;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }

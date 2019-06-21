@@ -65,6 +65,7 @@ body {
   outline: none;
 }
 
+
 .cool-button {
   color: #f3f3f3;
   font-family: 'Inconsolata', monospace;
@@ -222,7 +223,7 @@ body {
   white-space: nowrap; /* Keeps the content on a single line */
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
   letter-spacing: .15em; /* Adjust as needed */
-  animation: 
+  animation:
     typing 3.5s steps(40, end),
     blink-caret .75s step-end infinite;
   }
@@ -238,3 +239,13 @@ body {
     from, to { border-color: transparent }
     50% { border-color: orange; }
   }
+
+  .noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
