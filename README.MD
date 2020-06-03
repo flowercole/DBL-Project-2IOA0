@@ -1,6 +1,6 @@
 # Funsualization
 
-Funsualization is a data visualization tool made by Group 26 for the DBL HTI + Webtech (2IOA0) course, followed in Q4 of 2019 at the Eindhoven University of Technology.
+Funsualization is a data visualization tool.
 
 ## What is the purpose of our tool?
 
@@ -69,18 +69,6 @@ In the last week, we will polish up the whole tool for a better user experience,
 ![Heatmap in three dimensions](examples/heatmap3d.jpg?raw=true "A three dimensional view of a heatmap")
 
 
-## Authors and acknowledgment
-
-Contributors: Adrian Cucos, Wouter Haneveer, Stijn Kuijper, Maxim Snoep,
-Bart van der Steenhoven, Luca Tudor, and Konstantin Velkov.
-
-And our tutor, who has guided us through this project: Delyana Stoyanova.
-
-## License
-
-We are not using a license.
-
-
 ## Project status
 
-We are done with the project, the current state of the project, is the final state of the project, including all its bugs and forgotten features. Every student has put 140 hours of work into this project.
+We are done with the project, the current state of the project, is the final state of the project, including all its bugs and forgotten features.
